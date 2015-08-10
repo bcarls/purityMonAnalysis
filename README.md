@@ -14,7 +14,7 @@ This assumes that you have traces produced by the purity monitor DAQ. Edit the r
 
     python run_plotAnodeCathodeDiff.py -b
 
-It produces a few files. Run000801.1.LogData.csv contains parameters from the calculation. The lifetimes_01.txt file contains the lifetimes from the runs analyzed to make plotting of the lifetimes by time easier. The image Run_000801_diff.png contains the traces, anode signal minus cathode signal, that's used to generate the lifetime. 
+It produces a few files. Run000801.1.LogData.csv contains parameters from the calculation and is intended for the iFix Historian. The lifetimes_01.txt file contains the lifetimes from the runs analyzed to make plotting of the lifetimes by time easier. The image Run_000801_diff.png contains the traces, anode signal minus cathode signal, that's used to generate the lifetime. 
 
 
 
