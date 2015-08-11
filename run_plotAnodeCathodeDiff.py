@@ -7,7 +7,6 @@ ROOT.gROOT.ProcessLine(".L plotAnodeCathodeDiff.cxx")
 
 p = ROOT.plotAnodeCathodeDiff()
 
-<<<<<<< HEAD
 # p.RunPlotAndLifetime("Run_000349_00.txt")
 # p.RunPlotAndLifetime("Run_000350_00.txt")
 # p.RunPlotAndLifetime("Run_000351_00.txt")
@@ -250,8 +249,5 @@ p.RunPlotAndLifetime("Run_000836_01.txt")
 p.RunPlotAndLifetime("Run_000837_01.txt")
 p.RunPlotAndLifetime("Run_000838_01.txt")
 p.RunPlotAndLifetime("Run_000839_01.txt")
-=======
-p.RunPlotAndLifetime("Run_000801_01.txt")
 
->>>>>>> 9a6f68a7aac8f1e01c388bcde7623aeacf937f32
 
