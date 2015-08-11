@@ -1,0 +1,6 @@
+
+# Ignore data files and plots
+/*.png
+/*.txt
+
+
