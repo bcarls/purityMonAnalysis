@@ -63,7 +63,9 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
     voltage = oscillData->GetEntry(i);
     fCatBase = fCatBase + anoSignalVolt-catSignalVolt;
   }
+  std::cout << fCatBase << std::endl;
   fCatBase = fCatBase/50;
+  std::cout << fCatBase << std::endl;
   double maxCathNoiseOffBase = 0;
   for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
     voltage = oscillData->GetEntry(i);
@@ -94,6 +96,7 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
     }
   }
 
+  fAnoTime = secPerSample*(-TriggerTimeIndex + AnoTimeIndex);
 
   // Find the anode baseline
   // int AnoBaselineIndexLow = 1602
@@ -103,16 +106,19 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
   //   AnoBaselineIndexLow = 2500;
   //   AnoBaselineIndexHigh = 4200;
   // }
-  int AnoBaselineIndexLow = TriggerTimeIndex + 0.666666*(AnoTimeIndex-CatTimeIndex);
-  int AnoBaselineIndexHigh = AnoTimeIndex + 0.333333*(AnoTimeIndex-CatTimeIndex);
-  std::cout << AnoBaselineIndexLow  << " " << AnoBaselineIndexHigh << std::endl;
+  int AnoBaselineIndexLow = (int)((double)(TriggerTimeIndex) + 0.666666*((double)AnoTimeIndex-(double)CatTimeIndex));
+  int AnoBaselineIndexHigh = (int)((double)(AnoTimeIndex) + 0.333333*((double)AnoTimeIndex-(double)CatTimeIndex));
+  // std::cout << AnoTimeIndex << " " << CatTimeIndex << std::endl;
+  // std::cout << AnoBaselineIndexLow  << " " << AnoBaselineIndexHigh << std::endl;
   for(int i = AnoBaselineIndexLow - 25; i <= AnoBaselineIndexLow + 24; i++){
     voltage = oscillData->GetEntry(i);
-    fAnoBase = + anoSignalVolt-catSignalVolt;
+    // std::cout << i << " " << fAnoBase << std::endl;
+    fAnoBase+=anoSignalVolt-catSignalVolt;
   }
   for(int i = AnoBaselineIndexHigh - 25; i <= AnoBaselineIndexHigh + 24; i++){
     voltage = oscillData->GetEntry(i);
-    fAnoBase = + anoSignalVolt-catSignalVolt;
+    // std::cout << i << " " << fAnoBase << std::endl;
+    fAnoBase+=anoSignalVolt-catSignalVolt;
   }
   fAnoBase = fAnoBase/100;
 
@@ -140,7 +146,6 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
 
 
 
-  fAnoTime = secPerSample*(-TriggerTimeIndex + AnoTimeIndex);
 
   if(istop == 0){
     double a1 = fAnoBase + 0.25*(fAnoPeak-fAnoBase);
