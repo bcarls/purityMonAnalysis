@@ -1,5 +1,6 @@
 
 #include "plotAnodeCathodeDiff.h"
+#include "TString.h"
 
 // Plot the data coming from the digitizer card reading the purity monitors
 
@@ -133,10 +134,26 @@ void plotAnodeCathodeDiff::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetBranchAddress("catSignalSmooth",&catSignalVolt);
   for(int i = 0; i < nEntries; i++){
     voltage = oscillData->GetEntry(i);
-    if(anoSignalVolt - catSignalVolt < minVoltage)
-       minVoltage=anoSignalVolt-catSignalVolt;
-    if(anoSignalVolt - catSignalVolt > maxVoltage)
-       maxVoltage=anoSignalVolt-catSignalVolt;
+    // if(anoSignalVolt - catSignalVolt < minVoltage)
+    //    minVoltage=anoSignalVolt-catSignalVolt;
+    // if(anoSignalVolt - catSignalVolt > maxVoltage)
+    //    maxVoltage=anoSignalVolt-catSignalVolt;
+
+    // if(anoSignalVolt - catSignalVolt < minVoltage)
+    //    minVoltage=anoSignalVolt-catSignalVolt;
+    // if(anoSignalVolt - catSignalVolt > maxVoltage)
+    //    maxVoltage=anoSignalVolt-catSignalVolt;
+
+
+    if(anoSignalVolt < minVoltage)
+      minVoltage=anoSignalVolt;
+    if(catSignalVolt < minVoltage)
+      minVoltage=catSignalVolt;
+    if(anoSignalVolt > maxVoltage)
+      maxVoltage=anoSignalVolt;
+    if(catSignalVolt > maxVoltage)
+      maxVoltage=catSignalVolt;
+
 
     // if(anoSignalVolt-anoNoiseVolt < minVoltage)
     //   minVoltage=anoSignalVolt-anoNoiseVolt;
@@ -175,70 +192,71 @@ void plotAnodeCathodeDiff::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetLineWidth(4);
   oscillData->SetLineStyle(2);
   oscillData->SetMarkerSize(0.5);
-  oscillData->Draw("1000*(anoSignalSmooth-catSignalSmooth):1000*time","","LSAME");
-  // oscillData->Draw("1000*(anoSignalSmooth-anoNoiseSmooth-catSignalSmooth+catNoiseSmooth):1000*time","","LSAME");
-  // oscillData->Draw("1000*(anoSignal-catSignal):1000*time","","LSAME");
+  // oscillData->Draw("1000*(anoSignalSmooth-catSignalSmooth):1000*time","","LSAME");
+  // oscillData->Draw("1000*(catSignalSmooth-catNoiseSmooth):1000*time","","LSAME");
+  oscillData->Draw("1000*(catSignalSmooth):1000*time","","LSAME");
   TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
   frame->GetXaxis()->SetTitle("ms");
   frame->GetYaxis()->SetTitle("mV");
-  leg->AddEntry(graph,"anode signal minus cathode signal","l");
-  // oscillData->SetMarkerStyle(5);
-  // oscillData->SetMarkerColor(4);
-  // oscillData->SetLineColor(4);
-  // oscillData->SetLineStyle(1);
-  // oscillData->SetLineWidth(4);
+  // leg->AddEntry(graph,"anode signal minus cathode signal","l");
+  oscillData->SetMarkerStyle(5);
+  oscillData->SetMarkerColor(4);
+  oscillData->SetLineColor(4);
+  oscillData->SetLineStyle(1);
+  oscillData->SetLineWidth(4);
   // oscillData->Draw("1000*(anoSignalSmooth-anoNoiseSmooth):1000*time","","LSAME");
-  // TGraph *graph1 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-  // graph1->SetMarkerStyle(5);
-  // graph1->SetMarkerColor(4);
-  // graph1->SetLineColor(4);
-  // graph1->SetLineWidth(4);
-  // leg->AddEntry(graph1,"anode signal, noise subtracted","l");
+  oscillData->Draw("1000*(anoSignalSmooth):1000*time","","LSAME");
+  TGraph *graph1 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+  graph1->SetMarkerStyle(5);
+  graph1->SetMarkerColor(4);
+  graph1->SetLineColor(4);
+  graph1->SetLineWidth(4);
+  leg->AddEntry(graph1,"anode signal, noise subtracted","l");
 
 
 
-//   oscillData->SetMarkerStyle(2);
-//   oscillData->SetMarkerColor(8);
-//   oscillData->SetLineColor(8);
-//   oscillData->SetLineStyle(3);
-//   oscillData->Draw("1000*(catSignalSmooth)+20:1000*time","","LSAME");
-//   TGraph *graph2 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-//   graph2->SetMarkerStyle(2);
-//   graph2->SetMarkerColor(8);
-//   graph2->SetLineColor(8);
-//   leg->AddEntry(graph2,"cathode signal, without noise subtracted","l");
+  // oscillData->SetMarkerStyle(2);
+  // oscillData->SetMarkerColor(8);
+  // oscillData->SetLineColor(8);
+  // oscillData->SetLineStyle(3);
+  // oscillData->Draw("1000*(catSignalSmooth)+20:1000*time","","LSAME");
+  // TGraph *graph2 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+  // graph2->SetMarkerStyle(2);
+  // graph2->SetMarkerColor(8);
+  // graph2->SetLineColor(8);
+  // leg->AddEntry(graph2,"cathode signal, without noise subtracted","l");
 
-//   oscillData->SetMarkerStyle(5);
-//   oscillData->SetLineStyle(4);
-//   oscillData->SetMarkerColor(1);
-//   oscillData->SetLineColor(1);
-//   oscillData->Draw("1000*(anoSignalSmooth)+20:1000*time","","LSAME");
-//   TGraph *graph3 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-//   graph3->SetMarkerStyle(5);
-//   graph3->SetMarkerColor(1);
-//   graph3->SetLineColor(1);
-//   leg->AddEntry(graph3,"anode signal, without noise subtracted","l");
+  // oscillData->SetMarkerStyle(5);
+  // oscillData->SetLineStyle(4);
+  // oscillData->SetMarkerColor(1);
+  // oscillData->SetLineColor(1);
+  // oscillData->Draw("1000*(anoSignalSmooth)+20:1000*time","","LSAME");
+  // TGraph *graph3 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+  // graph3->SetMarkerStyle(5);
+  // graph3->SetMarkerColor(1);
+  // graph3->SetLineColor(1);
+  // leg->AddEntry(graph3,"anode signal, without noise subtracted","l");
 
 
-//   oscillData->SetMarkerStyle(2);
-//   oscillData->SetMarkerColor(28);
-//   oscillData->SetLineColor(28);
-//   oscillData->Draw("1000*(catNoiseSmooth)+40:1000*time","","LSAME");
-//   TGraph *graph4 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-//   graph4->SetMarkerStyle(2);
-//   graph4->SetMarkerColor(28);
-//   graph4->SetLineColor(28);
-//   leg->AddEntry(graph4,"cathode noise","l");
+  // oscillData->SetMarkerStyle(2);
+  // oscillData->SetMarkerColor(28);
+  // oscillData->SetLineColor(28);
+  // oscillData->Draw("1000*(catNoiseSmooth)+40:1000*time","","LSAME");
+  // TGraph *graph4 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+  // graph4->SetMarkerStyle(2);
+  // graph4->SetMarkerColor(28);
+  // graph4->SetLineColor(28);
+  // leg->AddEntry(graph4,"cathode noise","l");
 
-//   oscillData->SetMarkerStyle(5);
-//   oscillData->SetMarkerColor(6);
-//   oscillData->SetLineColor(6);
-//   oscillData->Draw("1000*(anoNoiseSmooth)+40:1000*time","","LSAME");
-//   TGraph *graph5 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-//   graph5->SetMarkerStyle(5);
-//   graph5->SetMarkerColor(6);
-//   graph5->SetLineColor(6);
-//   leg->AddEntry(graph5,"anode noise","l");
+  // oscillData->SetMarkerStyle(5);
+  // oscillData->SetMarkerColor(6);
+  // oscillData->SetLineColor(6);
+  // oscillData->Draw("1000*(anoNoiseSmooth)+40:1000*time","","LSAME");
+  // TGraph *graph5 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+  // graph5->SetMarkerStyle(5);
+  // graph5->SetMarkerColor(6);
+  // graph5->SetLineColor(6);
+  // leg->AddEntry(graph5,"anode noise","l");
 
   leg->Draw();
 
@@ -261,7 +279,10 @@ void plotAnodeCathodeDiff::RunPlotAndLifetime(TString PrMFile){
     << datime.GetHour() << " " 
     << datime.GetMinute() << " " 
     << datime.GetSecond() << " " 
-    << " " << calc.Lifetime() << "\n";
+    << calc.Lifetime() << " " 
+    << calc.CatTrue() << " " 
+    << calc.AnoTrue() << 
+    "\n";
   myfile.close();
 
 
