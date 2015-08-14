@@ -260,64 +260,64 @@ void plotAnodeCathodeDiff::RunPlotAndLifetime(TString PrMFile){
 
   leg->Draw();
 
-  TString PrMTrace = PrMFile.ReplaceAll(".txt","_diff.png");
+  TString PrMTrace = PrMFile.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
 
-  TString sPrM = PrMFile[12];
-  // calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), atoi(runNumber.Data()));
-  calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
+//   TString sPrM = PrMFile[12];
+//   // calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), atoi(runNumber.Data()));
+//   calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
 
-  // Print lifetime out to a text file 
-  TString runNumber = PrMFile(4,6);
-  TString outFileName = "lifetimes_0"+sPrM+".txt";
-  ofstream myfile;
-  myfile.open(outFileName.Data(),ios::app);
-  myfile << runNumber.Data() << " " 
-    << datime.GetMonth() << " " 
-    << datime.GetDay() << " " 
-    << datime.GetYear() << " " 
-    << datime.GetHour() << " " 
-    << datime.GetMinute() << " " 
-    << datime.GetSecond() << " " 
-    << calc.Lifetime() << " " 
-    << calc.CatTrue() << " " 
-    << calc.AnoTrue() << 
-    "\n";
-  myfile.close();
-
-
-  TString when = Form("%d",datime.GetMonth());
-  when+="/";
-  when+=Form("%d",datime.GetDay());
-  when+="/";
-  when+=Form("%d",datime.GetYear());
-  when+=" ";
-  when+=Form("%02d",datime.GetHour());
-  when+=":";
-  when+=Form("%02d",datime.GetMinute());
-  when+=":";
-  when+=Form("%02d",datime.GetSecond());
-  std::cout << when.Data() << std::endl;
+//   // Print lifetime out to a text file 
+//   TString runNumber = PrMFile(4,6);
+//   TString outFileName = "lifetimes_0"+sPrM+".txt";
+//   ofstream myfile;
+//   myfile.open(outFileName.Data(),ios::app);
+//   myfile << runNumber.Data() << " " 
+//     << datime.GetMonth() << " " 
+//     << datime.GetDay() << " " 
+//     << datime.GetYear() << " " 
+//     << datime.GetHour() << " " 
+//     << datime.GetMinute() << " " 
+//     << datime.GetSecond() << " " 
+//     << calc.Lifetime() << " " 
+//     << calc.CatTrue() << " " 
+//     << calc.AnoTrue() << 
+//     "\n";
+//   myfile.close();
 
 
-  TString outCSVFileName = "Run"+runNumber+"."+sPrM+".LogData.csv";
-  myfile.open(outCSVFileName.Data());
-  myfile << "[Data]\n";
-  myfile << "Tagname,TimeStamp,Value\n";
-  myfile << "UBOONE.PRM_CATHPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatPeak() << "\n";
-  myfile << "UBOONE.PRM_CATHTIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTime() << "\n";
-  myfile << "UBOONE.PRM_CATHBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatBase() << "\n";
-  myfile << "UBOONE.PRM_ANODEPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoPeak() << "\n";
-  myfile << "UBOONE.PRM_ANODETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTime() << "\n";
-  myfile << "UBOONE.PRM_ANODEBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoBase() << "\n";
-  myfile << "UBOONE.PRM_ANODERISE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoRise() << "\n";
-  myfile << "UBOONE.PRM_CATHFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CathF() << "\n";
-  myfile << "UBOONE.PRM_ANODEFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoF() << "\n";
-  myfile << "UBOONE.PRM_ANODETRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTrue() << "\n";
-  myfile << "UBOONE.PRM_CATHTRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTrue() << "\n";
-  myfile << "UBOONE.PRM_LIFETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Lifetime() << "\n";
-  myfile << "UBOONE.PRM_IMPURITIES_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Impurities() << "\n";
-  myfile.close();
+//   TString when = Form("%d",datime.GetMonth());
+//   when+="/";
+//   when+=Form("%d",datime.GetDay());
+//   when+="/";
+//   when+=Form("%d",datime.GetYear());
+//   when+=" ";
+//   when+=Form("%02d",datime.GetHour());
+//   when+=":";
+//   when+=Form("%02d",datime.GetMinute());
+//   when+=":";
+//   when+=Form("%02d",datime.GetSecond());
+//   std::cout << when.Data() << std::endl;
+
+
+//   TString outCSVFileName = "Run"+runNumber+"."+sPrM+".LogData.csv";
+//   myfile.open(outCSVFileName.Data());
+//   myfile << "[Data]\n";
+//   myfile << "Tagname,TimeStamp,Value\n";
+//   myfile << "UBOONE.PRM_CATHPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatPeak() << "\n";
+//   myfile << "UBOONE.PRM_CATHTIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTime() << "\n";
+//   myfile << "UBOONE.PRM_CATHBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatBase() << "\n";
+//   myfile << "UBOONE.PRM_ANODEPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoPeak() << "\n";
+//   myfile << "UBOONE.PRM_ANODETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTime() << "\n";
+//   myfile << "UBOONE.PRM_ANODEBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoBase() << "\n";
+//   myfile << "UBOONE.PRM_ANODERISE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoRise() << "\n";
+//   myfile << "UBOONE.PRM_CATHFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CathF() << "\n";
+//   myfile << "UBOONE.PRM_ANODEFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoF() << "\n";
+//   myfile << "UBOONE.PRM_ANODETRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTrue() << "\n";
+//   myfile << "UBOONE.PRM_CATHTRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTrue() << "\n";
+//   myfile << "UBOONE.PRM_LIFETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Lifetime() << "\n";
+//   myfile << "UBOONE.PRM_IMPURITIES_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Impurities() << "\n";
+//   myfile.close();
 
 
 

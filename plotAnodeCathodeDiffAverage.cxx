@@ -655,7 +655,7 @@ void plotAnodeCathodeDiffAverage::RunPlotAndLifetime(TString PrMFile0, TString P
 
   leg->Draw();
 
-  TString PrMTrace = PrMFile0.ReplaceAll(".txt","_diff.png");
+  TString PrMTrace = PrMFile0.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
 
 
@@ -683,7 +683,9 @@ void plotAnodeCathodeDiffAverage::RunPlotAndLifetime(TString PrMFile0, TString P
     << datime.GetSecond() << " " 
     << calc.Lifetime() << " " 
     << calc.CatTrue() << " " 
-    << calc.AnoTrue() << 
+    << calc.AnoTrue() << " "
+    << calc.CathF() << " " 
+    << calc.AnoF() << 
     "\n";
   myfile.close();
 

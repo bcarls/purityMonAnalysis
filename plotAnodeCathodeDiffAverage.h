@@ -3,6 +3,7 @@
 #ifndef plotAnodeCathodeDiffAverage_h
 #define plotAnodeCathodeDiffAverage_h
 
+#include "lifetimeCalcFit.h"
 #include "lifetimeCalcLAPD.h"
 
 // Number of samples

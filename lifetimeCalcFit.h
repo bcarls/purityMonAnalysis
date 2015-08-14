@@ -4,7 +4,6 @@
 
 class lifetimeCalcFit{
   public:
-    // lifetimeCalcFit();
     void CalculateLifetime(TNtuple* oscillData, int IPrM);
     double CatPeak(){ return fCatPeak;}
     double CatTime(){ return fCatTime;}
@@ -19,8 +18,7 @@ class lifetimeCalcFit{
     double CatTrue(){ return fCatTrue;}
     double Lifetime(){ return fLifeTime;}
     double Impurities(){ return fImpurities;}
-    static double SinusoidReject(double *x, double *par);
-    static double SignalFunction(double *x, double *par);
+    static double Func(double *x, double *par);
 
   private:
     double fCatPeak;
