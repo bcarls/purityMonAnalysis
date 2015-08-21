@@ -220,16 +220,6 @@ void PurityPlotMaker::MakePlots(){
 
   // Make the averaged plot
   gStyle->SetOptStat(0);
-  TH2F *frameAverageLifetime = new TH2F("frame","", 1000, averagedLifetimeData->GetMinimum("averagedRun")-10, averagedLifetimeData->GetMaximum("averagedRun")+10, 1000, 0, 1.1*1000*averagedLifetimeData->GetMaximum("averagedLifetime"));
-  frameAverageLifetime ->GetXaxis()->SetTitle("date/time");
-  frameAverageLifetime ->GetXaxis()->SetTimeDisplay(1);
-  frameAverageLifetime->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
-  frameAverageLifetime->GetXaxis()->SetTimeOffset(0);
-  frameAverageLifetime->GetXaxis()->SetLabelOffset(0.025);
-  frameAverageLifetime->GetXaxis()->SetTitleOffset(1.5);
-  frameAverageLifetime ->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-  frameAverageLifetime ->GetXaxis()->SetTimeOffset(0);
-  frameAverageLifetime ->Draw();
   long N = averagedLifetimeData->Draw("datime.Convert():1000*averagedLifetime:1000*lifetimeStandardDev","","goff");
   TGraphErrors *gr = new TGraphErrors(N,averagedLifetimeData->GetV1(),averagedLifetimeData->GetV2(),0,averagedLifetimeData->GetV3());
   gr->SetMarkerStyle(2);
@@ -242,9 +232,14 @@ void PurityPlotMaker::MakePlots(){
   gr->GetXaxis()->SetTitle("date/time");
   gr->GetXaxis()->SetTimeDisplay(1);
   gr->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+  gr->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
   gr->GetXaxis()->SetTimeOffset(0);
+  gr->GetXaxis()->SetLabelOffset(0.025);
+  gr->GetXaxis()->SetTitleOffset(1.5);
+  gr->Draw("APE");
+  // gr->GetXaxis()->SetRange(datimeMax.Convert()-604800,datimeMax.Convert());
+  gr->GetXaxis()->SetLimits(datimeMax.Convert()-604800,datimeMax.Convert());
   gr->GetXaxis()->SetNdivisions(-7);
-  gr->Draw("APESAME");
 
   TString averageLifetimeImage = "averageLifetime_" + sAtM + ".ps";
   TString averageLifetimeImagePNG = "averageLifetime_" + sAtM + ".png";
