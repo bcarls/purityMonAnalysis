@@ -2,8 +2,9 @@
 import ROOT
 import sys
 
-ROOT.gROOT.ProcessLine(".L lifetimeCalc.cxx")
+# ROOT.gROOT.ProcessLine(".L lifetimeCalc.cxx")
 # ROOT.gROOT.ProcessLine(".L lifetimeCalcFit.cxx")
+ROOT.gROOT.ProcessLine(".L lifetimeCalcLAPD.cxx")
 ROOT.gROOT.ProcessLine(".L plotAnodeCathodeDiff.cxx")
 
 p = ROOT.plotAnodeCathodeDiff()
@@ -324,3 +325,22 @@ p.RunPlotAndLifetime("Run_000719_01.txt")
 # p.RunPlotAndLifetime("Run_000903_01.txt")
 # p.RunPlotAndLifetime("Run_000904_01.txt")
 # p.RunPlotAndLifetime("Run_000905_01.txt")
+
+
+
+
+
+
+p.RunPlotAndLifetime("Run_001060_01.txt")
+p.RunPlotAndLifetime("Run_001061_01.txt")
+p.RunPlotAndLifetime("Run_001062_01.txt")
+p.RunPlotAndLifetime("Run_001063_01.txt")
+p.RunPlotAndLifetime("Run_001064_01.txt")
+p.RunPlotAndLifetime("Run_001065_01.txt")
+p.RunPlotAndLifetime("Run_001066_01.txt")
+p.RunPlotAndLifetime("Run_001067_01.txt")
+p.RunPlotAndLifetime("Run_001068_01.txt")
+p.RunPlotAndLifetime("Run_001069_01.txt")
+
+
+

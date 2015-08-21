@@ -23,6 +23,8 @@ void plotAnodeCathodeDiffAverage::RunPlotAndLifetime(TString PrMFile0, TString P
   TString pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
+  if(pThingString == "A" && hour == 12)
+    hour-=12;
   TDatime datime(year,month,day,hour,minute,second);
   datime.Print();
   // Read in time and anode noise
@@ -684,8 +686,8 @@ void plotAnodeCathodeDiffAverage::RunPlotAndLifetime(TString PrMFile0, TString P
     << calc.Lifetime() << " " 
     << calc.CatTrue() << " " 
     << calc.AnoTrue() << " "
-    << calc.CathF() << " " 
-    << calc.AnoF() << 
+    << calc.CatRMS() << " " 
+    << calc.AnoRMS() << 
     "\n";
   myfile.close();
 

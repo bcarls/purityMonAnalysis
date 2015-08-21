@@ -43,12 +43,10 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
   double fCatTime = -1;
   double fCatBase = 0;
   double fCatSq = 0;
-  double fCatRMS = 0;
   int AnoTimeIndex = -1;
   double fAnoTime = -1;
   double fAnoBase = 0;
   double fAnoSq = 0;
-  double fAnoRMS = 0;
   double RMSCut = 10;
   int istop = 0;
   double ta1 = 0;
@@ -91,6 +89,7 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
       maxCathNoiseOffBase = fabs(fCatBase - catSignalAverage);
   }
   fCatRMS = sqrt(fCatSq/50);
+
   std::cout << "Cathode Peak = " << fCatPeak << std::endl;
   std::cout << "Cathode Time = " << fCatTime << std::endl;
   std::cout << "Cathode Baseline = " << fCatBase << std::endl;
@@ -163,26 +162,15 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
 
 
 
-
-
-
-
-
-
-//   double maxAnoNoiseOffBase = 0;
-//   for(int i = AnoBaselineIndexLow - 25; i <= AnoBaselineIndexLow + 24; i++){
-//     voltage = oscillData->GetEntry(i);
-//     fAnoSq = fAnoSq + pow((fAnoBase - anoSignalVolt + catSignalVolt),2);
-//     if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalVolt + catSignalVolt))
-//       maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalVolt + catSignalVolt);
-//   }
-//   for(int i = AnoBaselineIndexHigh - 25; i <= AnoBaselineIndexHigh + 24; i++){
-//     voltage = oscillData->GetEntry(i);
-//     fAnoSq = fAnoSq + pow((fAnoBase - anoSignalVolt + catSignalVolt),2);
-//     if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalVolt + catSignalVolt))
-//       maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalVolt + catSignalVolt);
-//   }
-//   fAnoRMS= sqrt(fAnoSq/100);
+  double maxAnoNoiseOffBase = 0;
+  for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
+    double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
+    voltage = oscillData->GetEntry(i);
+    fAnoSq = fAnoSq + pow((fAnoBase - anoSignalAverage),2);
+    if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalAverage))
+      maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalAverage);
+  }
+  fAnoRMS= sqrt(fAnoSq/400);
 
 
 
@@ -226,6 +214,8 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
 
   fCathF = (fCatTime + 0.000006) / (RC*(1-exp(-(fCatTime + 0.000006)/RC)));
   fAnoF = (fAnoRise + 0.000005)/(RC*(1-exp(-(fAnoRise + 0.000005)/RC)));
+  // fAnoF = 1.283;
+  // fCathF = 1.627;
   fAnoTrue = (fAnoPeak - fAnoBase)*fAnoF;
   fCatTrue = fabs((fCatPeak - fCatBase)*fCathF);
   fLifeTime = 0;

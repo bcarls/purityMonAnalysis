@@ -3,7 +3,7 @@
 #ifndef plotAnodeCathodeDiff_h
 #define plotAnodeCathodeDiff_h
 
-#include "lifetimeCalcFit.h"
+#include "lifetimeCalcLAPD.h"
 
 // Number of samples
 static const int nSamples = 5008;
@@ -14,7 +14,7 @@ class plotAnodeCathodeDiff{
     
     void RunPlotAndLifetime(TString PrMFile);
 
-    lifetimeCalcFit calc;
+    lifetimeCalcLAPD calc;
 
   private:
 

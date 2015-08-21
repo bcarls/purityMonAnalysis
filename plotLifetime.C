@@ -1,9 +1,9 @@
 
 void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
-  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","run:month:day:year:hour:minute:second:lifetime:QC:QA:CathF:AnoF");
+  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","run:month:day:year:hour:minute:second:lifetime:QC:QA:CatRMS:AnoRMS");
   lifetimeData->ReadFile(lifetimeFile.Data());
 
-  float runNumber, Lifetime, QC, QA, CathF, AnoF;
+  float runNumber, Lifetime, QC, QA, CatRMS, AnoRMS;
   float runNumberSum, LifetimeSum;
   float month, day, year, hour, minute, second;
   int nEntries = (int)lifetimeData->GetEntries();
@@ -17,8 +17,8 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
   lifetimeData->SetBranchAddress("lifetime",&Lifetime);
   lifetimeData->SetBranchAddress("QC",&QC);
   lifetimeData->SetBranchAddress("QA",&QA);
-  lifetimeData->SetBranchAddress("CathF",&CathF);
-  lifetimeData->SetBranchAddress("AnoF",&AnoF);
+  lifetimeData->SetBranchAddress("CatRMS",&CatRMS);
+  lifetimeData->SetBranchAddress("AnoRMS",&AnoRMS);
 
 
   TDatime datime, datimeMin, datimeMax;
@@ -60,27 +60,25 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
 
 
 
-  TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1.1*1000*lifetimeMax);
-  frame->GetXaxis()->SetTitle("date/time");
-  frame->GetXaxis()->SetTimeDisplay(1);
-  frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-  frame->GetXaxis()->SetTimeOffset(0);
-  frame->GetYaxis()->SetTitle("lifetime (ms)");
-  frame->SetNdivisions(-404);
-  frame->Draw();
+//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-100000, datimeMax.Convert()+100000, 1000, 0, 1.1*1000*lifetimeMax);
+//   frame->GetXaxis()->SetTitle("date/time");
+//   frame->GetXaxis()->SetTimeDisplay(1);
+//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+//   frame->GetXaxis()->SetTimeOffset(0);
+//   frame->GetYaxis()->SetTitle("lifetime (ms)");
+//   frame->SetNdivisions(-404);
+//   frame->Draw();
+//   lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1 && AnoRMS < 0.0001","SAME");
+//   TString sAtM = lifetimeFile[13];
+//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
+//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
+//   c1->Print(lifetimeImage);
+//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
+//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
 
-  lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1","SAME");
+ 
 
-  TString sAtM = lifetimeFile[13];
 
-  TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-  TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
-
-  c1->Print(lifetimeImage);
-  std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-  gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
-
-  
 
 
 //   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
@@ -91,9 +89,7 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
 //   frame->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
 //   frame->SetNdivisions(-404);
 //   frame->Draw();
-
-//   lifetimeData->Draw("QA/QC:datime.Convert()","","SAME");
-
+//   lifetimeData->Draw("QA/QC:datime.Convert()","AnoRMS < 0.0001","SAME");
 //   TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
 //   f3msLifetime->SetParameter(0,exp(-2.82/3)); 
 //   f3msLifetime->SetLineColor(1);
@@ -104,7 +100,6 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
 //   // lab6ms->SetLineColor(0);
 //   lab3ms->AddText("3.0 ms");
 //   lab3ms->Draw("SAME");
-
 //   TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
 //   f9msLifetime->SetParameter(0,exp(-2.82/9)); 
 //   f9msLifetime->SetLineColor(1);
@@ -184,7 +179,7 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
 //   frame->GetXaxis()->SetTimeDisplay(1);
 //   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
 //   frame->GetXaxis()->SetTimeOffset(0);
-//   frame->GetYaxis()->SetTitle("CathodeFactor");
+//   frame->GetYaxis()->SetTitle("cathode factor");
 //   frame->SetNdivisions(-404);
 //   frame->Draw();
 
@@ -202,27 +197,75 @@ void plotLifetime(TString lifetimeFile = "lifetimes_00.txt" ){
 
 
 
-  // TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 2);
-  // frame->GetXaxis()->SetTitle("date/time");
-  // frame->GetXaxis()->SetTimeDisplay(1);
-  // frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-  // frame->GetXaxis()->SetTimeOffset(0);
-  // frame->GetYaxis()->SetTitle("AnodeFactor");
-  // frame->SetNdivisions(-404);
-  // frame->Draw();
+//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 2);
+//   frame->GetXaxis()->SetTitle("date/time");
+//   frame->GetXaxis()->SetTimeDisplay(1);
+//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+//   frame->GetXaxis()->SetTimeOffset(0);
+//   frame->GetYaxis()->SetTitle("anode factor");
+//   frame->SetNdivisions(-404);
+//   frame->Draw();
 
-  // lifetimeData->Draw("AnoF:datime.Convert()","","SAME");
+//   lifetimeData->Draw("AnoF:datime.Convert()","","SAME");
 
-  // TString sAtM = lifetimeFile[13];
+//   TString sAtM = lifetimeFile[13];
 
-  // TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-  // TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
+//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
+//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
 
-  // c1->Print(lifetimeImage);
-  // std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-  // gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
+//   c1->Print(lifetimeImage);
+//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
+//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
 
 
+
+
+
+
+  TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 0.001);
+  frame->GetXaxis()->SetTitle("date/time");
+  frame->GetXaxis()->SetTimeDisplay(1);
+  frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+  frame->GetXaxis()->SetTimeOffset(0);
+  frame->GetYaxis()->SetTitle("anode factor");
+  frame->SetNdivisions(-404);
+  frame->Draw();
+
+  lifetimeData->Draw("CatRMS:datime.Convert()","","SAME");
+
+  TString sAtM = lifetimeFile[13];
+
+  TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
+  TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
+
+  c1->Print(lifetimeImage);
+  std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
+
+
+
+
+
+
+//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 0.001);
+//   frame->GetXaxis()->SetTitle("date/time");
+//   frame->GetXaxis()->SetTimeDisplay(1);
+//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+//   frame->GetXaxis()->SetTimeOffset(0);
+//   frame->GetYaxis()->SetTitle("anode factor");
+//   frame->SetNdivisions(-404);
+//   frame->Draw();
+
+//   lifetimeData->Draw("AnoRMS:datime.Convert()","","SAME");
+
+//   TString sAtM = lifetimeFile[13];
+
+//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
+//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
+
+//   c1->Print(lifetimeImage);
+//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
+//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
 
 
 
