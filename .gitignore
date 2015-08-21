@@ -1,10 +1,10 @@
 
 # Ignore data files and plots
-/*.png
-/*.ps
-/*.txt
-/*.csv
-/*~
-/*.un~
-/*.swp
+*.png
+*.ps
+*.txt
+*.csv
+*~
+*.un~
+*.swp
 
