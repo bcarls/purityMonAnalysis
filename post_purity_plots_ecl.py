@@ -1,11 +1,12 @@
 from ECLAPI import ECLConnection, ECLEntry
 from os import path, access, R_OK
+import commands
 
 #URL = "http://dbweb4.fnal.gov:8080/ECL/demo"
 URL="http://dbweb4.fnal.gov:8080/ECL/uboone"
-#user = ""
-#password = ""
 
+user = commands.getoutput("aescrypt -d -p $(cat pass.aes) -o - ~/.pass.txt.aes | grep ECL | awk '{print $2}'")
+password = commands.getoutput("aescrypt -d -p $(cat pass.aes) -o - ~/.pass.txt.aes | grep ECL | awk '{print $3}'")
 
 
 if __name__ == '__main__':
@@ -23,8 +24,7 @@ if __name__ == '__main__':
             
         if opt == '-U':
             URL = val
-            
-      
+
 #################
 #   Create test entry
     # e = ECLEntry(category='Cryogenics Operations', tags=[], formname='default', 
