@@ -8,4 +8,5 @@
 *.un~
 *.swp
 *.aes
+*.pyc
 
