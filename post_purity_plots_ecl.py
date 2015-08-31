@@ -31,7 +31,7 @@ if __name__ == '__main__':
     #             text='<font face="arial"> <b> DAILY PLOT! </b> <BR> Plots of the contamination (Oxygen, Water, Nitrogen) level in the last 24 hours.<BR> For the latest plots check <a href="http://www-microboone.fnal.gov/at_work/gas_analyzers_plot.php">here</a>. <BR> Each filename indicates which contaminant is shown in the plot and which subsystem the gas analyzer device is connected to:  <BR> <i> AFL </i> is the Ar fill line; <BR> <i> PD </i> is the pump discharge; <BR> <i> HVC </i> is the high voltage cryostat; <BR> <i> BDLO </i> is the buffer dewar liquid outlet; <BR> <i> MS1(2) </i> is the molecular sieve 1(2); <BR> <i> CS1(2) </i> is the Oxygen filter 1(2);<BR> <i> UG </i> is the utility gas. <BR> Prefix <i> HR </i> stands for High Resolution (ppb level) device. </font>', preformatted=True)
 
     e = ECLEntry(category='Purity Monitor', tags=[], formname='default', 
-                text='<font face="arial"> <b>OCTORALLY PLOT! </b> <BR> Plots from the long purity monitor for QA/QC and lifetime. </font>', preformatted=True)
+                text='<font face="arial"> <b>Eight Hour Plot!</b> <BR> Plots from the long purity monitor for QA/QC, QA, QC, lifetime, and average lifetime. </font>', preformatted=True)
 #       Optional. Set the author username. The user must be registered CRL user 
     e.setAuthor('bcarls')
 
@@ -56,23 +56,36 @@ if __name__ == '__main__':
 #    e.addImage('nine','/afs/fnal.gov/files/expwww/microboone/html/at_work/gas_analyzers/ECL/GAS_Plots/O2_UG.png', image=None)
 
 
-    PATH='/home/bcarls/purity_mon_ecl_daily/QAQC_1.png'
+    PATH='/home/bcarls/purityMonAnalysis/QAQC_1.png'
     if path.isfile(PATH) and access(PATH, R_OK):
         e.addImage('ten',PATH, image=None)
     else:
         print "Either file is missing or is not readable"  
 
-    PATH='/home/bcarls/purity_mon_ecl_daily/lifetime_1.png'
+    PATH='/home/bcarls/purityMonAnalysis/lifetime_1.png'
     if path.isfile(PATH) and access(PATH, R_OK):
         e.addImage('eleven',PATH, image=None)
     else:
         print "Either file is missing or is not readable"  
 
-    PATH='/home/bcarls/purity_mon_ecl_daily/averageLifetime_1.png'
+    PATH='/home/bcarls/purityMonAnalysis/averageLifetime_1.png'
     if path.isfile(PATH) and access(PATH, R_OK):
         e.addImage('twelve',PATH, image=None)
     else:
         print "Either file is missing or is not readable"  
+
+    PATH='/home/bcarls/purityMonAnalysis/QA_1.png'
+    if path.isfile(PATH) and access(PATH, R_OK):
+        e.addImage('thirteen',PATH, image=None)
+    else:
+        print "Either file is missing or is not readable"  
+
+    PATH='/home/bcarls/purityMonAnalysis/QC_1.png'
+    if path.isfile(PATH) and access(PATH, R_OK):
+        e.addImage('fourteen',PATH, image=None)
+    else:
+        print "Either file is missing or is not readable"  
+
 
 
 

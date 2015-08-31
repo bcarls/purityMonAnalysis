@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cd /home/bcarls/purity_mon_ecl_daily/
+cd /home/bcarls/purityMonAnalysis/
 
 # Setup PATH, ROOT, and psycopg2
 export PATH=~/bin/:$PATH
