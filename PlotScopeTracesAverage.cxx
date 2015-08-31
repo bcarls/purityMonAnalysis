@@ -1,12 +1,12 @@
 
-#include "plotAnodeCathodeDiffAverage.h"
+#include "PlotScopeTracesAverage.h"
 #include "TString.h"
 
 // Plot the data coming from the digitizer card reading the purity monitors
 
 
 
-void plotAnodeCathodeDiffAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFile1, TString PrMFile2, TString PrMFile3){
+void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFile1, TString PrMFile2, TString PrMFile3){
   TNtuple *oscillData = new TNtuple("oscillData","NTUPLE","time:anoNoise0");
 
   // Select file to plot data from
