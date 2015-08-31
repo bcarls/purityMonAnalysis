@@ -1,20 +1,9 @@
 
-#include "plotAnodeCathodeDiff.h"
+#include "PlotScopeTraces.h"
 
-void run_plotAnodeCathodeDiff(){
+void run_PlotScopeTraces(){
 
-  plotAnodeCathodeDiff pACD;
+  PlotScopeTraces pPST;
   
-  // pACD.RunPlotAndLifetime("Run_000904_01.txt");
-  // pACD.RunPlotAndLifetime("Run_000905_01.txt");
-  // pACD.RunPlotAndLifetime("Run_000907_01.txt");
-
-
-  // pACD.RunPlotAndLifetime("Run_000909_01.txt");
-  // pACD.RunPlotAndLifetime("Run_000910_01.txt");
-  // pACD.RunPlotAndLifetime("Run_000911_01.txt");
-
-  
-
-  pACD.RunPlotAndLifetime("Run_001014_01.txt");
+  pPST.RunPlotAndLifetime("PrM_Traces/Run_001175_01.txt");
 }

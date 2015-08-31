@@ -30,11 +30,10 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
   oscillData->SetBranchAddress("catNoiseSmooth3",&catNoiseVolt3);
   oscillData->SetBranchAddress("catSignalSmooth3",&catSignalVolt3);
   
-  // PrMs 1 and 4 are short and sample at 5000000 Hz
-  // PrMs 0, 2, and 3 are long and sample at 2000000 Hz
   int TriggerTimeIndex = 500;
-  double samplesPerSec = 2000000;
-  if(IPrM == 1
+  double samplesPerSec = 1000000;
+  if(IPrM == 0
+      || IPrM == 1
       || IPrM == 2)
     samplesPerSec = 1000000;
   double secPerSample = 1/samplesPerSec;
@@ -85,8 +84,8 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
     voltage = oscillData->GetEntry(i);
     double catSignalAverage = (catSignalVolt0+catSignalVolt1+catSignalVolt2+catSignalVolt3)/4;
     fCatSq = fCatSq + pow((fCatBase - catSignalAverage),2);
-    if(maxCathNoiseOffBase < fabs(fCatBase - catSignalAverage))
-      maxCathNoiseOffBase = fabs(fCatBase - catSignalAverage);
+    if(maxCathNoiseOffBase < std::abs(fCatBase - catSignalAverage))
+      maxCathNoiseOffBase = std::abs(fCatBase - catSignalAverage);
   }
   fCatRMS = sqrt(fCatSq/50);
 
@@ -149,26 +148,23 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
   AnoBaselineIndexHigh = (int)((double)(AnoTimeIndex) + 0.333333*((double)AnoTimeIndex-(double)CatTimeIndex));
   // std::cout << AnoTimeIndex << " " << CatTimeIndex << std::endl;
   // std::cout << AnoBaselineIndexLow  << " " << AnoBaselineIndexHigh << std::endl;
-  for(int i = AnoBaselineIndexLow - 50; i <= AnoBaselineIndexLow + 49; i++){
-    double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
+  for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
     voltage = oscillData->GetEntry(i);
+    double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
     // std::cout << i << " " << fAnoBase << std::endl;
     fAnoBase+=anoSignalAverage;
   }
-  fAnoBase = fAnoBase/100;
-
-
-
+  fAnoBase = fAnoBase/400;
 
 
 
   double maxAnoNoiseOffBase = 0;
   for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
-    double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
     voltage = oscillData->GetEntry(i);
+    double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
     fAnoSq = fAnoSq + pow((fAnoBase - anoSignalAverage),2);
-    if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalAverage))
-      maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalAverage);
+    if(maxAnoNoiseOffBase < std::abs(fAnoBase - anoSignalAverage))
+      maxAnoNoiseOffBase = std::abs(fAnoBase - anoSignalAverage);
   }
   fAnoRMS= sqrt(fAnoSq/400);
 
@@ -185,13 +181,13 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
     for(int i = AnoRiseStartIndex; i <= AnoTimeIndex; i++){
       voltage = oscillData->GetEntry(i);
       double anoSignalAverage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
-      if(fabs(anoSignalAverage - a1)<da1){
-        da1 = fabs(anoSignalAverage- a1);
+      if(std::abs(anoSignalAverage - a1)<da1){
+        da1 = std::abs(anoSignalAverage- a1);
         ta1 = -TriggerTimeIndex*secPerSample+i*secPerSample;
         va1 = anoSignalAverage;
       }
-      if(fabs(anoSignalAverage - a2)<da2){
-        da2 = fabs(anoSignalAverage - a2);
+      if(std::abs(anoSignalAverage - a2)<da2){
+        da2 = std::abs(anoSignalAverage - a2);
         ta2 = -TriggerTimeIndex*secPerSample+i*secPerSample;
         va2 = anoSignalAverage;
       }
@@ -217,7 +213,7 @@ void lifetimeCalcLAPD::CalculateLifetime(TNtuple* oscillData, int IPrM){
   // fAnoF = 1.283;
   // fCathF = 1.627;
   fAnoTrue = (fAnoPeak - fAnoBase)*fAnoF;
-  fCatTrue = fabs((fCatPeak - fCatBase)*fCathF);
+  fCatTrue = std::abs((fCatPeak - fCatBase)*fCathF);
   fLifeTime = 0;
   fImpurities = 99999;
   if(fAnoTrue > 0){

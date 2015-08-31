@@ -12,14 +12,13 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // Select file to plot data from
   FILE *fp = fopen(PrMFile0.Data(),"r");
   float time, voltage;
-  int month, day, year, hour, minute, second, pass;
+  int month, day, year, hour, minute, second;
   char AMorPM[2];
   int n = 0;
   // Definte ncols and skip first line
-  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c Pass = %d",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1],&pass);
+  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c ",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM << 
-    " Pass = " << pass << std::endl;
+    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   TString pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
@@ -127,14 +126,13 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // Select file to plot data from
   FILE *fp1 = fopen(PrMFile1.Data(),"r");
   // float time, voltage;
-  // int month, day, year, hour, minute, second, pass;
+  // int month, day, year, hour, minute, second
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp1,"%d/%d/%d %d:%d:%d %c%c Pass = %d",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1],&pass);
+  ncols = fscanf(fp1,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM << 
-    " Pass = " << pass << std::endl;
+    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
@@ -245,14 +243,13 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // Select file to plot data from
   FILE *fp2 = fopen(PrMFile2.Data(),"r");
   // float time, voltage;
-  // int month, day, year, hour, minute, second, pass;
+  // int month, day, year, hour, minute, second;
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp2,"%d/%d/%d %d:%d:%d %c%c Pass = %d",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1],&pass);
+  ncols = fscanf(fp2,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM << 
-    " Pass = " << pass << std::endl;
+    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
@@ -363,14 +360,13 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // Select file to plot data from
   FILE *fp3 = fopen(PrMFile3.Data(),"r");
   // float time, voltage;
-  // int month, day, year, hour, minute, second, pass;
+  // int month, day, year, hour, minute, second;
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp3,"%d/%d/%d %d:%d:%d %c%c Pass = %d",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1],&pass);
+  ncols = fscanf(fp3,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM << 
-    " Pass = " << pass << std::endl;
+    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
@@ -668,7 +664,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
 
 
 
-  TString sPrM = PrMFile0[12];
+  TString sPrM = PrMFile0[22];
   calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
 
   // Print lifetime out to a text file 

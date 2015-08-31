@@ -263,7 +263,7 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   TString PrMTrace = PrMFile.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
 
-  TString sPrM = PrMFile[12];
+  TString sPrM = PrMFile[22];
   // calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), atoi(runNumber.Data()));
   calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
 

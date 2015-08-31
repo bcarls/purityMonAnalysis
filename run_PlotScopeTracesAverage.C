@@ -1,9 +1,9 @@
 
-#include "plotAnodeCathodeDiffAverage.h"
+#include "PlotScopeTracesAverage.h"
 
-void run_plotAnodeCathodeDiffAverage(){
+void run_PlotScopeTracesAverage(){
 
-  plotAnodeCathodeDiffAverage pACD;
+  PlotScopeTracesAverage pACD;
 
 
 
@@ -778,13 +778,6 @@ void run_plotAnodeCathodeDiffAverage(){
     "Run_001065_01.txt",
     "Run_001065_01.txt",
     "Run_001065_01.txt");
-
-
-
-
-
-
-
   pACD.RunPlotAndLifetime(
     "Run_001066_01.txt",
     "Run_001066_01.txt",
@@ -795,8 +788,262 @@ void run_plotAnodeCathodeDiffAverage(){
     "Run_001067_01.txt",
     "Run_001067_01.txt",
     "Run_001067_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001068_01.txt",
+    "Run_001068_01.txt",
+    "Run_001068_01.txt",
+    "Run_001068_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001069_01.txt",
+    "Run_001069_01.txt",
+    "Run_001069_01.txt",
+    "Run_001069_01.txt");
+
+  pACD.RunPlotAndLifetime(
+    "Run_001070_01.txt",
+    "Run_001070_01.txt",
+    "Run_001070_01.txt",
+    "Run_001060_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001071_01.txt",
+    "Run_001071_01.txt",
+    "Run_001071_01.txt",
+    "Run_001071_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001072_01.txt",
+    "Run_001072_01.txt",
+    "Run_001072_01.txt",
+    "Run_001072_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001073_01.txt",
+    "Run_001073_01.txt",
+    "Run_001073_01.txt",
+    "Run_001073_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001074_01.txt",
+    "Run_001074_01.txt",
+    "Run_001074_01.txt",
+    "Run_001074_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001075_01.txt",
+    "Run_001075_01.txt",
+    "Run_001075_01.txt",
+    "Run_001075_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001074_01.txt",
+    "Run_001074_01.txt",
+    "Run_001074_01.txt",
+    "Run_001074_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001075_01.txt",
+    "Run_001075_01.txt",
+    "Run_001075_01.txt",
+    "Run_001075_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001076_01.txt",
+    "Run_001076_01.txt",
+    "Run_001076_01.txt",
+    "Run_001076_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001077_01.txt",
+    "Run_001077_01.txt",
+    "Run_001077_01.txt",
+    "Run_001077_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001078_01.txt",
+    "Run_001078_01.txt",
+    "Run_001078_01.txt",
+    "Run_001078_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001079_01.txt",
+    "Run_001079_01.txt",
+    "Run_001079_01.txt",
+    "Run_001079_01.txt");
+
+  pACD.RunPlotAndLifetime(
+    "Run_001080_01.txt",
+    "Run_001080_01.txt",
+    "Run_001080_01.txt",
+    "Run_001060_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001081_01.txt",
+    "Run_001081_01.txt",
+    "Run_001081_01.txt",
+    "Run_001081_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001082_01.txt",
+    "Run_001082_01.txt",
+    "Run_001082_01.txt",
+    "Run_001082_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001083_01.txt",
+    "Run_001083_01.txt",
+    "Run_001083_01.txt",
+    "Run_001083_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001084_01.txt",
+    "Run_001084_01.txt",
+    "Run_001084_01.txt",
+    "Run_001084_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001085_01.txt",
+    "Run_001085_01.txt",
+    "Run_001085_01.txt",
+    "Run_001085_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001084_01.txt",
+    "Run_001084_01.txt",
+    "Run_001084_01.txt",
+    "Run_001084_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001085_01.txt",
+    "Run_001085_01.txt",
+    "Run_001085_01.txt",
+    "Run_001085_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001086_01.txt",
+    "Run_001086_01.txt",
+    "Run_001086_01.txt",
+    "Run_001086_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001087_01.txt",
+    "Run_001087_01.txt",
+    "Run_001087_01.txt",
+    "Run_001087_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001088_01.txt",
+    "Run_001088_01.txt",
+    "Run_001088_01.txt",
+    "Run_001088_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001089_01.txt",
+    "Run_001089_01.txt",
+    "Run_001089_01.txt",
+    "Run_001089_01.txt");
 
 
+  pACD.RunPlotAndLifetime(
+    "Run_001090_01.txt",
+    "Run_001090_01.txt",
+    "Run_001090_01.txt",
+    "Run_001060_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001091_01.txt",
+    "Run_001091_01.txt",
+    "Run_001091_01.txt",
+    "Run_001091_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001092_01.txt",
+    "Run_001092_01.txt",
+    "Run_001092_01.txt",
+    "Run_001092_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001093_01.txt",
+    "Run_001093_01.txt",
+    "Run_001093_01.txt",
+    "Run_001093_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001094_01.txt",
+    "Run_001094_01.txt",
+    "Run_001094_01.txt",
+    "Run_001094_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001095_01.txt",
+    "Run_001095_01.txt",
+    "Run_001095_01.txt",
+    "Run_001095_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001094_01.txt",
+    "Run_001094_01.txt",
+    "Run_001094_01.txt",
+    "Run_001094_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001095_01.txt",
+    "Run_001095_01.txt",
+    "Run_001095_01.txt",
+    "Run_001095_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001096_01.txt",
+    "Run_001096_01.txt",
+    "Run_001096_01.txt",
+    "Run_001096_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001097_01.txt",
+    "Run_001097_01.txt",
+    "Run_001097_01.txt",
+    "Run_001097_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001098_01.txt",
+    "Run_001098_01.txt",
+    "Run_001098_01.txt",
+    "Run_001098_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001099_01.txt",
+    "Run_001099_01.txt",
+    "Run_001099_01.txt",
+    "Run_001099_01.txt");
+
+
+  pACD.RunPlotAndLifetime(
+    "Run_001100_01.txt",
+    "Run_001100_01.txt",
+    "Run_001100_01.txt",
+    "Run_001060_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001101_01.txt",
+    "Run_001101_01.txt",
+    "Run_001101_01.txt",
+    "Run_001101_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001102_01.txt",
+    "Run_001102_01.txt",
+    "Run_001102_01.txt",
+    "Run_001102_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001103_01.txt",
+    "Run_001103_01.txt",
+    "Run_001103_01.txt",
+    "Run_001103_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001104_01.txt",
+    "Run_001104_01.txt",
+    "Run_001104_01.txt",
+    "Run_001104_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001105_01.txt",
+    "Run_001105_01.txt",
+    "Run_001105_01.txt",
+    "Run_001105_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001104_01.txt",
+    "Run_001104_01.txt",
+    "Run_001104_01.txt",
+    "Run_001104_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001105_01.txt",
+    "Run_001105_01.txt",
+    "Run_001105_01.txt",
+    "Run_001105_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001106_01.txt",
+    "Run_001106_01.txt",
+    "Run_001106_01.txt",
+    "Run_001106_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001107_01.txt",
+    "Run_001107_01.txt",
+    "Run_001107_01.txt",
+    "Run_001107_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001108_01.txt",
+    "Run_001108_01.txt",
+    "Run_001108_01.txt",
+    "Run_001108_01.txt");
+  pACD.RunPlotAndLifetime(
+    "Run_001109_01.txt",
+    "Run_001109_01.txt",
+    "Run_001109_01.txt",
+    "Run_001109_01.txt");
 
 
 
