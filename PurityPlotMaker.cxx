@@ -30,13 +30,13 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("CathF",&CathF);
   lifetimeData->SetBranchAddress("AnoF",&AnoF);
 
-
   TDatime datime, datimeMin, datimeMax;
   UInt_t datimeMinConvert = 1739935037 ;
   int datimeMaxConvert = 0;
   TBranch *datimeBranch = lifetimeData->Branch("datime", &datime);
   float lifetimeValue;
   float lifetimeMax = 0;
+  float QAMax = 0;
   lifetimeData->SetBranchAddress("lifetime",&lifetimeValue);
   for(int i = 0; i < lifetimeData->GetEntries(); i++){
     lifetimeData->GetEntry(i);
@@ -54,6 +54,9 @@ void PurityPlotMaker::MakePlots(){
       datimeMinConvert = datime.Convert();
       datimeMin.Set(year,month,day,hour,minute,second);
     }
+
+    if(QA > QAMax)
+      QAMax = QA;
 
   }
 
@@ -142,9 +145,8 @@ void PurityPlotMaker::MakePlots(){
   gStyle->SetOptStat(0);
 
 
-
-  // TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMin.Convert()-100000, datimeMax.Convert()+100000, 1000, 0, 1.1*1000*lifetimeMax);
-  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1.1*1000*lifetimeMax);
+  // TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1.1*1000*lifetimeMax);
+  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 15);
   frameLifetime->GetXaxis()->SetTitle("date/time");
   frameLifetime->GetXaxis()->SetTimeDisplay(1);
   frameLifetime->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -166,6 +168,10 @@ void PurityPlotMaker::MakePlots(){
   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
 
  
+
+
+
+
 
 
 
@@ -218,6 +224,9 @@ void PurityPlotMaker::MakePlots(){
 
 
 
+
+
+
   // Make the averaged plot
   gStyle->SetOptStat(0);
   long N = averagedLifetimeData->Draw("datime.Convert():1000*averagedLifetime:1000*lifetimeStandardDev","","goff");
@@ -258,6 +267,25 @@ void PurityPlotMaker::MakePlots(){
 
 
 
+  // TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
+  TH2F *frameQA = new TH2F("frameQA","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 20);
+  frameQA->GetXaxis()->SetTitle("date/time");
+  frameQA->GetXaxis()->SetTimeDisplay(1);
+  frameQA->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+  frameQA->GetXaxis()->SetTimeOffset(0);
+  frameQA->GetXaxis()->SetLabelOffset(0.025);
+  frameQA->GetXaxis()->SetTitleOffset(1.5);
+  frameQA->GetYaxis()->SetTitle("Q_{A} (mV)");
+  frameQA->SetNdivisions(-7);
+  frameQA->Draw();
+  lifetimeData->Draw("1000*QA:datime.Convert()","","SAME");
+
+  TString QAImage = "QA_" + sAtM + ".ps";
+  TString QAImagePNG = "QA_" + sAtM + ".png";
+
+  c1->Print(QAImage);
+  std::cout << "convert -rotate 90 " + QAImage + " "+ QAImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 " + QAImage + " "+ QAImagePNG );
 
 
 
@@ -267,98 +295,25 @@ void PurityPlotMaker::MakePlots(){
 
 
 
+  // TH2F *frameQC = new TH2F("frameQC","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
+  TH2F *frameQC = new TH2F("frameQC","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 20);
+  frameQC->GetXaxis()->SetTitle("date/time");
+  frameQC->GetXaxis()->SetTimeDisplay(1);
+  frameQC->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+  frameQC->GetXaxis()->SetTimeOffset(0);
+  frameQC->GetXaxis()->SetLabelOffset(0.025);
+  frameQC->GetXaxis()->SetTitleOffset(1.5);
+  frameQC->GetYaxis()->SetTitle("Q_{C} (mV)");
+  frameQC->SetNdivisions(-7);
+  frameQC->Draw();
+  lifetimeData->Draw("1000*QC:datime.Convert()","","SAME");
 
+  TString QCImage = "QC_" + sAtM + ".ps";
+  TString QCImagePNG = "QC_" + sAtM + ".png";
 
-  // TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
-//   frame->GetXaxis()->SetTitle("date/time");
-//   frame->GetXaxis()->SetTimeDisplay(1);
-//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-//   frame->GetXaxis()->SetTimeOffset(0);
-//   frame->GetYaxis()->SetTitle("Q_{C}");
-//   frame->SetNdivisions(-404);
-//   frame->Draw();
-
-//   lifetimeData->Draw("QC:datime.Convert()","","SAME");
-
-//   TString sAtM = lifetimeFile[13];
-
-//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
-
-//   c1->Print(lifetimeImage);
-//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
-
-
-
-
-//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 1);
-//   frame->GetXaxis()->SetTitle("date/time");
-//   frame->GetXaxis()->SetTimeDisplay(1);
-//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-//   frame->GetXaxis()->SetTimeOffset(0);
-//   frame->GetYaxis()->SetTitle("Q_{A}");
-//   frame->SetNdivisions(-404);
-//   frame->Draw();
-
-//   lifetimeData->Draw("QA:datime.Convert()","","SAME");
-
-//   TString sAtM = lifetimeFile[13];
-
-//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
-
-//   c1->Print(lifetimeImage);
-//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
-
-
-
-
-//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 2);
-//   frame->GetXaxis()->SetTitle("date/time");
-//   frame->GetXaxis()->SetTimeDisplay(1);
-//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-//   frame->GetXaxis()->SetTimeOffset(0);
-//   frame->GetYaxis()->SetTitle("cathode factor");
-//   frame->SetNdivisions(-404);
-//   frame->Draw();
-
-//   lifetimeData->Draw("CathF:datime.Convert()","","SAME");
-
-//   TString sAtM = lifetimeFile[13];
-
-//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
-
-//   c1->Print(lifetimeImage);
-//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
-
-
-
-
-//   TH2F *frame = new TH2F("frame","", 1000, datimeMin.Convert()-2000, datimeMax.Convert()+2000, 1000, 0, 2);
-//   frame->GetXaxis()->SetTitle("date/time");
-//   frame->GetXaxis()->SetTimeDisplay(1);
-//   frame->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
-//   frame->GetXaxis()->SetTimeOffset(0);
-//   frame->GetYaxis()->SetTitle("anode factor");
-//   frame->SetNdivisions(-404);
-//   frame->Draw();
-
-//   lifetimeData->Draw("AnoF:datime.Convert()","","SAME");
-
-//   TString sAtM = lifetimeFile[13];
-
-//   TString lifetimeImage = lifetimeFile.ReplaceAll(".txt",".ps");
-//   TString lifetimeImagePNG = lifetimeFile.ReplaceAll(".ps",".png");
-
-//   c1->Print(lifetimeImage);
-//   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
-//   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
-
-
+  c1->Print(QCImage);
+  std::cout << "convert -rotate 90 " + QCImage + " "+ QCImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 " + QCImage + " "+ QCImagePNG );
 
 
 
