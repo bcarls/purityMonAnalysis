@@ -5,7 +5,7 @@
 
 
 void PurityPlotMaker::MakePlots(){
-  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","run:month:day:year:hour:minute:second:lifetime:QC:QA:CathF:AnoF");
+  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","run:month:day:year:hour:minute:second:lifetime:QC:QA:CatRMS:AnoRMS");
   TNtuple *averagedLifetimeData = new TNtuple("averagedLifetime","NTUPLE","averagedRun:averagedLifetime:datime");
 
   for(int i = 0; i < listOfDataFiles.size(); i++)
@@ -13,7 +13,7 @@ void PurityPlotMaker::MakePlots(){
 
   // lifetimeData->Scan();
 
-  float runNumber, Lifetime, QC, QA, CathF, AnoF;
+  float runNumber, Lifetime, QC, QA, CatRMS, AnoRMS;
   float runNumberSum, LifetimeSum;
   float month, day, year, hour, minute, second;
   int nEntries = (int)lifetimeData->GetEntries();
@@ -27,8 +27,8 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("lifetime",&Lifetime);
   lifetimeData->SetBranchAddress("QC",&QC);
   lifetimeData->SetBranchAddress("QA",&QA);
-  lifetimeData->SetBranchAddress("CathF",&CathF);
-  lifetimeData->SetBranchAddress("AnoF",&AnoF);
+  lifetimeData->SetBranchAddress("CatRMS",&CatRMS);
+  lifetimeData->SetBranchAddress("AnoRMS",&AnoRMS);
 
 
   TDatime datime, datimeMin, datimeMax;
