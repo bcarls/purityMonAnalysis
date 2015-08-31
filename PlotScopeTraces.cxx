@@ -12,17 +12,18 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   // Select file to plot data from
   FILE *fp = fopen(PrMFile.Data(),"r");
   float time, voltage;
-  int month, day, year, hour, minute, second, pass;
+  int month, day, year, hour, minute, second;
   char AMorPM[2];
   int n = 0;
   // Definte ncols and skip first line
-  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c Pass = %d",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1],&pass);
+  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM << 
-    " Pass = " << pass << std::endl;
+    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   TString pThingString = AMorPM[0];
   if(pThingString == "P" && hour < 12)
     hour+=12;
+  if(pThingString == "A" && hour == 12)
+    hour-=12;
   TDatime datime(year,month,day,hour,minute,second);
   datime.Print();
   // Read in time and anode noise
@@ -134,16 +135,6 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetBranchAddress("catSignalSmooth",&catSignalVolt);
   for(int i = 0; i < nEntries; i++){
     voltage = oscillData->GetEntry(i);
-    // if(anoSignalVolt - catSignalVolt < minVoltage)
-    //    minVoltage=anoSignalVolt-catSignalVolt;
-    // if(anoSignalVolt - catSignalVolt > maxVoltage)
-    //    maxVoltage=anoSignalVolt-catSignalVolt;
-
-    // if(anoSignalVolt - catSignalVolt < minVoltage)
-    //    minVoltage=anoSignalVolt-catSignalVolt;
-    // if(anoSignalVolt - catSignalVolt > maxVoltage)
-    //    maxVoltage=anoSignalVolt-catSignalVolt;
-
 
     if(anoSignalVolt < minVoltage)
       minVoltage=anoSignalVolt;
@@ -155,29 +146,9 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
       maxVoltage=catSignalVolt;
 
 
-    // if(anoSignalVolt-anoNoiseVolt < minVoltage)
-    //   minVoltage=anoSignalVolt-anoNoiseVolt;
-    // if(catSignalVolt-catNoiseVolt < minVoltage)
-    //   minVoltage=catSignalVolt-catNoiseVolt;
-    // if(anoSignalVolt-anoNoiseVolt > maxVoltage)
-    //   maxVoltage=anoSignalVolt-anoNoiseVolt;
-    // if(catSignalVolt-catNoiseVolt > maxVoltage)
-    //   maxVoltage=catSignalVolt-catNoiseVolt;
-    // if(anoSignalVolt+0.020 < minVoltage)
-    //   minVoltage=anoSignalVolt+0.020;
-    // if(catSignalVolt+0.020 < minVoltage)
-    //   minVoltage=catSignalVolt+0.020;
-    // if(anoSignalVolt+0.020 > maxVoltage)
-    //   maxVoltage=anoSignalVolt+0.020;
-    // if(catSignalVolt+0.020 > maxVoltage)
-    //   maxVoltage=catSignalVolt+0.020;
-    // if(anoNoiseVolt+0.040 > maxVoltage)
-    //   maxVoltage=anoNoiseVolt+0.040;
-    // if(catNoiseVolt+0.040 > maxVoltage)
-    //   maxVoltage=catNoiseVolt+0.040;
-
   }
 
+  std::cout << maxVoltage << " " << minVoltage << std::endl;
 
   /*Plot the oscilloscope scans*/
   TCanvas *c1 = new TCanvas("c1","Tree test");
@@ -192,26 +163,31 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetLineWidth(4);
   oscillData->SetLineStyle(2);
   oscillData->SetMarkerSize(0.5);
-  // oscillData->Draw("1000*(anoSignalSmooth-catSignalSmooth):1000*time","","LSAME");
-  // oscillData->Draw("1000*(catSignalSmooth-catNoiseSmooth):1000*time","","LSAME");
-  oscillData->Draw("1000*(catSignalSmooth):1000*time","","LSAME");
+  oscillData->Draw("1000*catSignalSmooth:1000*time","","LSAME");
   TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
   frame->GetXaxis()->SetTitle("ms");
   frame->GetYaxis()->SetTitle("mV");
-  // leg->AddEntry(graph,"anode signal minus cathode signal","l");
+  leg->AddEntry(graph,"cathode signal","l");
   oscillData->SetMarkerStyle(5);
   oscillData->SetMarkerColor(4);
   oscillData->SetLineColor(4);
   oscillData->SetLineStyle(1);
   oscillData->SetLineWidth(4);
-  // oscillData->Draw("1000*(anoSignalSmooth-anoNoiseSmooth):1000*time","","LSAME");
-  oscillData->Draw("1000*(anoSignalSmooth):1000*time","","LSAME");
+  oscillData->Draw("1000*anoSignalSmooth:1000*time","","LSAME");
   TGraph *graph1 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
   graph1->SetMarkerStyle(5);
   graph1->SetMarkerColor(4);
   graph1->SetLineColor(4);
   graph1->SetLineWidth(4);
-  leg->AddEntry(graph1,"anode signal, noise subtracted","l");
+  leg->AddEntry(graph1,"anode signal","l");
+
+
+
+
+
+
+
+
 
 
 
@@ -263,13 +239,11 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   TString PrMTrace = PrMFile.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
 
-  TString sPrM = PrMFile[22];
-  // calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), atoi(runNumber.Data()));
+  TString sPrM = PrMFile[23];
   calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
-
   // Print lifetime out to a text file 
-  TString runNumber = PrMFile(4,6);
-  TString outFileName = "lifetimes_0"+sPrM+".txt";
+  TString runNumber = PrMFile(15,6);
+  TString outFileName = "PrM_Logs/lifetimes_0"+sPrM+".txt";
   ofstream myfile;
   myfile.open(outFileName.Data(),ios::app);
   myfile << runNumber.Data() << " " 
@@ -281,7 +255,13 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
     << datime.GetSecond() << " " 
     << calc.Lifetime() << " " 
     << calc.CatTrue() << " " 
-    << calc.AnoTrue() << 
+    << calc.AnoTrue() << " " 
+    << calc.CatBase() << " " 
+    << calc.AnoBase() << " " 
+    << calc.CatRMS() << " " 
+    << calc.AnoRMS() << " " 
+    << calc.CathF() << " " 
+    << calc.AnoF() << 
     "\n";
   myfile.close();
 
@@ -300,24 +280,24 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   std::cout << when.Data() << std::endl;
 
 
-  TString outCSVFileName = "Run"+runNumber+"."+sPrM+".LogData.csv";
-  myfile.open(outCSVFileName.Data());
-  myfile << "[Data]\n";
-  myfile << "Tagname,TimeStamp,Value\n";
-  myfile << "UBOONE.PRM_CATHPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatPeak() << "\n";
-  myfile << "UBOONE.PRM_CATHTIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTime() << "\n";
-  myfile << "UBOONE.PRM_CATHBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatBase() << "\n";
-  myfile << "UBOONE.PRM_ANODEPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoPeak() << "\n";
-  myfile << "UBOONE.PRM_ANODETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTime() << "\n";
-  myfile << "UBOONE.PRM_ANODEBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoBase() << "\n";
-  myfile << "UBOONE.PRM_ANODERISE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoRise() << "\n";
-  myfile << "UBOONE.PRM_CATHFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CathF() << "\n";
-  myfile << "UBOONE.PRM_ANODEFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoF() << "\n";
-  myfile << "UBOONE.PRM_ANODETRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTrue() << "\n";
-  myfile << "UBOONE.PRM_CATHTRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTrue() << "\n";
-  myfile << "UBOONE.PRM_LIFETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Lifetime() << "\n";
-  myfile << "UBOONE.PRM_IMPURITIES_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Impurities() << "\n";
-  myfile.close();
+  // TString outCSVFileName = "Run"+runNumber+"."+sPrM+".LogData.csv";
+  // myfile.open(outCSVFileName.Data());
+  // myfile << "[Data]\n";
+  // myfile << "Tagname,TimeStamp,Value\n";
+  // myfile << "UBOONE.PRM_CATHPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatPeak() << "\n";
+  // myfile << "UBOONE.PRM_CATHTIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTime() << "\n";
+  // myfile << "UBOONE.PRM_CATHBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatBase() << "\n";
+  // myfile << "UBOONE.PRM_ANODEPEAK_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoPeak() << "\n";
+  // myfile << "UBOONE.PRM_ANODETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTime() << "\n";
+  // myfile << "UBOONE.PRM_ANODEBASE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoBase() << "\n";
+  // myfile << "UBOONE.PRM_ANODERISE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoRise() << "\n";
+  // myfile << "UBOONE.PRM_CATHFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CathF() << "\n";
+  // myfile << "UBOONE.PRM_ANODEFACTOR_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoF() << "\n";
+  // myfile << "UBOONE.PRM_ANODETRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.AnoTrue() << "\n";
+  // myfile << "UBOONE.PRM_CATHTRUE_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.CatTrue() << "\n";
+  // myfile << "UBOONE.PRM_LIFETIME_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Lifetime() << "\n";
+  // myfile << "UBOONE.PRM_IMPURITIES_0" << atoi(sPrM.Data()) << ".F_CV," << when.Data() << "," << calc.Impurities() << "\n";
+  // myfile.close();
 
 
 

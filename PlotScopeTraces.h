@@ -5,9 +5,6 @@
 
 #include "lifetimeCalcLAPD.h"
 
-// Number of samples
-static const int nSamples = 5008;
-
 class PlotScopeTraces{
 
   public:
@@ -17,6 +14,9 @@ class PlotScopeTraces{
     lifetimeCalcLAPD calc;
 
   private:
+
+    // Number of samples
+    static const int nSamples = 5008;
 
 
 };

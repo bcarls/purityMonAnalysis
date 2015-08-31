@@ -6,8 +6,6 @@
 #include "lifetimeCalcFit.h"
 #include "lifetimeCalcLAPD.h"
 
-// Number of samples
-static const int nSamples = 5008;
 
 class PlotScopeTracesAverage{
 
@@ -19,6 +17,7 @@ class PlotScopeTracesAverage{
 
   private:
 
+    static const int nSamples = 5008;
 
 };
 

@@ -921,7 +921,6 @@ void run_PlotScopeTracesAverage(){
     "Run_001089_01.txt",
     "Run_001089_01.txt");
 
-
   pACD.RunPlotAndLifetime(
     "Run_001090_01.txt",
     "Run_001090_01.txt",
@@ -983,7 +982,6 @@ void run_PlotScopeTracesAverage(){
     "Run_001099_01.txt",
     "Run_001099_01.txt");
 
-
   pACD.RunPlotAndLifetime(
     "Run_001100_01.txt",
     "Run_001100_01.txt",
@@ -1044,9 +1042,6 @@ void run_PlotScopeTracesAverage(){
     "Run_001109_01.txt",
     "Run_001109_01.txt",
     "Run_001109_01.txt");
-
-
-
 
 
 }

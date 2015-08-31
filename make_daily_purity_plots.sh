@@ -27,4 +27,4 @@ done
 python run_PurityPlotMaker.py -S list_of_datafiles.txt -b 
 
 # Post the plots to the ECL
-python post_purity_plots_ecl.py 
+# python post_purity_plots_ecl.py 
