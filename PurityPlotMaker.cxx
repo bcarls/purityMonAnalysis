@@ -35,7 +35,7 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("AnoF",&AnoF);
 
   TDatime datime, datimeMin, datimeMax;
-  UInt_t datimeMinConvert = 1739935037 ;
+  UInt_t datimeMinConvert = 1739935037;
   int datimeMaxConvert = 0;
   TBranch *datimeBranch = lifetimeData->Branch("datime", &datime);
   float lifetimeValue;
