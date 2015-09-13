@@ -24,7 +24,7 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("hour",&hour);
   lifetimeData->SetBranchAddress("minute",&minute);
   lifetimeData->SetBranchAddress("second",&second);
-  lifetimeData->SetBranchAddress("lifetime",&Lifetime);
+  // lifetimeData->SetBranchAddress("lifetime",&Lifetime);
   lifetimeData->SetBranchAddress("QC",&QC);
   lifetimeData->SetBranchAddress("QA",&QA);
   lifetimeData->SetBranchAddress("CatBase",&CatBase);
@@ -78,9 +78,14 @@ void PurityPlotMaker::MakePlots(){
   int measPerAve = 6;
   LifetimeSum = 0;
   float datimeSum = 0;
-  for(int i = 0; i < nEntries; i++){
-    status = lifetimeData->GetEntry(i);
-
+  // Sort the TTree so that the average actually makes sense
+  lifetimeData->BuildIndex("run");
+  TTreeIndex *lifetimeDataIndex = (TTreeIndex*)lifetimeData->GetTreeIndex();
+  // for(int i = lifetimeDataIndex->GetN() - 1; i >= 0; --i){
+  for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
+    Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
+    lifetimeData->GetEntry(local);
+    // std::cout << runNumber << " " << lifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
@@ -94,9 +99,11 @@ void PurityPlotMaker::MakePlots(){
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
     datimeSum+=datime.Convert();
+    // std::cout << j << " " << lifetimeValue << std::endl;
     j++;
     if(j==measPerAve){
       averagedLifetimeData->Fill(runNumberSum/measPerAve,LifetimeSum/measPerAve,datimeSum/measPerAve);
+      // std::cout << LifetimeSum/measPerAve << std::endl;
       runNumberSum=0;
       LifetimeSum=0;
       datimeSum=0;
@@ -110,9 +117,11 @@ void PurityPlotMaker::MakePlots(){
   TBranch *lifetimeStandardDev = averagedLifetimeData->Branch("lifetimeStandardDev", &lifetimeStandardDevValue, "lifetimeStandardDev/F");
   averagedLifetimeData->SetBranchAddress("averagedLifetime",&averagedLifetimeValue);
   j = 0;
-  for(int i = 0; i < nEntries; i++){
-    status = lifetimeData->GetEntry(i);
+  for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
+    Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
+    lifetimeData->GetEntry(local);
     status = averagedLifetimeData->GetEntry(i/measPerAve);
+    // std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
