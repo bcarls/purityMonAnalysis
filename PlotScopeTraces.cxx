@@ -9,6 +9,17 @@
 void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   TNtuple *oscillData = new TNtuple("oscillData","NTUPLE","time:anoNoise");
 
+  TString sPrM = PrMFile[23];
+  TString runNumber = PrMFile(15,6);
+
+  // Subtract noise traces from signal?
+  bool doNoiseSubtraction = false;
+  if(atoi(runNumber.Data()) >= 1816 && atoi(sPrM.Data()) == 1)
+    doNoiseSubtraction = true;
+  if(atoi(sPrM.Data()) == 0)
+    doNoiseSubtraction = true;
+
+
   // Select file to plot data from
   FILE *fp = fopen(PrMFile.Data(),"r");
   float time, voltage;
@@ -163,7 +174,10 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetLineWidth(4);
   oscillData->SetLineStyle(2);
   oscillData->SetMarkerSize(0.5);
-  oscillData->Draw("1000*catSignalSmooth:1000*time","","LSAME");
+  if(doNoiseSubtraction)
+    oscillData->Draw("1000*(catSignalSmooth-catNoiseSmooth):1000*time","","LSAME");
+  else 
+    oscillData->Draw("1000*(catSignalSmooth):1000*time","","LSAME");
   TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
   frame->GetXaxis()->SetTitle("ms");
   frame->GetYaxis()->SetTitle("mV");
@@ -173,7 +187,10 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   oscillData->SetLineColor(4);
   oscillData->SetLineStyle(1);
   oscillData->SetLineWidth(4);
-  oscillData->Draw("1000*anoSignalSmooth:1000*time","","LSAME");
+  if(doNoiseSubtraction)
+    oscillData->Draw("1000*(anoSignalSmooth-anoNoiseSmooth):1000*time","","LSAME");
+  else
+    oscillData->Draw("1000*(anoSignalSmooth):1000*time","","LSAME");
   TGraph *graph1 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
   graph1->SetMarkerStyle(5);
   graph1->SetMarkerColor(4);
@@ -239,10 +256,8 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   TString PrMTrace = PrMFile.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
 
-  TString sPrM = PrMFile[23];
-  calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
+  calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), doNoiseSubtraction);
   // Print lifetime out to a text file 
-  TString runNumber = PrMFile(15,6);
   TString outFileName = "PrM_Logs/lifetimes_0"+sPrM+".txt";
   ofstream myfile;
   myfile.open(outFileName.Data(),ios::app);

@@ -44,7 +44,6 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("lifetime",&lifetimeValue);
   for(int i = 0; i < lifetimeData->GetEntries(); i++){
     lifetimeData->GetEntry(i);
-
     datime.Set(year,month,day,hour,minute,second);
     datimeBranch->Fill();
     if(lifetimeValue > lifetimeMax && lifetimeValue < 0.1)
@@ -148,9 +147,13 @@ void PurityPlotMaker::MakePlots(){
 
 
 
-
-
-
+  // Set custom datimeMin and datimeMax, it's in this format:
+  // datimeMin.Set(year,month,day,hour,minute,second);
+  TDatime datimePlotBegin, datimePlotEnd;
+  // datimePlotBegin.Set(2015,8,4,0,0,0);
+  // datimePlotEnd.Set(2015,8,19,12,0,0);
+  datimePlotBegin = datimeMax-604800;;
+  datimePlotEnd = datimeMax;
 
 
 
@@ -175,8 +178,7 @@ void PurityPlotMaker::MakePlots(){
   gStyle->SetOptStat(0);
 
 
-  // TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1.1*1000*lifetimeMax);
-  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 50);
+  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 15);
   frameLifetime->GetXaxis()->SetTitle("date/time");
   frameLifetime->GetXaxis()->SetTimeDisplay(1);
   frameLifetime->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -206,38 +208,38 @@ void PurityPlotMaker::MakePlots(){
 
 
 
-  // TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
-  TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1);
+  // TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1);
+  TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
   frameQAQC->GetXaxis()->SetTitle("date/time");
   frameQAQC->GetXaxis()->SetTimeDisplay(1);
   frameQAQC->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
   frameQAQC->GetXaxis()->SetTimeOffset(0);
-  frameQAQC->GetXaxis()->SetLabelOffset(0.025);
-  frameQAQC->GetXaxis()->SetTitleOffset(1.5);
+  frameQAQC->GetXaxis()->SetLabelOffset(0.030);
+  frameQAQC->GetXaxis()->SetTitleOffset(1.55);
   frameQAQC->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
   frameQAQC->SetNdivisions(-7);
   frameQAQC->Draw();
   lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
   // TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
-  TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimeMax.Convert()-604800, datimeMax.Convert());
+  TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
   f3msLifetime->SetParameter(0,exp(-2.82/3)); 
   f3msLifetime->SetLineColor(1);
   f3msLifetime->SetLineStyle(2);
   f3msLifetime->Draw("SAME");
   // TPaveText *lab3ms = new TPaveText(1.43894e9,0.393,1.43903e9,0.443);
-  TPaveText *lab3ms = new TPaveText(datimeMax.Convert()-604800+0.00001e9,0.393,datimeMax.Convert()-604800+0.0001e9,0.443);
+  TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.393,datimePlotBegin.Convert()+0.0001e9,0.443);
   lab3ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab3ms->AddText("3 ms");
   lab3ms->Draw("SAME");
   // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
-  TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMax.Convert()-604800, datimeMax.Convert());
+  TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
   f9msLifetime->SetParameter(0,exp(-2.82/9)); 
   f9msLifetime->SetLineColor(1);
   f9msLifetime->SetLineStyle(2);
   f9msLifetime->Draw("SAME");
   // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
-  TPaveText *lab9ms = new TPaveText(datimeMax.Convert()-604800+0.00001e9,0.743,datimeMax.Convert()-604800+0.0001e9,0.793);
+  TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.743,datimePlotBegin.Convert()+0.0001e9,0.793);
   lab9ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab9ms->AddText("9 ms");
@@ -277,7 +279,7 @@ void PurityPlotMaker::MakePlots(){
   gr->GetXaxis()->SetTitleOffset(1.5);
   gr->Draw("APE");
   // gr->GetXaxis()->SetRange(datimeMax.Convert()-604800,datimeMax.Convert());
-  gr->GetXaxis()->SetLimits(datimeMax.Convert()-604800,datimeMax.Convert());
+  gr->GetXaxis()->SetLimits(datimePlotBegin.Convert(),datimePlotEnd.Convert());
   gr->GetXaxis()->SetNdivisions(-7);
 
   TString averageLifetimeImage = "averageLifetime_" + sAtM + ".ps";
@@ -298,7 +300,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   // TH2F *frameQAQC = new TH2F("frameQAQC","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
-  TH2F *frameQA = new TH2F("frameQA","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 20);
+  TH2F *frameQA = new TH2F("frameQA","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 20);
   frameQA->GetXaxis()->SetTitle("date/time");
   frameQA->GetXaxis()->SetTimeDisplay(1);
   frameQA->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -326,7 +328,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   // TH2F *frameQC = new TH2F("frameQC","", 1000, datimeMin.Convert()-50000, datimeMax.Convert()+50000, 1000, 0, 1);
-  TH2F *frameQC = new TH2F("frameQC","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 20);
+  TH2F *frameQC = new TH2F("frameQC","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 20);
   frameQC->GetXaxis()->SetTitle("date/time");
   frameQC->GetXaxis()->SetTimeDisplay(1);
   frameQC->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -348,7 +350,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   
-  TH2F *frameCatBase = new TH2F("frameCatBase","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, -1, 1);
+  TH2F *frameCatBase = new TH2F("frameCatBase","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, -1, 1);
   frameCatBase->GetXaxis()->SetTitle("date/time");
   frameCatBase->GetXaxis()->SetTimeDisplay(1);
   frameCatBase->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -370,7 +372,7 @@ void PurityPlotMaker::MakePlots(){
 
  
 
-  TH2F *frameAnoBase = new TH2F("frameAnoBase","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, -1, 1);
+  TH2F *frameAnoBase = new TH2F("frameAnoBase","", 1000, datimePlotBegin.Convert()-604800, datimePlotEnd.Convert(), 1000, -1, 1);
   frameAnoBase->GetXaxis()->SetTitle("date/time");
   frameAnoBase->GetXaxis()->SetTimeDisplay(1);
   frameAnoBase->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -399,7 +401,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   
-  TH2F *frameCatRMS = new TH2F("frameCatRMS","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 0.2);
+  TH2F *frameCatRMS = new TH2F("frameCatRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 0.2);
   frameCatRMS->GetXaxis()->SetTitle("date/time");
   frameCatRMS->GetXaxis()->SetTimeDisplay(1);
   frameCatRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -421,7 +423,7 @@ void PurityPlotMaker::MakePlots(){
 
  
 
-  TH2F *frameAnoRMS = new TH2F("frameAnoRMS","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1);
+  TH2F *frameAnoRMS = new TH2F("frameAnoRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
   frameAnoRMS->GetXaxis()->SetTitle("date/time");
   frameAnoRMS->GetXaxis()->SetTimeDisplay(1);
   frameAnoRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -447,7 +449,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   
-  TH2F *frameCathF = new TH2F("frameCathF","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 10);
+  TH2F *frameCathF = new TH2F("frameCathF","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 10);
   frameCathF->GetXaxis()->SetTitle("date/time");
   frameCathF->GetXaxis()->SetTimeDisplay(1);
   frameCathF->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
@@ -469,7 +471,7 @@ void PurityPlotMaker::MakePlots(){
 
  
 
-  TH2F *frameAnoF = new TH2F("frameAnoF","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 10);
+  TH2F *frameAnoF = new TH2F("frameAnoF","", 1000, datimePlotBegin.Convert()-604800, datimePlotEnd.Convert(), 1000, 0, 10);
   frameAnoF->GetXaxis()->SetTitle("date/time");
   frameAnoF->GetXaxis()->SetTimeDisplay(1);
   frameAnoF->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
