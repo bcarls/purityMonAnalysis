@@ -85,7 +85,7 @@ void PurityPlotMaker::MakePlots(){
   for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
-    // std::cout << runNumber << " " << lifetimeValue << std::endl;
+    std::cout << runNumber << " " << lifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
@@ -99,11 +99,11 @@ void PurityPlotMaker::MakePlots(){
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
     datimeSum+=datime.Convert();
-    // std::cout << j << " " << lifetimeValue << std::endl;
+    std::cout << j << " " << lifetimeValue << std::endl;
     j++;
     if(j==measPerAve){
       averagedLifetimeData->Fill(runNumberSum/measPerAve,LifetimeSum/measPerAve,datimeSum/measPerAve);
-      // std::cout << LifetimeSum/measPerAve << std::endl;
+      std::cout << LifetimeSum/measPerAve << std::endl;
       runNumberSum=0;
       LifetimeSum=0;
       datimeSum=0;
@@ -121,7 +121,7 @@ void PurityPlotMaker::MakePlots(){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
     status = averagedLifetimeData->GetEntry(i/measPerAve);
-    // std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
+    std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
@@ -176,7 +176,7 @@ void PurityPlotMaker::MakePlots(){
 
 
   // TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 1.1*1000*lifetimeMax);
-  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 15);
+  TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimeMax.Convert()-604800, datimeMax.Convert(), 1000, 0, 50);
   frameLifetime->GetXaxis()->SetTitle("date/time");
   frameLifetime->GetXaxis()->SetTimeDisplay(1);
   frameLifetime->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
