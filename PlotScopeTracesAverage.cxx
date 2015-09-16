@@ -9,14 +9,26 @@
 void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFile1, TString PrMFile2, TString PrMFile3){
   TNtuple *oscillData = new TNtuple("oscillData","NTUPLE","time:anoNoise0");
 
+  TString sPrM = PrMFile0[23];
+  TString runNumber = PrMFile0(15,6);
+
+  // Subtract noise traces from signal?
+  bool doNoiseSubtraction = false;
+  if(atoi(runNumber.Data()) >= 1816 && atoi(sPrM.Data()) == 1)
+    doNoiseSubtraction = true;
+  if(atoi(sPrM.Data()) == 0)
+    doNoiseSubtraction = true;
+
   // Select file to plot data from
   FILE *fp = fopen(PrMFile0.Data(),"r");
   float time, voltage;
   int month, day, year, hour, minute, second;
   char AMorPM[2];
   int n = 0;
+  int ISmooth = 40;
   // Definte ncols and skip first line
-  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c ",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
+  // int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c ",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
+  int ncols = fscanf(fp,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
     hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   TString pThingString = AMorPM[0];
@@ -29,8 +41,8 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // Read in time and anode noise
   while (1) {
     ncols = fscanf(fp,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
+    if (n < 5)
+      std::cout << time << " " << voltage << std::endl;
     oscillData->Fill(time,voltage);
     n++;
     if(!(n<nSamples))
@@ -130,7 +142,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp1,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
+  ncols = fscanf(fp1,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
     hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
@@ -247,7 +259,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp2,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
+  ncols = fscanf(fp2,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
     hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
@@ -364,7 +376,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   // char AMorPM[2];
   // int n = 0;
   // Definte ncols and skip first line
-  ncols = fscanf(fp3,"%d/%d/%d %d:%d:%d %c%c",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
+  ncols = fscanf(fp3,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
   std::cout << month << "/" << day << "/" << year <<" " << 
     hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
   pThingString = AMorPM[0];
@@ -377,8 +389,8 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   TBranch *anoNoise3 = oscillData->Branch("anoNoise3", &voltage, "anoNoise3/F");
   while (1) {
     ncols = fscanf(fp3,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
+    if (n < 5)
+      std::cout << time << " " << voltage << std::endl;
     anoNoise3->Fill();
     n++;
     if(!(n<nSamples))
@@ -401,8 +413,8 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   TBranch *anoSignal3 = oscillData->Branch("anoSignal3", &voltage, "anoSignal3/F");
   while (1) {
     ncols = fscanf(fp3,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
+    if (n < 5)
+      std::cout << time << " " << voltage << std::endl;
     anoSignal3->Fill();
     n++;
     if(!(n<nSamples))
@@ -510,24 +522,109 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   float anoNoiseVolt2, anoSignalVolt2, catNoiseVolt2, catSignalVolt2;
   float anoNoiseVolt3, anoSignalVolt3, catNoiseVolt3, catSignalVolt3;
   float minVoltage=999999, maxVoltage=-999999;
-  oscillData->SetBranchAddress("anoNoiseSmooth0",&anoNoiseVolt0);
-  oscillData->SetBranchAddress("anoSignalSmooth0",&anoSignalVolt0);
-  oscillData->SetBranchAddress("catNoiseSmooth0",&catNoiseVolt0);
-  oscillData->SetBranchAddress("catSignalSmooth0",&catSignalVolt0);
-  oscillData->SetBranchAddress("anoNoiseSmooth1",&anoNoiseVolt1);
-  oscillData->SetBranchAddress("anoSignalSmooth1",&anoSignalVolt1);
-  oscillData->SetBranchAddress("catNoiseSmooth1",&catNoiseVolt1);
-  oscillData->SetBranchAddress("catSignalSmooth1",&catSignalVolt1);
-  oscillData->SetBranchAddress("anoNoiseSmooth2",&anoNoiseVolt2);
-  oscillData->SetBranchAddress("anoSignalSmooth2",&anoSignalVolt2);
-  oscillData->SetBranchAddress("catNoiseSmooth2",&catNoiseVolt2);
-  oscillData->SetBranchAddress("catSignalSmooth2",&catSignalVolt2);
-  oscillData->SetBranchAddress("anoNoiseSmooth3",&anoNoiseVolt3);
-  oscillData->SetBranchAddress("anoSignalSmooth3",&anoSignalVolt3);
-  oscillData->SetBranchAddress("catNoiseSmooth3",&catNoiseVolt3);
-  oscillData->SetBranchAddress("catSignalSmooth3",&catSignalVolt3);
+  oscillData->SetBranchAddress("anoNoise0",&anoNoiseVolt0);
+  oscillData->SetBranchAddress("anoSignal0",&anoSignalVolt0);
+  oscillData->SetBranchAddress("catNoise0",&catNoiseVolt0);
+  oscillData->SetBranchAddress("catSignal0",&catSignalVolt0);
+  oscillData->SetBranchAddress("anoNoise1",&anoNoiseVolt1);
+  oscillData->SetBranchAddress("anoSignal1",&anoSignalVolt1);
+  oscillData->SetBranchAddress("catNoise1",&catNoiseVolt1);
+  oscillData->SetBranchAddress("catSignal1",&catSignalVolt1);
+  oscillData->SetBranchAddress("anoNoise2",&anoNoiseVolt2);
+  oscillData->SetBranchAddress("anoSignal2",&anoSignalVolt2);
+  oscillData->SetBranchAddress("catNoise2",&catNoiseVolt2);
+  oscillData->SetBranchAddress("catSignal2",&catSignalVolt2);
+  oscillData->SetBranchAddress("anoNoise3",&anoNoiseVolt3);
+  oscillData->SetBranchAddress("anoSignal3",&anoSignalVolt3);
+  oscillData->SetBranchAddress("catNoise3",&catNoiseVolt3);
+  oscillData->SetBranchAddress("catSignal3",&catSignalVolt3);
 
 
+
+  // Now we create the averaged (even more), smoothed traces 
+  
+  TBranch *anoSignalNotSmooth = oscillData->Branch("anoSignalNotSmooth", &voltage, "anoSignalNotSmooth/F");
+  for(int i = 0; i < nEntries; i++){
+    oscillData->GetEntry(i);
+    voltage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
+    // if(i < 5)
+      // std::cout << voltage << " " << anoSignalVolt0 << " " << anoSignalVolt1 << " " << anoSignalVolt2 << " " << anoSignalVolt3 << std::endl; 
+    anoSignalNotSmooth->Fill();
+  }
+  TBranch *catSignalNotSmooth = oscillData->Branch("catSignalNotSmooth", &voltage, "catSignalNotSmooth/F");
+  for(int i = 0; i < nEntries; i++){
+    oscillData->GetEntry(i);
+    voltage = (catSignalVolt0+catSignalVolt1+catSignalVolt2+catSignalVolt3)/4;
+    catSignalNotSmooth->Fill();
+  }
+
+  float anoSignalVoltAverage;
+  oscillData->SetBranchAddress("anoSignalNotSmooth",&anoSignalVoltAverage);
+  TBranch *anoSignalSmooth = oscillData->Branch("anoSignalSmooth", &voltage, "anoSignalSmooth/F");
+  float voltSum = 0;
+  for(int i = 0; i <= ISmooth - 1; i++){
+    oscillData->GetEntry(i);
+    voltSum+= anoSignalVoltAverage;
+  }
+  for(int i = 0; i <= ISmooth/2 - 1; i++){
+    oscillData->GetEntry(i);
+    voltage = voltSum/ISmooth;
+    anoSignalSmooth->Fill();
+  }
+  for(int i = ISmooth/2; i <= nEntries - ISmooth/2-1; i++){
+    voltSum = 0;
+    for(int j = i - ISmooth/2; j <= i + ISmooth/2; j++){
+      oscillData->GetEntry(j);
+      voltSum+=anoSignalVoltAverage;
+    }
+    voltage = voltSum/(ISmooth+1);
+    anoSignalSmooth->Fill();
+  }
+  for(int i = nEntries-ISmooth/2; i <= nEntries; i++){
+    oscillData->GetEntry(i);
+    voltage = voltSum/ISmooth;
+    anoSignalSmooth->Fill();
+  }
+  float catSignalVoltAverage;
+  oscillData->SetBranchAddress("catSignalNotSmooth",&catSignalVoltAverage);
+  TBranch *catSignalSmooth = oscillData->Branch("catSignalSmooth", &voltage, "catSignalSmooth/F");
+  voltSum = 0;
+  for(int i = 0; i <= ISmooth - 1; i++){
+    oscillData->GetEntry(i);
+    voltSum+= catSignalVoltAverage;
+  }
+  for(int i = 0; i <= ISmooth/2 - 1; i++){
+    oscillData->GetEntry(i);
+    voltage = voltSum/ISmooth;
+    catSignalSmooth->Fill();
+  }
+  for(int i = ISmooth/2; i <= nEntries - ISmooth/2-1; i++){
+    voltSum = 0;
+    for(int j = i - ISmooth/2; j <= i + ISmooth/2; j++){
+      oscillData->GetEntry(j);
+      voltSum+=catSignalVoltAverage;
+    }
+    voltage = voltSum/(ISmooth+1);
+    catSignalSmooth->Fill();
+  }
+  for(int i = nEntries-ISmooth/2; i <= nEntries; i++){
+    oscillData->GetEntry(i);
+    voltage = voltSum/ISmooth;
+    catSignalSmooth->Fill();
+  }
+
+
+
+
+
+
+
+
+
+  float anoSignalVoltAverageSmooth;
+  oscillData->SetBranchAddress("anoSignalSmooth",&anoSignalVoltAverageSmooth);
+  float catSignalVoltAverageSmooth;
+  oscillData->SetBranchAddress("catSignalSmooth",&catSignalVoltAverageSmooth);
   for(int i = 0; i < nEntries; i++){
     voltage = oscillData->GetEntry(i);
     // if(anoSignalVolt - catSignalVolt < minVoltage)
@@ -541,14 +638,14 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
     //    maxVoltage=anoSignalVolt-catSignalVolt;
 
 
-    if(anoSignalVolt1 < minVoltage)
-      minVoltage=anoSignalVolt1;
-    if(catSignalVolt1 < minVoltage)
-      minVoltage=catSignalVolt1;
-    if(anoSignalVolt1 > maxVoltage)
-      maxVoltage=anoSignalVolt1;
-    if(catSignalVolt1 > maxVoltage)
-      maxVoltage=catSignalVolt1;
+    if(anoSignalVoltAverageSmooth< minVoltage)
+      minVoltage=anoSignalVoltAverageSmooth;
+    if(catSignalVoltAverageSmooth< minVoltage)
+      minVoltage=catSignalVoltAverageSmooth;
+    if(anoSignalVoltAverageSmooth> maxVoltage)
+      maxVoltage=anoSignalVoltAverageSmooth;
+    if(catSignalVoltAverageSmooth> maxVoltage)
+      maxVoltage=catSignalVoltAverageSmooth;
 
 
     // if(anoSignalVolt-anoNoiseVolt < minVoltage)
@@ -588,7 +685,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   oscillData->SetLineWidth(4);
   oscillData->SetLineStyle(2);
   oscillData->SetMarkerSize(0.5);
-  oscillData->Draw("1000*(catSignalSmooth0+catSignalSmooth1+catSignalSmooth2+catSignalSmooth3)/4:1000*time","","LSAME");
+  oscillData->Draw("1000*catSignalSmooth:1000*time","","LSAME");
   TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
   frame->GetXaxis()->SetTitle("ms");
   frame->GetYaxis()->SetTitle("mV");
@@ -598,7 +695,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
   oscillData->SetLineColor(4);
   oscillData->SetLineStyle(1);
   oscillData->SetLineWidth(4);
-  oscillData->Draw("1000*(anoSignalSmooth0+anoSignalSmooth1+anoSignalSmooth2+anoSignalSmooth3)/4:1000*time","","LSAME");
+  oscillData->Draw("1000*anoSignalSmooth:1000*time","","LSAME");
   TGraph *graph1 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
   graph1->SetMarkerStyle(5);
   graph1->SetMarkerColor(4);
@@ -664,12 +761,11 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
 
 
 
-  TString sPrM = PrMFile0[22];
-  calc.CalculateLifetime(oscillData, atoi(sPrM.Data()));
 
+
+  calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), doNoiseSubtraction);
   // Print lifetime out to a text file 
-  TString runNumber = PrMFile0(4,6);
-  TString outFileName = "lifetimes_0"+sPrM+".txt";
+  TString outFileName = "PrM_Logs/lifetimes_0"+sPrM+".txt";
   ofstream myfile;
   myfile.open(outFileName.Data(),ios::app);
   myfile << runNumber.Data() << " " 
@@ -681,11 +777,18 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(TString PrMFile0, TString PrMFil
     << datime.GetSecond() << " " 
     << calc.Lifetime() << " " 
     << calc.CatTrue() << " " 
-    << calc.AnoTrue() << " "
+    << calc.AnoTrue() << " " 
+    << calc.CatBase() << " " 
+    << calc.AnoBase() << " " 
     << calc.CatRMS() << " " 
-    << calc.AnoRMS() << 
+    << calc.AnoRMS() << " " 
+    << calc.CathF() << " " 
+    << calc.AnoF() << 
     "\n";
   myfile.close();
+
+
+
 
 
   TString when = Form("%d",datime.GetMonth());

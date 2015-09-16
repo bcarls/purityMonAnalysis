@@ -8,7 +8,23 @@ void run_PlotScopeTraces(){
   PlotScopeTracesAverage pPSTA;
 
 
-  
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000816_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000822_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000823_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000824_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000825_00.txt");
+ 
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000827_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000828_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000829_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000831_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000832_00.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_000833_00.txt");
+
+
+
+
+
   // pPSTA.RunPlotAndLifetime(
   //   "Run_000719_01.txt",
   //   "Run_000720_01.txt",
@@ -666,10 +682,75 @@ void run_PlotScopeTraces(){
   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001304_01.txt");
   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001305_01.txt");
   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001306_01.txt");
-  pPST.RunPlotAndLifetime("PrM_Traces/Run_001307_01.txt");
-  pPST.RunPlotAndLifetime("PrM_Traces/Run_001308_01.txt");
-  pPST.RunPlotAndLifetime("PrM_Traces/Run_001309_01.txt");
-  pPST.RunPlotAndLifetime("PrM_Traces/Run_001313_01.txt");
-  pPST.RunPlotAndLifetime("PrM_Traces/Run_001314_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001307_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001308_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001309_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001313_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001314_01.txt");
+
+
+
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001645_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001647_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001649_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001651_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001653_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001654_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001655_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001656_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001658_01.txt");
+
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001659_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001660_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001661_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001662_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001663_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001664_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001665_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001666_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001667_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001668_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001669_01.txt");
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001670_01.txt");
+
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001718_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001719_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001720_01.txt");
+
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001767_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001768_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001769_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001770_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001771_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001772_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001773_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001774_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001775_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001776_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001777_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001778_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001779_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001780_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001781_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001782_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001785_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001800_01.txt");
+
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001800_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001801_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001802_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001803_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001804_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001805_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001806_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001807_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001808_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001809_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001810_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001818_01.txt");
+   // pPST.RunPlotAndLifetime("PrM_Traces/Run_001819_01.txt");
+   pPST.RunPlotAndLifetime("PrM_Traces/Run_001820_01.txt");
+
+
 
 }

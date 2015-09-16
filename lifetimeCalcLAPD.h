@@ -4,7 +4,7 @@
 
 class lifetimeCalcLAPD{
   public:
-    void CalculateLifetime(TNtuple* oscillData, int IPrM);
+    void CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoiseSubtraction);
     double CatPeak(){ return fCatPeak;}
     double CatTime(){ return fCatTime;}
     double CatBase(){ return fCatBase;}
