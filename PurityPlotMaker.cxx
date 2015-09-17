@@ -85,16 +85,16 @@ void PurityPlotMaker::MakePlots(){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
     // std::cout << runNumber << " " << lifetimeValue << std::endl;
-    if(lifetimeValue >= 0.1)
-      continue;
-    if(CatRMS >= 0.00005)
-      continue;
-    if(AnoRMS >= 0.00012)
-      continue;
-    if(AnoF <= 1.1)
-      continue;
-    if(AnoF >= 1.4)
-      continue;
+    // if(lifetimeValue >= 0.1)
+    //   continue;
+    // if(CatRMS >= 0.00005)
+    //   continue;
+    // if(AnoRMS >= 0.00012)
+    //   continue;
+    // if(AnoF <= 1.1)
+    //   continue;
+    // if(AnoF >= 1.4)
+    //   continue;
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
     datimeSum+=datime.Convert();
@@ -121,16 +121,16 @@ void PurityPlotMaker::MakePlots(){
     lifetimeData->GetEntry(local);
     status = averagedLifetimeData->GetEntry(i/measPerAve);
     // std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
-    if(lifetimeValue >= 0.1)
-      continue;
-    if(CatRMS >= 0.00005)
-      continue;
-    if(AnoRMS >= 0.00012)
-      continue;
-    if(AnoF <= 1.1)
-      continue;
-    if(AnoF >= 1.4)
-      continue;
+    // if(lifetimeValue >= 0.1)
+    //   continue;
+    // if(CatRMS >= 0.00005)
+    //   continue;
+    // if(AnoRMS >= 0.00012)
+    //   continue;
+    // if(AnoF <= 1.1)
+    //   continue;
+    // if(AnoF >= 1.4)
+    //   continue;
     lifetimeStandardDevValue += pow(lifetimeValue-averagedLifetimeValue,2);
     j++;
     if(j==measPerAve){
@@ -190,7 +190,8 @@ void PurityPlotMaker::MakePlots(){
   frameLifetime->SetNdivisions(-7);
   frameLifetime->Draw();
 
-  lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
+  // lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
+  lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1","SAME");
 
   TString lifetimeImage = "lifetime_" + sAtM + ".ps";
   TString lifetimeImagePNG = "lifetime_" + sAtM + ".png";
@@ -219,7 +220,8 @@ void PurityPlotMaker::MakePlots(){
   frameQAQC->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
   frameQAQC->SetNdivisions(-7);
   frameQAQC->Draw();
-  lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
+  // lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
+  lifetimeData->Draw("QA/QC:datime.Convert()","","SAME");
   // TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
   f3msLifetime->SetParameter(0,exp(-2.82/3)); 

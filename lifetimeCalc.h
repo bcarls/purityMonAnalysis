@@ -4,8 +4,7 @@
 
 class lifetimeCalc{
   public:
-    // lifetimeCalc();
-    void CalculateLifetime(TNtuple* oscillData, int IPrM);
+    void CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoiseSubtraction);
     double CatPeak(){ return fCatPeak;}
     double CatTime(){ return fCatTime;}
     double CatBase(){ return fCatBase;}
@@ -15,6 +14,8 @@ class lifetimeCalc{
     double AnoRise(){ return fAnoRise;}
     double CathF(){ return fCathF;}
     double AnoF(){ return fAnoF;}
+    double CatRMS(){ return fCatRMS;}
+    double AnoRMS(){ return fAnoRMS;}
     double AnoTrue(){ return fAnoTrue;}
     double CatTrue(){ return fCatTrue;}
     double Lifetime(){ return fLifeTime;}
@@ -30,6 +31,8 @@ class lifetimeCalc{
     double fAnoRise;
     double fCathF;
     double fAnoF;
+    double fCatRMS;
+    double fAnoRMS;
     double fAnoTrue;
     double fCatTrue;
     double fLifeTime;

@@ -5,38 +5,30 @@
 
 
 
-void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
+void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoiseSubtraction){
 
   // Determine lifetime, reinterpreted from the VB program
   int nEntries = (int)oscillData->GetEntries();
-  float anoNoiseVolt, anoSignalVolt, catNoiseVolt, catSignalVolt;
-  oscillData->SetBranchAddress("anoNoiseSmooth",&anoNoiseVolt);
+  float anoSignalVolt, catSignalVolt, anoNoiseVolt, catNoiseVolt;
   oscillData->SetBranchAddress("anoSignalSmooth",&anoSignalVolt);
-  oscillData->SetBranchAddress("catNoiseSmooth",&catNoiseVolt);
   oscillData->SetBranchAddress("catSignalSmooth",&catSignalVolt);
-  //oscillData->SetBranchAddress("anoNoise",&anoNoiseVolt);
-  //oscillData->SetBranchAddress("anoSignal",&anoSignalVolt);
-  //oscillData->SetBranchAddress("catNoise",&catNoiseVolt);
-  //oscillData->SetBranchAddress("catSignal",&catSignalVolt);
-  // PrMs 1 and 4 are short and sample at 5000000 Hz
-  // PrMs 0, 2, and 3 are long and sample at 2000000 Hz
+  oscillData->SetBranchAddress("anoNoiseSmooth",&anoNoiseVolt);
+  oscillData->SetBranchAddress("catNoiseSmooth",&catNoiseVolt);
+  
   int TriggerTimeIndex = 500;
   double samplesPerSec = 2000000;
   if(IPrM == 1
-      || IPrM == 2)
+    || IPrM == 2)
     samplesPerSec = 1000000;
   double secPerSample = 1/samplesPerSec;
   // Wait a little while after the trigger to look for the cathode min and anode max
   int CatTimeIndex = -1;
   double fCatTime = -1;
-  double fCatBase = 0;
   double fCatSq = 0;
-  double fCatRMS = 0;
   int AnoTimeIndex = -1;
   double fAnoTime = -1;
-  double fAnoBase = 0;
   double fAnoSq = 0;
-  double fAnoRMS = 0;
+  double fAnoNoiseBase = 0;
   double RMSCut = 10;
   int istop = 0;
   double ta1 = 0;
@@ -45,42 +37,72 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
   double va2 = 0;
   int voltage;
 
+
   
   
   // Look for the cathode sigmal, it's now positive
-  fCatPeak = -1000;
-  for(int i = 0; i < 1000; i++){
-    voltage = oscillData->GetEntry(i);
-    if(anoSignalVolt-catSignalVolt > fCatPeak){
-      fCatPeak = anoSignalVolt-catSignalVolt;
-      CatTimeIndex = i;
+  fCatPeak = 1000;
+  if(doNoiseSubtraction)
+    for(int i = 0; i < 1000; i++){
+      voltage = oscillData->GetEntry(i);
+      if(catSignalVolt - catNoiseVolt < fCatPeak){
+        fCatPeak = catSignalVolt-catNoiseVolt;
+        CatTimeIndex = i;
+      }
     }
-  }
+  else
+    for(int i = 0; i < 1000; i++){
+      voltage = oscillData->GetEntry(i);
+      if(catSignalVolt < fCatPeak){
+        fCatPeak = catSignalVolt;
+        CatTimeIndex = i;
+      }
+    }
   fCatTime = secPerSample*(-TriggerTimeIndex + CatTimeIndex);
 
   // Get the baseline 
-  for(int i = 3*TriggerTimeIndex/4 - 25; i <= 3*TriggerTimeIndex/4 + 24; i++){
-    voltage = oscillData->GetEntry(i);
-    fCatBase = fCatBase + anoSignalVolt-catSignalVolt;
-  }
-  
-  // oscillData->GetEntry(CatTimeIndex-(int)(0.00017*samplesPerSec));
-  // std::cout << CatTimeIndex << " " << TriggerTimeIndex << " " << samplesPerSec << std::endl;
-  // std::cout << CatTimeIndex+(int)(0.00017*samplesPerSec)<< std::endl;
-  oscillData->GetEntry(TriggerTimeIndex);
-  fCatBase = anoSignalVolt-catSignalVolt;
+  if(doNoiseSubtraction)
+    for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
+      voltage = oscillData->GetEntry(i);
+      fCatBase = fCatBase + catSignalVolt - catNoiseVolt;
+    }
+  else
+    for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
+      voltage = oscillData->GetEntry(i);
+      fCatBase = fCatBase + catSignalVolt;
+    }
+  fCatBase = fCatBase/50; 
 
 
 
-  // fCatBase = fCatBase/50;
+
   double maxCathNoiseOffBase = 0;
-  for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
-    voltage = oscillData->GetEntry(i);
-    fCatSq = fCatSq + pow((fCatBase - anoSignalVolt + catSignalVolt),2);
-    if(maxCathNoiseOffBase < fabs(fCatBase - anoSignalVolt + catSignalVolt))
-      maxCathNoiseOffBase = fabs(fCatBase - anoSignalVolt + catSignalVolt);
-  }
+  if(doNoiseSubtraction)
+    for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
+      voltage = oscillData->GetEntry(i);
+      fCatSq = fCatSq + pow((fCatBase - catSignalVolt),2);
+      if(maxCathNoiseOffBase < std::abs(fCatBase - catSignalVolt + catNoiseVolt))
+        maxCathNoiseOffBase = std::abs(fCatBase - catSignalVolt + catNoiseVolt);
+    }
+  else 
+    for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
+      voltage = oscillData->GetEntry(i);
+      fCatSq = fCatSq + pow((fCatBase),2);
+      if(maxCathNoiseOffBase < std::abs(fCatBase - catSignalVolt))
+        maxCathNoiseOffBase = std::abs(fCatBase - catSignalVolt);
+    }
   fCatRMS = sqrt(fCatSq/50);
+
+
+
+
+
+
+
+
+
+
+  
   std::cout << "Cathode Peak = " << fCatPeak << std::endl;
   std::cout << "Cathode Time = " << fCatTime << std::endl;
   std::cout << "Cathode Baseline = " << fCatBase << std::endl;
@@ -93,68 +115,107 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
   fAnoPeak = -1000;
   AnoTimeIndex = -1;
   // Start at sample 1500 to get a fair bit past the cathode signal
-  for(int i = 1500; i < nEntries; i++){
-    voltage = oscillData->GetEntry(i);
-    if(anoSignalVolt-catSignalVolt > fAnoPeak){
-      fAnoPeak = anoSignalVolt-catSignalVolt;
-      AnoTimeIndex = i;
+  if(doNoiseSubtraction)
+    for(int i = 1000; i < nEntries; i++){
+      voltage = oscillData->GetEntry(i);
+      if(anoSignalVolt - anoNoiseVolt > fAnoPeak){
+        fAnoPeak = anoSignalVolt - anoNoiseVolt;
+        AnoTimeIndex = i;
+      }
     }
-  }
+  else
+    for(int i = 1000; i < nEntries; i++){
+      voltage = oscillData->GetEntry(i);
+      if(anoSignalVolt > fAnoPeak){
+        fAnoPeak = anoSignalVolt;
+        AnoTimeIndex = i;
+      }
+    }
 
   fAnoTime = secPerSample*(-TriggerTimeIndex + AnoTimeIndex);
 
-  // Find the anode baseline
-  // int AnoBaselineIndexLow = 1602
+
+
+
+  // Try grabbing the anode baseline from right in front of the anode signal
+  oscillData->GetEntry(AnoTimeIndex-(int)(0.000083*samplesPerSec));
+  if(doNoiseSubtraction)
+    fAnoBase = anoSignalVolt-anoNoiseVolt;
+  else
+    fAnoBase = anoSignalVolt;
+  
+  // int AnoBaselineIndexLow = AnoTimeIndex-(int)(0.000083*samplesPerSec);
   // int AnoBaselineIndexHigh = 3000;
   // if(IPrM == 1
   //     || IPrM == 2){
-  //   AnoBaselineIndexLow = 2500;
+  //   AnoBaselineIndexLow = AnoTimeIndex-(int)(0.000083*samplesPerSec);
   //   AnoBaselineIndexHigh = 4200;
   // }
-  // int AnoBaselineIndexLow = (int)((double)(TriggerTimeIndex) + 0.666666*((double)AnoTimeIndex-(double)CatTimeIndex));
-  // int AnoBaselineIndexHigh = (int)((double)(AnoTimeIndex) + 0.333333*((double)AnoTimeIndex-(double)CatTimeIndex));
-  // // std::cout << AnoTimeIndex << " " << CatTimeIndex << std::endl;
-  // // std::cout << AnoBaselineIndexLow  << " " << AnoBaselineIndexHigh << std::endl;
-  // for(int i = AnoBaselineIndexLow - 25; i <= AnoBaselineIndexLow + 24; i++){
-  //   voltage = oscillData->GetEntry(i);
-  //   // std::cout << i << " " << fAnoBase << std::endl;
-  //   fAnoBase+=anoSignalVolt-catSignalVolt;
-  // }
-  // for(int i = AnoBaselineIndexHigh - 25; i <= AnoBaselineIndexHigh + 24; i++){
-  //   voltage = oscillData->GetEntry(i);
-  //   // std::cout << i << " " << fAnoBase << std::endl;
-  //   fAnoBase+=anoSignalVolt-catSignalVolt;
-  // }
-  // fAnoBase = fAnoBase/100;
-
-  oscillData->GetEntry(AnoTimeIndex-(int)(0.000083*samplesPerSec));
-  fAnoBase = anoSignalVolt-catSignalVolt;
+  // AnoBaselineIndexLow = (int)((double)(TriggerTimeIndex) + 0.666666*((double)AnoTimeIndex-(double)CatTimeIndex));
+  // AnoBaselineIndexHigh = (int)((double)(AnoTimeIndex) + 0.333333*((double)AnoTimeIndex-(double)CatTimeIndex));
+  // if(doNoiseSubtraction)
+  //   for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+  //     voltage = oscillData->GetEntry(i);
+  //     // std::cout << i << " " << fAnoBase << std::endl;
+  //     fAnoBase+=anoSignalVolt - anoNoiseVolt;
+  //   }
+  // else
+  //   for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+  //     voltage = oscillData->GetEntry(i);
+  //     // std::cout << i << " " << fAnoBase << std::endl;
+  //     fAnoBase+=anoSignalVolt;
+  //   }
+  // fAnoBase = fAnoBase/40;
 
 
 
 
 
+  int AnoBaselineIndexLow = 1602;
+  int AnoBaselineIndexHigh = 3000;
+  if(IPrM == 1
+      || IPrM == 2){
+    AnoBaselineIndexLow = 2500;
+    AnoBaselineIndexHigh = 4200;
+  }
+  AnoBaselineIndexLow = (int)((double)(TriggerTimeIndex) + 0.666666*((double)AnoTimeIndex-(double)CatTimeIndex));
+  AnoBaselineIndexHigh = (int)((double)(AnoTimeIndex) + 0.333333*((double)AnoTimeIndex-(double)CatTimeIndex));
+  if(doNoiseSubtraction)
+    for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
+      voltage = oscillData->GetEntry(i);
+      // std::cout << i << " " << fAnoBase << std::endl;
+      fAnoNoiseBase+=anoSignalVolt - anoNoiseVolt;
+    }
+  else
+    for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
+      voltage = oscillData->GetEntry(i);
+      // std::cout << i << " " << fAnoBase << std::endl;
+      fAnoNoiseBase+=anoSignalVolt;
+    }
+  fAnoNoiseBase = fAnoNoiseBase/400;
 
-//   double maxAnoNoiseOffBase = 0;
-//   for(int i = AnoBaselineIndexLow - 25; i <= AnoBaselineIndexLow + 24; i++){
-//     voltage = oscillData->GetEntry(i);
-//     fAnoSq = fAnoSq + pow((fAnoBase - anoSignalVolt + catSignalVolt),2);
-//     if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalVolt + catSignalVolt))
-//       maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalVolt + catSignalVolt);
-//   }
-//   for(int i = AnoBaselineIndexHigh - 25; i <= AnoBaselineIndexHigh + 24; i++){
-//     voltage = oscillData->GetEntry(i);
-//     fAnoSq = fAnoSq + pow((fAnoBase - anoSignalVolt + catSignalVolt),2);
-//     if(maxAnoNoiseOffBase < fabs(fAnoBase - anoSignalVolt + catSignalVolt))
-//       maxAnoNoiseOffBase = fabs(fAnoBase - anoSignalVolt + catSignalVolt);
-//   }
-//   fAnoRMS= sqrt(fAnoSq/100);
 
 
 
 
 
 
+  double maxAnoNoiseOffBase = 0;
+  if(doNoiseSubtraction)
+    for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+      voltage = oscillData->GetEntry(i);
+      fAnoSq = fAnoSq + pow((fAnoNoiseBase - anoSignalVolt + anoNoiseVolt),2);
+      if(maxAnoNoiseOffBase < std::abs(fAnoNoiseBase - anoSignalVolt + anoNoiseVolt))
+        maxAnoNoiseOffBase = std::abs(fAnoNoiseBase - anoSignalVolt + anoNoiseVolt);
+    }
+  else
+    for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+      voltage = oscillData->GetEntry(i);
+      fAnoSq = fAnoSq + pow((fAnoNoiseBase - anoSignalVolt),2);
+      if(maxAnoNoiseOffBase < std::abs(fAnoNoiseBase - anoSignalVolt))
+        maxAnoNoiseOffBase = std::abs(fAnoNoiseBase - anoSignalVolt);
+    }
+  fAnoRMS= sqrt(fAnoSq/40);
 
 
 
@@ -164,22 +225,34 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
     double da1 = 10000;
     double da2 = 10000;
     int AnoRiseStartIndex = TriggerTimeIndex + 0.75*(AnoTimeIndex-CatTimeIndex);
-    // for(int i = 1602; i <= AnoTimeIndex; i++){
-    // for(int i = 3000; i <= AnoTimeIndex; i++){
-    for(int i = AnoRiseStartIndex; i <= AnoTimeIndex; i++){
-      voltage = oscillData->GetEntry(i);
-      if(fabs(anoSignalVolt-catSignalVolt - a1)<da1){
-        da1 = fabs(anoSignalVolt-catSignalVolt - a1);
-        ta1 = -TriggerTimeIndex*secPerSample+i*secPerSample;
-        va1 = anoSignalVolt-catSignalVolt;
+    if(doNoiseSubtraction)
+      for(int i = AnoRiseStartIndex; i <= AnoTimeIndex; i++){
+        voltage = oscillData->GetEntry(i);
+        if(std::abs(anoSignalVolt - anoNoiseVolt - a1)<da1){
+          da1 = std::abs(anoSignalVolt - anoNoiseVolt - a1);
+          ta1 = -TriggerTimeIndex*secPerSample+i*secPerSample;
+          va1 = anoSignalVolt - anoNoiseVolt;
+        }
+        if(std::abs(anoSignalVolt - anoNoiseVolt - a2)<da2){
+          da2 = std::abs(anoSignalVolt - anoNoiseVolt - a2);
+          ta2 = -TriggerTimeIndex*secPerSample+i*secPerSample;
+          va2 = anoSignalVolt - anoNoiseVolt;
+        }
       }
-      if(fabs(anoSignalVolt-catSignalVolt - a2)<da2){
-        da2 = fabs(anoSignalVolt-catSignalVolt - a2);
-        ta2 = -TriggerTimeIndex*secPerSample+i*secPerSample;
-        va2 = anoSignalVolt-catSignalVolt;
+    else
+      for(int i = AnoRiseStartIndex; i <= AnoTimeIndex; i++){
+        voltage = oscillData->GetEntry(i);
+        if(std::abs(anoSignalVolt - a1)<da1){
+          da1 = std::abs(anoSignalVolt - a1);
+          ta1 = -TriggerTimeIndex*secPerSample+i*secPerSample;
+          va1 = anoSignalVolt;
+        }
+        if(std::abs(anoSignalVolt - a2)<da2){
+          da2 = std::abs(anoSignalVolt - a2);
+          ta2 = -TriggerTimeIndex*secPerSample+i*secPerSample;
+          va2 = anoSignalVolt;
+        }
       }
-
-    }
     fAnoRise = (ta2-ta1)*(fAnoPeak-fAnoBase)/(va2-va1);
   }
 
@@ -197,8 +270,10 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM){
 
   fCathF = (fCatTime + 0.000006) / (RC*(1-exp(-(fCatTime + 0.000006)/RC)));
   fAnoF = (fAnoRise + 0.000005)/(RC*(1-exp(-(fAnoRise + 0.000005)/RC)));
+  // fAnoF = 1.283;
+  // fCathF = 1.627;
   fAnoTrue = (fAnoPeak - fAnoBase)*fAnoF;
-  fCatTrue = fabs((fCatPeak - fCatBase)*fCathF);
+  fCatTrue = std::abs((fCatPeak - fCatBase)*fCathF);
   fLifeTime = 0;
   fImpurities = 99999;
   if(fAnoTrue > 0){
