@@ -84,7 +84,7 @@ void PurityPlotMaker::MakePlots(){
   for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
-    std::cout << runNumber << " " << lifetimeValue << std::endl;
+    // std::cout << runNumber << " " << lifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
@@ -98,11 +98,11 @@ void PurityPlotMaker::MakePlots(){
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
     datimeSum+=datime.Convert();
-    std::cout << j << " " << lifetimeValue << std::endl;
+    // std::cout << j << " " << lifetimeValue << std::endl;
     j++;
     if(j==measPerAve){
       averagedLifetimeData->Fill(runNumberSum/measPerAve,LifetimeSum/measPerAve,datimeSum/measPerAve);
-      std::cout << LifetimeSum/measPerAve << std::endl;
+      // std::cout << LifetimeSum/measPerAve << std::endl;
       runNumberSum=0;
       LifetimeSum=0;
       datimeSum=0;
@@ -120,7 +120,7 @@ void PurityPlotMaker::MakePlots(){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
     status = averagedLifetimeData->GetEntry(i/measPerAve);
-    std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
+    // std::cout << i <<  " " << lifetimeValue << " " << i/measPerAve << " " << averagedLifetimeValue << std::endl;
     if(lifetimeValue >= 0.1)
       continue;
     if(CatRMS >= 0.00005)
@@ -152,7 +152,7 @@ void PurityPlotMaker::MakePlots(){
   TDatime datimePlotBegin, datimePlotEnd;
   // datimePlotBegin.Set(2015,8,4,0,0,0);
   // datimePlotEnd.Set(2015,8,19,12,0,0);
-  datimePlotBegin = datimeMax-604800;;
+  datimePlotBegin.Set(datimeMax.Convert()-604800);
   datimePlotEnd = datimeMax;
 
 
