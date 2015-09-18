@@ -163,10 +163,10 @@ void PurityPlotMaker::MakePlots(){
 
 
 
-  lifetimeData->SetMarkerStyle(2);
+  lifetimeData->SetMarkerStyle(8);
   lifetimeData->SetMarkerColor(2);
   lifetimeData->SetLineColor(2);
-  lifetimeData->SetMarkerSize(3.0);
+  lifetimeData->SetMarkerSize(1.0);
 
   TCanvas *c1 = new TCanvas("c1","Tree test");
   // Turn grid on
@@ -234,18 +234,33 @@ void PurityPlotMaker::MakePlots(){
   // lab6ms->SetLineColor(0);
   lab3ms->AddText("3 ms");
   lab3ms->Draw("SAME");
-  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
-  TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
-  f9msLifetime->SetParameter(0,exp(-2.82/9)); 
-  f9msLifetime->SetLineColor(1);
-  f9msLifetime->SetLineStyle(2);
-  f9msLifetime->Draw("SAME");
-  // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
-  TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.743,datimePlotBegin.Convert()+0.0001e9,0.793);
-  lab9ms->SetFillColor(0);
+
+
+  // TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
+  TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
+  f6msLifetime->SetParameter(0,exp(-2.82/6)); 
+  f6msLifetime->SetLineColor(1);
+  f6msLifetime->SetLineStyle(2);
+  f6msLifetime->Draw("SAME");
+  TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.633,datimePlotBegin.Convert()+0.0001e9,0.683);
+  lab6ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
-  lab9ms->AddText("9 ms");
-  lab9ms->Draw("SAME");
+  lab6ms->AddText("6 ms");
+  lab6ms->Draw("SAME");
+
+  
+  // // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
+  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
+  // f9msLifetime->SetParameter(0,exp(-2.82/9)); 
+  // f9msLifetime->SetLineColor(1);
+  // f9msLifetime->SetLineStyle(2);
+  // f9msLifetime->Draw("SAME");
+  // // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
+  // TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.743,datimePlotBegin.Convert()+0.0001e9,0.793);
+  // lab9ms->SetFillColor(0);
+  // // lab6ms->SetLineColor(0);
+  // lab9ms->AddText("9 ms");
+  // lab9ms->Draw("SAME");
 
   TString QAQCImage = "QAQC_" + sAtM + ".ps";
   TString QAQCImagePNG = "QAQC_" + sAtM + ".png";
