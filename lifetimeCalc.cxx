@@ -75,7 +75,6 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
 
 
 
-
   double maxCathNoiseOffBase = 0;
   if(doNoiseSubtraction)
     for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
@@ -202,20 +201,20 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
 
   double maxAnoNoiseOffBase = 0;
   if(doNoiseSubtraction)
-    for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+    for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
       voltage = oscillData->GetEntry(i);
       fAnoSq = fAnoSq + pow((fAnoNoiseBase - anoSignalVolt + anoNoiseVolt),2);
       if(maxAnoNoiseOffBase < std::abs(fAnoNoiseBase - anoSignalVolt + anoNoiseVolt))
         maxAnoNoiseOffBase = std::abs(fAnoNoiseBase - anoSignalVolt + anoNoiseVolt);
     }
   else
-    for(int i = AnoBaselineIndexLow - 20; i <= AnoBaselineIndexLow + 19; i++){
+    for(int i = AnoBaselineIndexLow - 200; i <= AnoBaselineIndexLow + 199; i++){
       voltage = oscillData->GetEntry(i);
       fAnoSq = fAnoSq + pow((fAnoNoiseBase - anoSignalVolt),2);
       if(maxAnoNoiseOffBase < std::abs(fAnoNoiseBase - anoSignalVolt))
         maxAnoNoiseOffBase = std::abs(fAnoNoiseBase - anoSignalVolt);
     }
-  fAnoRMS= sqrt(fAnoSq/40);
+  fAnoRMS= sqrt(fAnoSq/400);
 
 
 
@@ -259,6 +258,7 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
   std::cout << "Anode Peak = " << fAnoPeak << std::endl;
   std::cout << "Anode Time = " << fAnoTime << std::endl;
   std::cout << "Anode Baseline = " << fAnoBase << std::endl;
+  std::cout << "Anode Noise Baseline = " << fAnoNoiseBase << std::endl;
   std::cout << "Anode Rise = " << fAnoRise << std::endl;
   std::cout << "Anode RMS = " << fAnoRMS << std::endl;
   // std::cout << "Anode Max Noise Off Baseline = " << maxAnoNoiseOffBase << std::endl;

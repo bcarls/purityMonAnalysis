@@ -10,6 +10,7 @@ def main(argv):
     inputFile = ''
     inputFileList = ''
     nevts = 0
+    prm = 0
     # Parse arguments
     args = argv[1:]
     while len(args) > 0:
@@ -21,9 +22,9 @@ def main(argv):
             if len(args) > 1:
                 inputFileList = args[1]
                 del args[0:2]
-        elif args[0] == '-n' or args[0] == '--nevts' :
+        elif args[0] == '-p' or args[0] == '--purity-monitor' :
             if len(args) > 1:
-                nevts = int(args[1])
+                prm = int(args[1])
                 del args[0:2]
         elif args[0] == '-b' :
             del args[0:1]
@@ -45,9 +46,8 @@ def main(argv):
         print 'Adding input file: '+f+'.'
         t.AddDataFile(f)
 
+    t.SetPurityMonitor(prm)
     t.MakePlots()
-
-
 
 
 

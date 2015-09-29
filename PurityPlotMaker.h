@@ -7,6 +7,10 @@ class PurityPlotMaker{
   public:
     void MakePlots();
 
+    void SetPurityMonitor(int whichPurityMonitor){
+      purityMonitor = whichPurityMonitor;
+    }
+
     void AddDataFile(TString fileToAdd){
       listOfDataFiles.push_back(fileToAdd);
     }
@@ -14,6 +18,7 @@ class PurityPlotMaker{
   private: 
 
     std::vector<TString> listOfDataFiles;
+    int purityMonitor; 
 
 };
 

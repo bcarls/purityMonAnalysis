@@ -156,6 +156,15 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
     if(catSignalVolt > maxVoltage)
       maxVoltage=catSignalVolt;
 
+    // if(anoNoiseVolt + 0.010 < minVoltage)
+    //   minVoltage=anoNoiseVolt + 0.010;
+    // if(catNoiseVolt + 0.010 < minVoltage)
+    //   minVoltage=catNoiseVolt + 0.010;
+    // if(anoNoiseVolt + 0.010 > maxVoltage)
+    //   maxVoltage=anoNoiseVolt + 0.010;
+    // if(catNoiseVolt + 0.010 > maxVoltage)
+    //   maxVoltage=catNoiseVolt + 0.010;
+
 
   }
 
@@ -165,9 +174,11 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
   TCanvas *c1 = new TCanvas("c1","Tree test");
   TH2F *frame = new TH2F("frame","", 100, 1000*(oscillData->GetMinimum("time")), 1000*(oscillData->GetMaximum("time")), 100, 1000*(minVoltage-0.1*fabs(maxVoltage-minVoltage)), 1000*(maxVoltage+0.5*fabs(maxVoltage-minVoltage)));
   gStyle->SetOptStat(0);
+  gPad->SetTicks(0,1);
   frame->Draw();
-  TLegend *leg = new TLegend(0.1,0.7,0.48,0.9);
+  TLegend *leg = new TLegend(0.12,0.68,0.59,0.88);
   leg->SetFillColor(0);
+  leg->SetLineColor(0);
   oscillData->SetMarkerStyle(2);
   oscillData->SetMarkerColor(kOrange+8);
   oscillData->SetLineColor(kOrange+8);
@@ -206,29 +217,32 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
 
 
 
+//   oscillData->SetMarkerStyle(2);
+//   oscillData->SetMarkerColor(8);
+//   oscillData->SetLineColor(8);
+//   oscillData->SetLineStyle(3);
+//   oscillData->Draw("1000*(catSignalSmooth)+10:1000*time","","LSAME");
+//   TGraph *graph2 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+//   graph2->SetMarkerStyle(2);
+//   graph2->SetMarkerColor(8);
+//   graph2->SetLineColor(8);
+//   leg->AddEntry(graph2,"cathode signal, without noise subtracted","l");
+
+//   oscillData->SetMarkerStyle(5);
+//   oscillData->SetLineStyle(4);
+//   oscillData->SetMarkerColor(1);
+//   oscillData->SetLineColor(1);
+//   oscillData->Draw("1000*(anoSignalSmooth)+10:1000*time","","LSAME");
+//   TGraph *graph3 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
+//   graph3->SetMarkerStyle(5);
+//   graph3->SetMarkerColor(1);
+//   graph3->SetLineColor(1);
+//   leg->AddEntry(graph3,"anode signal, without noise subtracted","l");
 
 
-  // oscillData->SetMarkerStyle(2);
-  // oscillData->SetMarkerColor(8);
-  // oscillData->SetLineColor(8);
-  // oscillData->SetLineStyle(3);
-  // oscillData->Draw("1000*(catSignalSmooth)+20:1000*time","","LSAME");
-  // TGraph *graph2 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-  // graph2->SetMarkerStyle(2);
-  // graph2->SetMarkerColor(8);
-  // graph2->SetLineColor(8);
-  // leg->AddEntry(graph2,"cathode signal, without noise subtracted","l");
 
-  // oscillData->SetMarkerStyle(5);
-  // oscillData->SetLineStyle(4);
-  // oscillData->SetMarkerColor(1);
-  // oscillData->SetLineColor(1);
-  // oscillData->Draw("1000*(anoSignalSmooth)+20:1000*time","","LSAME");
-  // TGraph *graph3 = (TGraph*)gPad->GetPrimitive("Graph")->Clone();
-  // graph3->SetMarkerStyle(5);
-  // graph3->SetMarkerColor(1);
-  // graph3->SetLineColor(1);
-  // leg->AddEntry(graph3,"anode signal, without noise subtracted","l");
+
+
 
 
   // oscillData->SetMarkerStyle(2);
@@ -255,6 +269,9 @@ void PlotScopeTraces::RunPlotAndLifetime(TString PrMFile){
 
   TString PrMTrace = PrMFile.ReplaceAll(".txt",".png");
   c1->Print(PrMTrace);
+
+  TString PrMTracePS = PrMFile.ReplaceAll(".png",".ps");
+  c1->Print(PrMTracePS);
 
   calc.CalculateLifetime(oscillData, atoi(sPrM.Data()), doNoiseSubtraction);
   // Print lifetime out to a text file 

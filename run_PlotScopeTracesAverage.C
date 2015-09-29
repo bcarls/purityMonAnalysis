@@ -21,10 +21,6 @@ void run_PlotScopeTracesAverage(){
 
 
 
-
-
-
-
   
   pACD.RunPlotAndLifetime(
     "PrM_Traces/Run_000719_01.txt",
