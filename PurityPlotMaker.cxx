@@ -281,27 +281,21 @@ void PurityPlotMaker::MakePlots(){
   lab3ms->AddText("3 ms");
   lab3ms->Draw("SAME");
 
-  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
+
+  // TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
-  if(purityMonitor == 0)
-    f6msLifetime->SetParameter(0,exp(-0.3/6)); 
-  if(purityMonitor == 1)
-    f6msLifetime->SetParameter(0,exp(-2.82/6)); 
-  if(purityMonitor == 2)
-    f6msLifetime->SetParameter(0,exp(-2.27/6)); 
+  f6msLifetime->SetParameter(0,exp(-2.82/6)); 
   f6msLifetime->SetLineColor(1);
   f6msLifetime->SetLineStyle(2);
-  if(purityMonitor == 1 || purityMonitor == 2)
-    f6msLifetime->Draw("SAME");
+  f6msLifetime->Draw("SAME");
   TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.633,datimePlotBegin.Convert()+0.0001e9,0.683);
-  // TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+5*60,0.7,datimePlotBegin.Convert()+20*60,0.75);
   lab6ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab6ms->AddText("6 ms");
-  if(purityMonitor == 1 || purityMonitor == 2)
-    lab6ms->Draw("SAME");
+  lab6ms->Draw("SAME");
+
   
-  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
+  // // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
   // f9msLifetime->SetParameter(0,exp(-2.82/9)); 
   // f9msLifetime->SetLineColor(1);
