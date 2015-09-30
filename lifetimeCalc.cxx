@@ -61,6 +61,7 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
   fCatTime = secPerSample*(-TriggerTimeIndex + CatTimeIndex);
 
   // Get the baseline 
+  fCatBase = 0;
   if(doNoiseSubtraction)
     for(int i = TriggerTimeIndex/2 - 25; i <= TriggerTimeIndex/2 + 24; i++){
       voltage = oscillData->GetEntry(i);
@@ -193,7 +194,7 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
     }
   fAnoNoiseBase = fAnoNoiseBase/400;
 
-
+  fAnoBase = fAnoNoiseBase;
 
 
 

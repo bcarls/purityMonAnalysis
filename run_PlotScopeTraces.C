@@ -51,6 +51,7 @@ void run_PlotScopeTraces(){
   // pPST.RunPlotAndLifetime("PrM_Traces/Run_000848_00.txt");
   // pPST.RunPlotAndLifetime("PrM_Traces/Run_000849_00.txt");
 
+  // pPST.RunPlotAndLifetime("PrM_Traces/Run_001117_00.txt");
 
 
 
@@ -919,15 +920,329 @@ void run_PlotScopeTraces(){
 
 
 
-  pPSTA.RunPlotAndLifetime(
-    "PrM_Traces/Run_001802_01.txt",
-    "PrM_Traces/Run_001803_01.txt",
-    "PrM_Traces/Run_001804_01.txt",
-    "PrM_Traces/Run_001805_01.txt");
+
+
+
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002072_01.txt",
+  //   "PrM_Traces/Run_002073_01.txt",
+  //   "PrM_Traces/Run_002074_01.txt",
+  //   "PrM_Traces/Run_002075_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002076_01.txt",
+  //   "PrM_Traces/Run_002077_01.txt",
+  //   "PrM_Traces/Run_002078_01.txt",
+  //   "PrM_Traces/Run_002079_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002080_01.txt",
+  //   "PrM_Traces/Run_002081_01.txt",
+  //   "PrM_Traces/Run_002082_01.txt",
+  //   "PrM_Traces/Run_002083_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002084_01.txt",
+  //   "PrM_Traces/Run_002085_01.txt",
+  //   "PrM_Traces/Run_002086_01.txt",
+  //   "PrM_Traces/Run_002087_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002088_01.txt",
+  //   "PrM_Traces/Run_002089_01.txt",
+  //   "PrM_Traces/Run_002090_01.txt",
+  //   "PrM_Traces/Run_002091_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002092_01.txt",
+  //   "PrM_Traces/Run_002093_01.txt",
+  //   "PrM_Traces/Run_002094_01.txt",
+  //   "PrM_Traces/Run_002095_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002096_01.txt",
+  //   "PrM_Traces/Run_002097_01.txt",
+  //   "PrM_Traces/Run_002098_01.txt",
+  //   "PrM_Traces/Run_002099_01.txt");
 
 
 
 
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001901_01.txt",
+// "PrM_Traces/Run_001902_01.txt",
+// "PrM_Traces/Run_001903_01.txt",
+// "PrM_Traces/Run_001904_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001905_01.txt",
+// "PrM_Traces/Run_001906_01.txt",
+// "PrM_Traces/Run_001907_01.txt",
+// "PrM_Traces/Run_001908_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001909_01.txt",
+// "PrM_Traces/Run_001910_01.txt",
+// "PrM_Traces/Run_001911_01.txt",
+// "PrM_Traces/Run_001912_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001913_01.txt",
+// "PrM_Traces/Run_001914_01.txt",
+// "PrM_Traces/Run_001915_01.txt",
+// "PrM_Traces/Run_001916_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001917_01.txt",
+// "PrM_Traces/Run_001918_01.txt",
+// "PrM_Traces/Run_001919_01.txt",
+// "PrM_Traces/Run_001920_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001921_01.txt",
+// "PrM_Traces/Run_001922_01.txt",
+// "PrM_Traces/Run_001923_01.txt",
+// "PrM_Traces/Run_001924_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001925_01.txt",
+// "PrM_Traces/Run_001926_01.txt",
+// "PrM_Traces/Run_001927_01.txt",
+// "PrM_Traces/Run_001928_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001929_01.txt",
+// "PrM_Traces/Run_001930_01.txt",
+// "PrM_Traces/Run_001931_01.txt",
+// "PrM_Traces/Run_001932_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001933_01.txt",
+// "PrM_Traces/Run_001934_01.txt",
+// "PrM_Traces/Run_001935_01.txt",
+// "PrM_Traces/Run_001936_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001937_01.txt",
+// "PrM_Traces/Run_001938_01.txt",
+// "PrM_Traces/Run_001939_01.txt",
+// "PrM_Traces/Run_001940_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001941_01.txt",
+// "PrM_Traces/Run_001942_01.txt",
+// "PrM_Traces/Run_001943_01.txt",
+// "PrM_Traces/Run_001944_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001945_01.txt",
+// "PrM_Traces/Run_001946_01.txt",
+// "PrM_Traces/Run_001947_01.txt",
+// "PrM_Traces/Run_001948_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001949_01.txt",
+// "PrM_Traces/Run_001950_01.txt",
+// "PrM_Traces/Run_001951_01.txt",
+// "PrM_Traces/Run_001952_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001953_01.txt",
+// "PrM_Traces/Run_001954_01.txt",
+// "PrM_Traces/Run_001955_01.txt",
+// "PrM_Traces/Run_001956_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001957_01.txt",
+// "PrM_Traces/Run_001958_01.txt",
+// "PrM_Traces/Run_001959_01.txt",
+// "PrM_Traces/Run_001960_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001961_01.txt",
+// "PrM_Traces/Run_001962_01.txt",
+// "PrM_Traces/Run_001963_01.txt",
+// "PrM_Traces/Run_001964_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001965_01.txt",
+// "PrM_Traces/Run_001966_01.txt",
+// "PrM_Traces/Run_001967_01.txt",
+// "PrM_Traces/Run_001968_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001969_01.txt",
+// "PrM_Traces/Run_001970_01.txt",
+// "PrM_Traces/Run_001971_01.txt",
+// "PrM_Traces/Run_001972_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001973_01.txt",
+// "PrM_Traces/Run_001974_01.txt",
+// "PrM_Traces/Run_001975_01.txt",
+// "PrM_Traces/Run_001976_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001977_01.txt",
+// "PrM_Traces/Run_001978_01.txt",
+// "PrM_Traces/Run_001979_01.txt",
+// "PrM_Traces/Run_001980_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001981_01.txt",
+// "PrM_Traces/Run_001982_01.txt",
+// "PrM_Traces/Run_001983_01.txt",
+// "PrM_Traces/Run_001984_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001985_01.txt",
+// "PrM_Traces/Run_001986_01.txt",
+// "PrM_Traces/Run_001987_01.txt",
+// "PrM_Traces/Run_001988_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001989_01.txt",
+// "PrM_Traces/Run_001990_01.txt",
+// "PrM_Traces/Run_001991_01.txt",
+// "PrM_Traces/Run_001992_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001993_01.txt",
+// "PrM_Traces/Run_001994_01.txt",
+// "PrM_Traces/Run_001995_01.txt",
+// "PrM_Traces/Run_001996_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_001997_01.txt",
+// "PrM_Traces/Run_001998_01.txt",
+// "PrM_Traces/Run_001999_01.txt",
+// "PrM_Traces/Run_002000_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002001_01.txt",
+// "PrM_Traces/Run_002002_01.txt",
+// "PrM_Traces/Run_002003_01.txt",
+// "PrM_Traces/Run_002004_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002005_01.txt",
+// "PrM_Traces/Run_002006_01.txt",
+// "PrM_Traces/Run_002007_01.txt",
+// "PrM_Traces/Run_002008_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002009_01.txt",
+// "PrM_Traces/Run_002010_01.txt",
+// "PrM_Traces/Run_002011_01.txt",
+// "PrM_Traces/Run_002012_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002013_01.txt",
+// "PrM_Traces/Run_002014_01.txt",
+// "PrM_Traces/Run_002015_01.txt",
+// "PrM_Traces/Run_002016_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002017_01.txt",
+// "PrM_Traces/Run_002018_01.txt",
+// "PrM_Traces/Run_002019_01.txt",
+// "PrM_Traces/Run_002020_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002021_01.txt",
+// "PrM_Traces/Run_002022_01.txt",
+// "PrM_Traces/Run_002023_01.txt",
+// "PrM_Traces/Run_002024_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002025_01.txt",
+// "PrM_Traces/Run_002026_01.txt",
+// "PrM_Traces/Run_002027_01.txt",
+// "PrM_Traces/Run_002028_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002029_01.txt",
+// "PrM_Traces/Run_002030_01.txt",
+// "PrM_Traces/Run_002031_01.txt",
+// "PrM_Traces/Run_002032_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002033_01.txt",
+// "PrM_Traces/Run_002034_01.txt",
+// "PrM_Traces/Run_002035_01.txt",
+// "PrM_Traces/Run_002036_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002037_01.txt",
+// "PrM_Traces/Run_002038_01.txt",
+// "PrM_Traces/Run_002039_01.txt",
+// "PrM_Traces/Run_002040_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002041_01.txt",
+// "PrM_Traces/Run_002042_01.txt",
+// "PrM_Traces/Run_002043_01.txt",
+// "PrM_Traces/Run_002044_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002045_01.txt",
+// "PrM_Traces/Run_002046_01.txt",
+// "PrM_Traces/Run_002047_01.txt",
+// "PrM_Traces/Run_002048_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002049_01.txt",
+// "PrM_Traces/Run_002050_01.txt",
+// "PrM_Traces/Run_002051_01.txt",
+// "PrM_Traces/Run_002052_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002053_01.txt",
+// "PrM_Traces/Run_002054_01.txt",
+// "PrM_Traces/Run_002055_01.txt",
+// "PrM_Traces/Run_002056_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002057_01.txt",
+// "PrM_Traces/Run_002058_01.txt",
+// "PrM_Traces/Run_002059_01.txt",
+// "PrM_Traces/Run_002060_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002061_01.txt",
+// "PrM_Traces/Run_002062_01.txt",
+// "PrM_Traces/Run_002063_01.txt",
+// "PrM_Traces/Run_002064_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002065_01.txt",
+// "PrM_Traces/Run_002066_01.txt",
+// "PrM_Traces/Run_002067_01.txt",
+// "PrM_Traces/Run_002068_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002069_01.txt",
+// "PrM_Traces/Run_002070_01.txt",
+// "PrM_Traces/Run_002071_01.txt",
+// "PrM_Traces/Run_002072_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002073_01.txt",
+// "PrM_Traces/Run_002074_01.txt",
+// "PrM_Traces/Run_002075_01.txt",
+// "PrM_Traces/Run_002076_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002077_01.txt",
+// "PrM_Traces/Run_002078_01.txt",
+// "PrM_Traces/Run_002079_01.txt",
+// "PrM_Traces/Run_002080_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002081_01.txt",
+// "PrM_Traces/Run_002082_01.txt",
+// "PrM_Traces/Run_002083_01.txt",
+// "PrM_Traces/Run_002084_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002085_01.txt",
+// "PrM_Traces/Run_002086_01.txt",
+// "PrM_Traces/Run_002087_01.txt",
+// "PrM_Traces/Run_002088_01.txt");
+// pPSTA.RunPlotAndLifetime(
+// "PrM_Traces/Run_002089_01.txt",
+// "PrM_Traces/Run_002090_01.txt",
+// "PrM_Traces/Run_002091_01.txt",
+// "PrM_Traces/Run_002092_01.txt");
+  
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002082_01.txt",
+  //   "PrM_Traces/Run_002083_01.txt",
+  //   "PrM_Traces/Run_002084_01.txt",
+  //   "PrM_Traces/Run_002085_01.txt",
+  //   "PrM_Traces/Run_002086_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002087_01.txt",
+  //   "PrM_Traces/Run_002088_01.txt",
+  //   "PrM_Traces/Run_002089_01.txt",
+  //   "PrM_Traces/Run_002090_01.txt",
+  //   "PrM_Traces/Run_002091_01.txt");
+  // pPSTA.RunPlotAndLifetime(
+  //   "PrM_Traces/Run_002092_01.txt",
+  //   "PrM_Traces/Run_002093_01.txt",
+  //   "PrM_Traces/Run_002094_01.txt",
+  //   "PrM_Traces/Run_002095_01.txt",
+  //   "PrM_Traces/Run_002096_01.txt");
 
+
+  
+  
+  
+  pPSTA.AddTraceFile("PrM_Traces/Run_002087_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002088_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002089_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002090_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002091_01.txt");
+  pPSTA.ClearTraceFiles();
+  pPSTA.AddTraceFile("PrM_Traces/Run_002092_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002093_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002094_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002095_01.txt");
+  pPSTA.AddTraceFile("PrM_Traces/Run_002096_01.txt");
+  pPSTA.RunPlotAndLifetime();
 
 }
+
+
+
+
+
+
