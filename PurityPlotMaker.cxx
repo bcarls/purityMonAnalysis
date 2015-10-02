@@ -14,7 +14,7 @@ void PurityPlotMaker::MakePlots(){
   // lifetimeData->Scan();
 
   float runNumber, Lifetime, QC, QA, CatBase, AnoBase, CatRMS, AnoRMS, CathF, AnoF;
-  float runNumberSum, LifetimeSum;
+  float runNumberSum, LifetimeSum, QAQCSum;
   float month, day, year, hour, minute, second;
   int nEntries = (int)lifetimeData->GetEntries();
   lifetimeData->SetBranchAddress("run",&runNumber);
@@ -74,6 +74,8 @@ void PurityPlotMaker::MakePlots(){
   int j=0;
   int measPerAve = 6;
   LifetimeSum = 0;
+  QAQCSum = 0;
+  int QAQCSumCount = 0;
   float datimeSum = 0;
   // Sort the TTree so that the average actually makes sense
   lifetimeData->BuildIndex("run");
@@ -94,6 +96,8 @@ void PurityPlotMaker::MakePlots(){
       continue;
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
+    QAQCSum += QA/QC;
+    QAQCSumCount++;
     datimeSum+=datime.Convert();
     // std::cout << j << " " << lifetimeValue << std::endl;
     // std::cout << runNumber << " " << lifetimeValue << std::endl;
@@ -111,9 +115,11 @@ void PurityPlotMaker::MakePlots(){
     averagedLifetimeData->Fill(runNumberSum/(double)j,LifetimeSum/(double)j,datimeSum/(double)j);
     // std::cout << LifetimeSum/j << std::endl;
   }
+  float QAQCAverage = QAQCSum/QAQCSumCount;
+  float QAQCSigma = 0;
   float averagedLifetimeValue;
-  float lifetimeStandardDevValue = 0;
-  TBranch *lifetimeStandardDev = averagedLifetimeData->Branch("lifetimeStandardDev", &lifetimeStandardDevValue, "lifetimeStandardDev/F");
+  float lifetimeAverageUncertValue = 0;
+  TBranch *lifetimeAverageUncert = averagedLifetimeData->Branch("lifetimeAverageUncert", &lifetimeAverageUncertValue, "lifetimeAverageUncert/F");
   averagedLifetimeData->SetBranchAddress("averagedLifetime",&averagedLifetimeValue);
   j = 0;
   for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
@@ -128,20 +134,27 @@ void PurityPlotMaker::MakePlots(){
       continue;
     if(AnoRMS >= 0.00012)
       continue;
-    lifetimeStandardDevValue += pow(lifetimeValue-averagedLifetimeValue,2);
+    lifetimeAverageUncertValue += pow(lifetimeValue-averagedLifetimeValue,2);
+    QAQCSigma += (QAQCAverage-QA/QC)*(QAQCAverage-QA/QC);
     // std::cout << local <<  " " << i/measPerAve << " " << lifetimeValue << " " << local/measPerAve << " " << averagedLifetimeValue << std::endl;
     j++;
     if(j==measPerAve){
-      lifetimeStandardDevValue = sqrt((1/(double)measPerAve)*lifetimeStandardDevValue);
-      lifetimeStandardDev->Fill();
-      lifetimeStandardDevValue=0; 
+      lifetimeAverageUncertValue = sqrt((1/(double)measPerAve)*(1/(double)measPerAve)*lifetimeAverageUncertValue);
+      lifetimeAverageUncert->Fill();
+      lifetimeAverageUncertValue=0; 
       j=0;
     }
   }
   if(j!=0){
-    lifetimeStandardDevValue = sqrt((1/(double)j)*lifetimeStandardDevValue);
-    lifetimeStandardDev->Fill();
+    lifetimeAverageUncertValue = sqrt((1/(double)j)*(1/(double)j)*lifetimeAverageUncertValue);
+    lifetimeAverageUncert->Fill();
   }
+
+
+  QAQCSigma = sqrt(QAQCSigma/QAQCSumCount);
+
+  std::cout << QAQCAverage << " " << QAQCSigma << " " << std::endl;
+
 
   // averagedLifetimeData->Scan();
 
@@ -250,10 +263,10 @@ void PurityPlotMaker::MakePlots(){
   volExQAQC->SetLabelSize(frameQAQC->GetXaxis()->GetLabelSize());
   volExQAQC->SetLabelFont(frameQAQC->GetXaxis()->GetLabelFont());
   volExQAQC->Draw();
-  
+
   // Data quality cuts for the long monitor
   // This next one is for the publication
-  // lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","SAME");
+  // lifetimeData->Draw("(1/0.986302)*QA/QC*(run < 2100)+0.986302*QA/QC*(run>2113):datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","SAME");
   // This is for live plots
   lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012","SAME");
   // lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1","SAME");
@@ -281,7 +294,6 @@ void PurityPlotMaker::MakePlots(){
   lab3ms->AddText("3 ms");
   lab3ms->Draw("SAME");
 
-
   // TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
   f6msLifetime->SetParameter(0,exp(-2.82/6)); 
@@ -293,7 +305,6 @@ void PurityPlotMaker::MakePlots(){
   // lab6ms->SetLineColor(0);
   lab6ms->AddText("6 ms");
   lab6ms->Draw("SAME");
-
   
   // // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
@@ -325,7 +336,7 @@ void PurityPlotMaker::MakePlots(){
   // This is for live plots
   long NQAQC = lifetimeData->Draw("datime.Convert():1.057*QA/QC:0.057*QA/QC","lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012","goff");
   // This is for publication
-  // long NQAQC = lifetimeData->Draw("datime.Convert():QA/QC:0.057*QA/QC","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","goff");
+  // long NQAQC = lifetimeData->Draw("datime.Convert():(1/0.986302)*QA/QC*(run < 2100)+0.986302*QA/QC*(run>2113):0.057*QA/QC","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","goff");
   TGraphErrors *grQAQC = new TGraphErrors(NQAQC,lifetimeData->GetV1(),lifetimeData->GetV2(),0,lifetimeData->GetV3());
   grQAQC->SetMarkerStyle(8);
   grQAQC->SetMarkerColor(2);
@@ -395,7 +406,7 @@ void PurityPlotMaker::MakePlots(){
 
   // Make the averaged plot
   gStyle->SetOptStat(0);
-  long N = averagedLifetimeData->Draw("datime.Convert():1000*averagedLifetime:1000*lifetimeStandardDev","","goff");
+  long N = averagedLifetimeData->Draw("datime.Convert():1000*averagedLifetime:1000*lifetimeAverageUncert","","goff");
   TGraphErrors *gr = new TGraphErrors(N,averagedLifetimeData->GetV1(),averagedLifetimeData->GetV2(),0,averagedLifetimeData->GetV3());
   gr->SetMarkerStyle(8);
   gr->SetMarkerColor(2);

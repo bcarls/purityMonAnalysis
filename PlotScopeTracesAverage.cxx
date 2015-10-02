@@ -484,7 +484,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
 
 
 
-
+  
 
   // Select file to plot data from
   FILE *fp4 = fopen(TraceFiles[4].Data(),"r");
@@ -744,7 +744,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   TBranch *catNoiseNotSmooth = oscillData->Branch("catNoiseNotSmooth", &voltage, "catNoiseNotSmooth/F");
   for(int i = 0; i < nEntries; i++){
     oscillData->GetEntry(i);
-    voltage = (catNoiseVolt0+catNoiseVolt1+catNoiseVolt2+catNoiseVolt3+catNoiseVolt4)/4;
+    voltage = (catNoiseVolt0+catNoiseVolt1+catNoiseVolt2+catNoiseVolt3+anoNoiseVolt4)/4;
     catNoiseNotSmooth->Fill();
   }
 

@@ -194,7 +194,7 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
     }
   fAnoNoiseBase = fAnoNoiseBase/400;
 
-  fAnoBase = fAnoNoiseBase;
+  // fAnoBase = fAnoNoiseBase;
 
 
 
