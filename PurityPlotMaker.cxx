@@ -89,11 +89,11 @@ void PurityPlotMaker::MakePlots(){
       continue;
     if(CatRMS >= 0.0005)
       continue;
-    if(CatBase <= 0.0003)
+    if(CatBase <= -0.001)
       continue;
-    if(CatBase >= 0.0006)
+    if(CatBase >= 0.001)
       continue;
-    if(AnoRMS >= 0.00012)
+    if(AnoRMS >= 0.0001)
       continue;
     runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
@@ -128,13 +128,15 @@ void PurityPlotMaker::MakePlots(){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
     status = averagedLifetimeData->GetEntry(i/(double)measPerAve);
+    if(lifetimeValue >= 0.1)
+      continue;
     if(CatRMS >= 0.0005)
       continue;
-    if(CatBase <= 0.0003)
+    if(CatBase <= -0.001)
       continue;
-    if(CatBase >= 0.0006)
+    if(CatBase >= 0.001)
       continue;
-    if(AnoRMS >= 0.00012)
+    if(AnoRMS >= 0.0001)
       continue;
     lifetimeAverageUncertValue += pow(lifetimeValue-averagedLifetimeValue,2);
     QAQCSigma += (QAQCAverage-QA/QC)*(QAQCAverage-QA/QC);
