@@ -264,7 +264,8 @@ void lifetimeCalc::CalculateLifetime(TNtuple* oscillData, int IPrM, bool doNoise
   std::cout << "Anode RMS = " << fAnoRMS << std::endl;
   // std::cout << "Anode Max Noise Off Baseline = " << maxAnoNoiseOffBase << std::endl;
 
-  double RC = 0.000119;
+  // double RC = 0.000119;
+  double RC = 0.000130;
   
   double gAlphaGBeta = 1;
 

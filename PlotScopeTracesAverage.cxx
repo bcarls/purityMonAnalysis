@@ -486,125 +486,6 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
 
   
 
-  // Select file to plot data from
-  FILE *fp4 = fopen(TraceFiles[4].Data(),"r");
-  // float time, voltage;
-  // int month, day, year, hour, minute, second;
-  // char AMorPM[2];
-  // int n = 0;
-  // Definte ncols and skip first line
-  ncols = fscanf(fp4,"%d/%d/%d %d:%d:%d %c%c  Pass = 0",&month,&day,&year,&hour,&minute,&second,&AMorPM[0],&AMorPM[1]);
-  std::cout << month << "/" << day << "/" << year <<" " << 
-    hour << ":" << minute << ":" << second << " " << AMorPM[0] << AMorPM[1] << std::endl;
-  pThingString = AMorPM[0];
-  if(pThingString == "P" && hour < 12)
-    hour+=12;
-  TDatime datime4(year,month,day,hour,minute,second);
-  datime4.Print();
-  // Read in time and anode noise
-  n=0;
-  TBranch *anoNoise4 = oscillData->Branch("anoNoise4", &voltage, "anoNoise4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    anoNoise4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in cathode noise
-  n=0;
-  TBranch *catNoise4 = oscillData->Branch("catNoise4", &voltage, "catNoise4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    catNoise4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in anode signal
-  n=0;
-  TBranch *anoSignal4 = oscillData->Branch("anoSignal4", &voltage, "anoSignal4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    anoSignal4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in cathode signal
-  n=0;
-  TBranch *catSignal4 = oscillData->Branch("catSignal4", &voltage, "catSignal4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    catSignal4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in anode noise, smoothed
-  n=0;
-  TBranch *anoNoiseSmooth4 = oscillData->Branch("anoNoiseSmooth4", &voltage, "anoNoiseSmooth4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    anoNoiseSmooth4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in cathode noise, smoothed
-  n=0;
-  TBranch *catNoiseSmooth4 = oscillData->Branch("catNoiseSmooth4", &voltage, "catNoiseSmooth4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    catNoiseSmooth4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in anode signal, smoothed
-  n=0;
-  TBranch *anoSignalSmooth4 = oscillData->Branch("anoSignalSmooth4", &voltage, "anoSignalSmooth4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    anoSignalSmooth4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-  // Read in cathode signal, smooth
-  n=0;
-  TBranch *catSignalSmooth4 = oscillData->Branch("catSignalSmooth4", &voltage, "catSignalSmooth4/F");
-  while (1) {
-    ncols = fscanf(fp4,"%f sec. %f V",&time,&voltage);
-    // if (n < 5)
-    //   std::cout << time << " " << voltage << std::endl;
-    catSignalSmooth4->Fill();
-    n++;
-    if(!(n<nSamples))
-      break;
-  }
-
-
-
-
-
-
-
-
 
 
 
@@ -635,7 +516,6 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   float anoNoiseVolt1, anoSignalVolt1, catNoiseVolt1, catSignalVolt1;
   float anoNoiseVolt2, anoSignalVolt2, catNoiseVolt2, catSignalVolt2;
   float anoNoiseVolt3, anoSignalVolt3, catNoiseVolt3, catSignalVolt3;
-  float anoNoiseVolt4, anoSignalVolt4, catNoiseVolt4, catSignalVolt4;
   float minVoltage=999999, maxVoltage=-999999;
   oscillData->SetBranchAddress("anoNoise0",&anoNoiseVolt0);
   oscillData->SetBranchAddress("anoSignal0",&anoSignalVolt0);
@@ -653,10 +533,6 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   oscillData->SetBranchAddress("anoSignal3",&anoSignalVolt3);
   oscillData->SetBranchAddress("catNoise3",&catNoiseVolt3);
   oscillData->SetBranchAddress("catSignal3",&catSignalVolt3);
-  oscillData->SetBranchAddress("anoNoise4",&anoNoiseVolt4);
-  oscillData->SetBranchAddress("anoSignal4",&anoSignalVolt4);
-  oscillData->SetBranchAddress("catNoise4",&catNoiseVolt4);
-  oscillData->SetBranchAddress("catSignal4",&catSignalVolt4);
 
 
 
@@ -665,7 +541,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   TBranch *anoSignalNotSmooth = oscillData->Branch("anoSignalNotSmooth", &voltage, "anoSignalNotSmooth/F");
   for(int i = 0; i < nEntries; i++){
     oscillData->GetEntry(i);
-    voltage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3+anoSignalVolt4)/4;
+    voltage = (anoSignalVolt0+anoSignalVolt1+anoSignalVolt2+anoSignalVolt3)/4;
     // if(i < 5)
       // std::cout << voltage << " " << anoSignalVolt0 << " " << anoSignalVolt1 << " " << anoSignalVolt2 << " " << anoSignalVolt3 << std::endl; 
     anoSignalNotSmooth->Fill();
@@ -673,7 +549,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   TBranch *catSignalNotSmooth = oscillData->Branch("catSignalNotSmooth", &voltage, "catSignalNotSmooth/F");
   for(int i = 0; i < nEntries; i++){
     oscillData->GetEntry(i);
-    voltage = (catSignalVolt0+catSignalVolt1+catSignalVolt2+catSignalVolt3+catSignalVolt4)/4;
+    voltage = (catSignalVolt0+catSignalVolt1+catSignalVolt2+catSignalVolt3)/4;
     catSignalNotSmooth->Fill();
   }
 
@@ -736,7 +612,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   TBranch *anoNoiseNotSmooth = oscillData->Branch("anoNoiseNotSmooth", &voltage, "anoNoiseNotSmooth/F");
   for(int i = 0; i < nEntries; i++){
     oscillData->GetEntry(i);
-    voltage = (anoNoiseVolt0+anoNoiseVolt1+anoNoiseVolt2+anoNoiseVolt3+anoNoiseVolt4)/4;
+    voltage = (anoNoiseVolt0+anoNoiseVolt1+anoNoiseVolt2+anoNoiseVolt3)/4;
     // if(i < 5)
       // std::cout << voltage << " " << anoNoiseVolt0 << " " << anoNoiseVolt1 << " " << anoNoiseVolt2 << " " << anoNoiseVolt3 << std::endl; 
     anoNoiseNotSmooth->Fill();
@@ -744,7 +620,7 @@ void PlotScopeTracesAverage::RunPlotAndLifetime(){
   TBranch *catNoiseNotSmooth = oscillData->Branch("catNoiseNotSmooth", &voltage, "catNoiseNotSmooth/F");
   for(int i = 0; i < nEntries; i++){
     oscillData->GetEntry(i);
-    voltage = (catNoiseVolt0+catNoiseVolt1+catNoiseVolt2+catNoiseVolt3+anoNoiseVolt4)/4;
+    voltage = (catNoiseVolt0+catNoiseVolt1+catNoiseVolt2+catNoiseVolt3)/4;
     catNoiseNotSmooth->Fill();
   }
 

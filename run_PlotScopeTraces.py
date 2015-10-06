@@ -47,7 +47,7 @@ def main(argv):
     for index, f in enumerate(inputFiles):
         print 'Adding input file: '+f+'.'
         pPSTA.AddTraceFile(f)
-        if index !=0 and (index+1)%5 == 0:
+        if index !=0 and (index+1)%4 == 0:
             pPSTA.RunPlotAndLifetime()
             pPSTA.ClearTraceFiles()
 

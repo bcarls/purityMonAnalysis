@@ -11,7 +11,13 @@ void PurityPlotMaker::MakePlots(){
   for(int i = 0; i < listOfDataFiles.size(); i++)
     lifetimeData->ReadFile(listOfDataFiles[i].Data());
 
-  // lifetimeData->Scan();
+  // For publication 
+  // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1";
+  // For live plots
+  // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012";
+  // Loose cuts
+  TString dataQualityCuts = "lifetime<0.1";
+
 
   float runNumber, Lifetime, QC, QA, CatBase, AnoBase, CatRMS, AnoRMS, CathF, AnoF;
   float runNumberSum, LifetimeSum, QAQCSum;
@@ -40,7 +46,6 @@ void PurityPlotMaker::MakePlots(){
   TBranch *datimeBranch = lifetimeData->Branch("datime", &datime);
   float lifetimeValue;
   float lifetimeMax = 0;
-  float QAMax = 0;
   lifetimeData->SetBranchAddress("lifetime",&lifetimeValue);
   for(int i = 0; i < lifetimeData->GetEntries(); i++){
     lifetimeData->GetEntry(i);
@@ -57,10 +62,6 @@ void PurityPlotMaker::MakePlots(){
       datimeMinConvert = datime.Convert();
       datimeMin.Set(year,month,day,hour,minute,second);
     }
-
-    if(QA > QAMax)
-      QAMax = QA;
-
   }
 
 
@@ -99,6 +100,7 @@ void PurityPlotMaker::MakePlots(){
     QAQCSum += QA/QC;
     QAQCSumCount++;
     datimeSum+=datime.Convert();
+    std::cout << "QA/QC: " << QA/QC << std::endl;
     // std::cout << j << " " << lifetimeValue << std::endl;
     // std::cout << runNumber << " " << lifetimeValue << std::endl;
     j++;
@@ -163,8 +165,12 @@ void PurityPlotMaker::MakePlots(){
   TDatime datimePlotBegin, datimePlotEnd,datimePlotFiltBegin;
   // datimePlotBegin.Set(2015,8,4,0,0,0);
   // datimePlotEnd.Set(2015,8,19,12,0,0);
-  datimePlotBegin.Set(datimeMax.Convert()-604800);
-  datimePlotEnd = datimeMax;
+  // datimePlotBegin.Set(2015,8,25,0,0,0);
+  // datimePlotEnd.Set(2015,9,1,0,0,0);
+  datimePlotBegin.Set(2015,8,17,0,0,0);
+  datimePlotEnd.Set(2015,8,24,0,0,0);
+  // datimePlotBegin.Set(datimeMax.Convert()-604800);
+  // datimePlotEnd = datimeMax;
   // datimePlotBegin.Set(datimeMin.Convert() - 30*60);
   // datimePlotEnd.Set(datimeMax.Convert() + 30*60);
  
@@ -210,10 +216,7 @@ void PurityPlotMaker::MakePlots(){
   frameLifetime->SetNdivisions(-7);
   frameLifetime->Draw();
 
-  // lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1","SAME");
-  // This is for the live plots
-  lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012","SAME");
-  // lifetimeData->Draw("1000*lifetime:datime.Convert()","lifetime<0.1","SAME");
+  lifetimeData->Draw("1000*lifetime:datime.Convert()", dataQualityCuts,"SAME");
 
   TString lifetimeImage = "lifetime_" + sAtM + ".ps";
   TString lifetimeImagePNG = "lifetime_" + sAtM + ".png";
@@ -222,7 +225,74 @@ void PurityPlotMaker::MakePlots(){
   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  TH2F *frameQAQCuBooNEHalfDrift = new TH2F("frameQAQCuBooNEHalfDrift","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetTitle("Date/Time");
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetTimeDisplay(1);
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetTimeOffset(0);
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetLabelOffset(0.025);
+  frameQAQCuBooNEHalfDrift->GetXaxis()->SetTitleOffset(1.5);
+  frameQAQCuBooNEHalfDrift->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
+  // frameQAQCuBooNEHalfDrift->SetNdivisions(-404);
+  frameQAQCuBooNEHalfDrift->SetNdivisions(-7);
+  frameQAQCuBooNEHalfDrift->Draw();
+
+  lifetimeData->Draw("exp(-1.25/(1000*lifetime)):datime.Convert()",dataQualityCuts,"SAME");
+
+  TString QAQCuBooNEHalfDriftImage = "QAQCuBooNEHalfDrift_" + sAtM + ".ps";
+  TString QAQCuBooNEHalfDriftImagePNG = "QAQCuBooNEHalfDrift_" + sAtM + ".png";
+
+  c1->Print(QAQCuBooNEHalfDriftImage);
+  std::cout << "convert -rotate 90 "+QAQCuBooNEHalfDriftImage+" "+QAQCuBooNEHalfDriftImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 "+QAQCuBooNEHalfDriftImage+" "+QAQCuBooNEHalfDriftImagePNG);
+
+
+
+
+
+
+  TH2F *frameQAQCuBooNEDrift = new TH2F("frameQAQCuBooNEDrift","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
+  frameQAQCuBooNEDrift->GetXaxis()->SetTitle("Date/Time");
+  frameQAQCuBooNEDrift->GetXaxis()->SetTimeDisplay(1);
+  frameQAQCuBooNEDrift->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+  frameQAQCuBooNEDrift->GetXaxis()->SetTimeOffset(0);
+  frameQAQCuBooNEDrift->GetXaxis()->SetLabelOffset(0.025);
+  frameQAQCuBooNEDrift->GetXaxis()->SetTitleOffset(1.5);
+  frameQAQCuBooNEDrift->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
+  // frameQAQCuBooNEDrift->SetNdivisions(-404);
+  frameQAQCuBooNEDrift->SetNdivisions(-7);
+  frameQAQCuBooNEDrift->Draw();
+
+  // This is for the live plots
+  lifetimeData->Draw("exp(-2.5/(1000*lifetime)):datime.Convert()",dataQualityCuts,"SAME");
+
+  TString QAQCuBooNEDriftImage = "QAQCuBooNEDrift_" + sAtM + ".ps";
+  TString QAQCuBooNEDriftImagePNG = "QAQCuBooNEDrift_" + sAtM + ".png";
+
+  c1->Print(QAQCuBooNEDriftImage);
+  std::cout << "convert -rotate 90 "+QAQCuBooNEDriftImage+" "+QAQCuBooNEDriftImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 "+QAQCuBooNEDriftImage+" "+QAQCuBooNEDriftImagePNG);
+
+
+
 
 
 
@@ -265,11 +335,7 @@ void PurityPlotMaker::MakePlots(){
   volExQAQC->Draw();
 
   // Data quality cuts for the long monitor
-  // This next one is for the publication
-  // lifetimeData->Draw("(1/0.986302)*QA/QC*(run < 2100)+0.986302*QA/QC*(run>2113):datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","SAME");
-  // This is for live plots
-  lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012","SAME");
-  // lifetimeData->Draw("QA/QC:datime.Convert()","lifetime<0.1","SAME");
+  lifetimeData->Draw("QA/QC:datime.Convert()","","SAME");
  
   // TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
   TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
@@ -288,7 +354,7 @@ void PurityPlotMaker::MakePlots(){
   f3msLifetime->SetLineColor(1);
   f3msLifetime->SetLineStyle(2);
   f3msLifetime->Draw("SAME");
-  TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,f3msY1,datimePlotBegin.Convert()+0.0001e9,f3msY2);
+  TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,f3msY1,datimePlotBegin.Convert()+0.00015e9,f3msY2);
   lab3ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab3ms->AddText("3 ms");
@@ -300,24 +366,24 @@ void PurityPlotMaker::MakePlots(){
   f6msLifetime->SetLineColor(1);
   f6msLifetime->SetLineStyle(2);
   f6msLifetime->Draw("SAME");
-  TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.633,datimePlotBegin.Convert()+0.0001e9,0.683);
+  TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.633,datimePlotBegin.Convert()+0.00015e9,0.683);
   lab6ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab6ms->AddText("6 ms");
   lab6ms->Draw("SAME");
   
-  // // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
-  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
-  // f9msLifetime->SetParameter(0,exp(-2.82/9)); 
-  // f9msLifetime->SetLineColor(1);
-  // f9msLifetime->SetLineStyle(2);
-  // f9msLifetime->Draw("SAME");
-  // // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
-  // TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.00001e9,0.743,datimePlotBegin.Convert()+0.0001e9,0.793);
-  // lab9ms->SetFillColor(0);
-  // // lab6ms->SetLineColor(0);
-  // lab9ms->AddText("9 ms");
-  // lab9ms->Draw("SAME");
+  // TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimeMin.Convert()-50000, datimeMax.Convert()+50000);
+  TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",datimePlotBegin.Convert(), datimePlotEnd.Convert());
+  f9msLifetime->SetParameter(0,exp(-2.82/9)); 
+  f9msLifetime->SetLineColor(1);
+  f9msLifetime->SetLineStyle(2);
+  f9msLifetime->Draw("SAME");
+  // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
+  TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.743,datimePlotBegin.Convert()+0.00015e9,0.793);
+  lab9ms->SetFillColor(0);
+  // lab6ms->SetLineColor(0);
+  lab9ms->AddText("9 ms");
+  lab9ms->Draw("SAME");
 
   TString QAQCImage = "QAQC_" + sAtM + ".ps";
   TString QAQCImagePNG = "QAQC_" + sAtM + ".png";
@@ -331,15 +397,19 @@ void PurityPlotMaker::MakePlots(){
 
 
 
+
+
+
+
+
+
   // Plot QA/QC with error bars from baseline calculation
   gStyle->SetOptStat(0);
-  // This is for live plots
-  long NQAQC = lifetimeData->Draw("datime.Convert():1.057*QA/QC:0.057*QA/QC","lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012","goff");
-  // This is for publication
-  // long NQAQC = lifetimeData->Draw("datime.Convert():(1/0.986302)*QA/QC*(run < 2100)+0.986302*QA/QC*(run>2113):0.057*QA/QC","lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.0003 && CatBase < 0.0003 && AnoRMS < 0.00012","goff");
+  long NQAQC = lifetimeData->Draw("datime.Convert():(1.007)*(1.0)*QA/QC*(run < 2100)+0.9992877*1.057*QA/QC*(run>2113):0.057*QA/QC",dataQualityCuts,"goff");
   TGraphErrors *grQAQC = new TGraphErrors(NQAQC,lifetimeData->GetV1(),lifetimeData->GetV2(),0,lifetimeData->GetV3());
   grQAQC->SetMarkerStyle(8);
   grQAQC->SetMarkerColor(2);
+  grQAQC->SetFillColor(kRed);
   grQAQC->SetLineColor(2);
   grQAQC->SetMarkerSize(0.5);
   grQAQC->SetMaximum(1);
@@ -353,7 +423,7 @@ void PurityPlotMaker::MakePlots(){
   grQAQC->GetXaxis()->SetLabelOffset(0.030);
   grQAQC->GetXaxis()->SetTitleOffset(1.80);
   grQAQC->SetTitle("");
-  grQAQC->Draw("APE");
+  grQAQC->Draw("AE3");
   grQAQC->GetXaxis()->SetLimits(datimePlotBegin.Convert(),datimePlotEnd.Convert()+3*60*60);
   grQAQC->GetXaxis()->SetNdivisions(-7);
   // This adds the number of volume exchanges to the top of the plot, we have one volume exchange every 2.5 days. 
@@ -372,10 +442,12 @@ void PurityPlotMaker::MakePlots(){
   f3msLifetime->Draw("SAME");
   lab3ms->Draw("SAME");
 
-  if(purityMonitor == 1 || purityMonitor == 2)
+  if(purityMonitor == 1 || purityMonitor == 2){
     f6msLifetime->Draw("SAME");
-  if(purityMonitor == 1 || purityMonitor == 2)
     lab6ms->Draw("SAME");
+    f9msLifetime->Draw("SAME");
+    lab9ms->Draw("SAME");
+  }
 
   TString QAQCErrorImage = "QAQCError_" + sAtM + ".ps";
   TString QAQCErrorImagePNG = "QAQCError_" + sAtM + ".png";
@@ -455,7 +527,7 @@ void PurityPlotMaker::MakePlots(){
   frameQA->GetYaxis()->SetTitle("Q_{A} (mV)");
   frameQA->SetNdivisions(-7);
   frameQA->Draw();
-  lifetimeData->Draw("1000*QA:datime.Convert()","","SAME");
+  lifetimeData->Draw("1000*QA:datime.Convert()",dataQualityCuts,"SAME");
 
   TString QAImage = "QA_" + sAtM + ".ps";
   TString QAImagePNG = "QA_" + sAtM + ".png";

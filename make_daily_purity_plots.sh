@@ -15,6 +15,7 @@ dropbox_uploader.sh -s download /PrM_Logs/
 
 # Need to create a list of data files
 rm list_of_datafiles.txt
+# for l in PrM_Logs_Stat_Uncert/lifetimes_0"$1"*.txt
 for l in PrM_Logs/lifetimes_0"$1"*.txt
 do
     echo "Adding $l to the list."
