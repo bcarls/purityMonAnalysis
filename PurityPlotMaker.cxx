@@ -14,9 +14,9 @@ void PurityPlotMaker::MakePlots(){
   // For publication 
   // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1";
   // For live plots
-  // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > 0.0003 && CatBase < 0.0006 && AnoRMS < 0.00012";
+  TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.001 && CatBase < 0.001 && AnoRMS < 0.0001";
   // Loose cuts
-  TString dataQualityCuts = "lifetime<0.1";
+  // TString dataQualityCuts = "lifetime<0.1";
 
 
   float runNumber, Lifetime, QC, QA, CatBase, AnoBase, CatRMS, AnoRMS, CathF, AnoF;
@@ -167,10 +167,10 @@ void PurityPlotMaker::MakePlots(){
   // datimePlotEnd.Set(2015,8,19,12,0,0);
   // datimePlotBegin.Set(2015,8,25,0,0,0);
   // datimePlotEnd.Set(2015,9,1,0,0,0);
-  datimePlotBegin.Set(2015,8,17,0,0,0);
-  datimePlotEnd.Set(2015,8,24,0,0,0);
-  // datimePlotBegin.Set(datimeMax.Convert()-604800);
-  // datimePlotEnd = datimeMax;
+  // datimePlotBegin.Set(2015,8,17,0,0,0);
+  // datimePlotEnd.Set(2015,8,24,0,0,0);
+  datimePlotBegin.Set(datimeMax.Convert()-604800);
+  datimePlotEnd = datimeMax;
   // datimePlotBegin.Set(datimeMin.Convert() - 30*60);
   // datimePlotEnd.Set(datimeMax.Convert() + 30*60);
  
