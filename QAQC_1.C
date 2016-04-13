@@ -1,7 +1,6 @@
-void QAQC_1()
 {
 //=========Macro generated from canvas: c1/Tree test
-//=========  (Sat Nov 21 19:43:42 2015) by ROOT version6.04/08
+//=========  (Wed Apr 13 18:54:04 2016) by ROOT version5.34/05
    TCanvas *c1 = new TCanvas("c1", "Tree test",1,1,700,476);
    gStyle->SetOptStat(0);
    c1->SetHighLightColor(2);
@@ -14,33 +13,32 @@ void QAQC_1()
    c1->SetFrameBorderMode(0);
    c1->SetFrameBorderMode(0);
    
-   TH2F *frameQAQC__3 = new TH2F("frameQAQC__3","",1000,1.44238e+09,1.442995e+09,1000,0,1);
-   frameQAQC__3->SetStats(0);
+   TH2F *frameQAQC = new TH2F("frameQAQC","",1000,1.44238e+09,1.442995e+09,1000,0,1);
+   frameQAQC->SetStats(0);
 
-   Int_t ci;      // for color index setting
-   TColor *color; // for color definition with alpha
+   Int_t ci;   // for color index setting
    ci = TColor::GetColor("#000099");
-   frameQAQC__3->SetLineColor(ci);
-   frameQAQC__3->GetXaxis()->SetTitle("Date/Time");
-   frameQAQC__3->GetXaxis()->SetTimeDisplay(1);
-   frameQAQC__3->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}%F1970-01-01 00:00:00s0");
-   frameQAQC__3->GetXaxis()->SetNdivisions(-7);
-   frameQAQC__3->GetXaxis()->SetLabelFont(42);
-   frameQAQC__3->GetXaxis()->SetLabelOffset(0.03);
-   frameQAQC__3->GetXaxis()->SetLabelSize(0.035);
-   frameQAQC__3->GetXaxis()->SetTitleSize(0.035);
-   frameQAQC__3->GetXaxis()->SetTitleOffset(1.8);
-   frameQAQC__3->GetXaxis()->SetTitleFont(42);
-   frameQAQC__3->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
-   frameQAQC__3->GetYaxis()->SetLabelFont(42);
-   frameQAQC__3->GetYaxis()->SetLabelSize(0.035);
-   frameQAQC__3->GetYaxis()->SetTitleSize(0.035);
-   frameQAQC__3->GetYaxis()->SetTitleFont(42);
-   frameQAQC__3->GetZaxis()->SetLabelFont(42);
-   frameQAQC__3->GetZaxis()->SetLabelSize(0.035);
-   frameQAQC__3->GetZaxis()->SetTitleSize(0.035);
-   frameQAQC__3->GetZaxis()->SetTitleFont(42);
-   frameQAQC__3->Draw("");
+   frameQAQC->SetLineColor(ci);
+   frameQAQC->GetXaxis()->SetTitle("Date/Time");
+   frameQAQC->GetXaxis()->SetTimeDisplay(1);
+   frameQAQC->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}%F1970-01-01 00:00:00s0");
+   frameQAQC->GetXaxis()->SetNdivisions(-7);
+   frameQAQC->GetXaxis()->SetLabelFont(42);
+   frameQAQC->GetXaxis()->SetLabelOffset(0.03);
+   frameQAQC->GetXaxis()->SetLabelSize(0.035);
+   frameQAQC->GetXaxis()->SetTitleSize(0.035);
+   frameQAQC->GetXaxis()->SetTitleOffset(1.8);
+   frameQAQC->GetXaxis()->SetTitleFont(42);
+   frameQAQC->GetYaxis()->SetTitle("Q_{A}/Q_{C}");
+   frameQAQC->GetYaxis()->SetLabelFont(42);
+   frameQAQC->GetYaxis()->SetLabelSize(0.035);
+   frameQAQC->GetYaxis()->SetTitleSize(0.035);
+   frameQAQC->GetYaxis()->SetTitleFont(42);
+   frameQAQC->GetZaxis()->SetLabelFont(42);
+   frameQAQC->GetZaxis()->SetLabelSize(0.035);
+   frameQAQC->GetZaxis()->SetTitleSize(0.035);
+   frameQAQC->GetZaxis()->SetTitleFont(42);
+   frameQAQC->Draw("");
    TGaxis *gaxis = new TGaxis(1.44238e+09,1,1.442995e+09,1,21.73333,24.53333,510,"-L");
    gaxis->SetLabelOffset(0.005);
    gaxis->SetLabelSize(0.035);
@@ -54,312 +52,109 @@ void QAQC_1()
    gaxis->SetLabelFont(42);
    gaxis->Draw();
    
-   Double_t Graph0_fx3[147] = {
-   1.438806e+09,
-   1.438821e+09,
-   1.438836e+09,
-   1.438851e+09,
-   1.438865e+09,
-   1.43888e+09,
-   1.438917e+09,
-   1.438931e+09,
-   1.438946e+09,
-   1.438961e+09,
-   1.438976e+09,
-   1.43899e+09,
-   1.439005e+09,
-   1.43902e+09,
-   1.439035e+09,
-   1.439045e+09,
-   1.43906e+09,
-   1.439075e+09,
-   1.439087e+09,
-   1.439097e+09,
-   1.439112e+09,
-   1.439127e+09,
-   1.439141e+09,
-   1.439156e+09,
-   1.439171e+09,
-   1.439186e+09,
-   1.4392e+09,
-   1.439215e+09,
-   1.43923e+09,
-   1.439245e+09,
-   1.439255e+09,
-   1.43927e+09,
-   1.439284e+09,
-   1.439299e+09,
-   1.439314e+09,
-   1.439327e+09,
-   1.439342e+09,
-   1.439349e+09,
-   1.43935e+09,
-   1.439358e+09,
-   1.439373e+09,
-   1.439387e+09,
-   1.439402e+09,
-   1.439416e+09,
-   1.439427e+09,
-   1.439442e+09,
-   1.439456e+09,
-   1.439471e+09,
-   1.439486e+09,
-   1.439501e+09,
-   1.439515e+09,
-   1.43953e+09,
-   1.439545e+09,
-   1.43956e+09,
-   1.439574e+09,
-   1.439586e+09,
-   1.439601e+09,
-   1.439616e+09,
-   1.439631e+09,
-   1.439645e+09,
-   1.43966e+09,
-   1.439675e+09,
-   1.439689e+09,
-   1.439704e+09,
-   1.439719e+09,
-   1.439734e+09,
-   1.439748e+09,
-   1.439763e+09,
-   1.439778e+09,
-   1.439793e+09,
-   1.439807e+09,
-   1.439822e+09,
-   1.439839e+09,
-   1.439846e+09,
-   1.439891e+09,
-   1.43995e+09,
-   1.44e+09,
-   1.440019e+09,
-   1.440023e+09,
-   1.440035e+09,
-   1.440076e+09,
-   1.440083e+09,
-   1.440085e+09,
-   1.440087e+09,
-   1.441892e+09,
-   1.441908e+09,
-   1.441923e+09,
-   1.441939e+09,
-   1.441954e+09,
-   1.441969e+09,
-   1.441985e+09,
-   1.44202e+09,
-   1.442035e+09,
-   1.442051e+09,
-   1.442066e+09,
-   1.442081e+09,
-   1.442097e+09,
-   1.442118e+09,
-   1.442133e+09,
-   1.442149e+09,
-   1.442164e+09,
-   1.44218e+09,
-   1.442195e+09,
-   1.44221e+09,
-   1.442226e+09,
-   1.442241e+09,
-   1.442263e+09,
-   1.442271e+09,
-   1.442286e+09,
-   1.442302e+09,
-   1.442317e+09,
-   1.442352e+09,
-   1.442383e+09,
-   1.442398e+09,
-   1.442414e+09,
-   1.442429e+09,
-   1.442441e+09,
-   1.442457e+09,
-   1.442473e+09,
-   1.442489e+09,
-   1.442506e+09,
-   1.442563e+09,
-   1.44258e+09,
-   1.442598e+09,
-   1.442615e+09,
-   1.442631e+09,
-   1.442647e+09,
-   1.442663e+09,
-   1.442679e+09,
-   1.442713e+09,
-   1.442729e+09,
-   1.442745e+09,
-   1.442761e+09,
-   1.442777e+09,
-   1.442793e+09,
-   1.442809e+09,
-   1.442825e+09,
-   1.442842e+09,
-   1.442858e+09,
-   1.442901e+09,
-   1.442917e+09,
-   1.442933e+09,
-   1.442949e+09,
-   1.442966e+09,
-   1.442982e+09,
-   1.442998e+09,
-   1.443014e+09};
-   Double_t Graph0_fy3[147] = {
-   1.460841,
-   0.3409261,
-   0.3730062,
-   0.3497933,
-   0.4483803,
-   0.4114313,
-   0.4347126,
-   0.4585299,
-   0.5269661,
-   0.4562723,
-   0.5010661,
-   0.4772929,
-   0.559479,
-   0.5266974,
-   0.3667036,
-   0.5397441,
-   0.5475933,
-   0.5620058,
-   0.5535364,
-   0.5896594,
-   0.61429,
-   0.5937937,
-   0.5650931,
-   0.5706415,
-   0.5901265,
-   0.5725987,
-   0.604758,
-   0.6267461,
-   0.5775881,
-   0.5622667,
-   0.680531,
-   0.6099657,
-   0.6129782,
-   0.6717926,
-   0.6726726,
-   0.6559704,
-   0.6134941,
-   0.6031247,
-   0.6307047,
-   0.6580189,
-   0.629284,
-   0.68706,
-   0.6674278,
-   0.6260644,
-   0.6823186,
-   0.6579007,
-   0.6234928,
-   0.8785847,
-   0.6665665,
-   0.6434854,
-   0.6838751,
-   0.6795277,
-   0.6477769,
-   0.6469484,
-   0.6801355,
-   0.6535994,
-   0.7052004,
-   0.7056337,
-   0.65147,
-   0.7158897,
-   0.6756406,
-   0.6709483,
-   0.6590512,
-   0.6939095,
-   0.7122742,
-   0.6713254,
-   0.6825716,
-   0.679654,
-   0.687797,
-   0.6863418,
-   0.7249953,
-   0.7241246,
-   0.6845285,
-   0.6754401,
-   0.7108794,
-   0.6897959,
-   0.668776,
-   0.6709024,
-   0.6810442,
-   0.6719399,
-   0.6900213,
-   0.7780167,
-   0.6367625,
-   0.6270879,
-   0.7200723,
-   0.6978767,
-   0.6927054,
-   0.7404522,
-   0.689223,
-   0.625651,
-   0.6788241,
-   0.6659047,
-   0.653366,
-   0.6500791,
-   0.6732957,
-   0.6595878,
-   0.6509191,
-   0.6586086,
-   0.669366,
-   0.6810647,
-   0.6738673,
-   0.6610767,
-   0.6514972,
-   0.6868247,
-   0.6642048,
-   0.6974455,
-   0.6980418,
-   0.70381,
-   0.7094041,
-   0.7294259,
-   0.6826414,
-   0.6615688,
-   0.6652011,
-   0.6655706,
-   0.6717152,
-   0.6505907,
-   0.6437402,
-   0.6266931,
-   0.5912014,
-   0.5979314,
-   0.5160866,
-   0.4675891,
-   0.4589744,
-   0.4393221,
-   0.4429775,
-   0.4516776,
-   0.4647613,
-   0.4810571,
-   0.5026439,
-   0.5247849,
-   0.535972,
-   0.5246307,
-   0.5441221,
-   0.5582402,
-   0.5580423,
-   0.5658328,
-   0.554965,
-   0.5728296,
-   0.6026789,
-   0.6205283,
-   0.6199524,
-   0.6256342,
-   0.6181208,
-   0.6341548,
-   0.6414836,
-   0.6204289,
-   0.6472151};
-   TGraph *graph = new TGraph(147,Graph0_fx3,Graph0_fy3);
-   graph->SetName("Graph0");
+   TGraph *graph = new TGraph(93);
+   graph->SetName("Graph");
    graph->SetTitle("Graph");
    graph->SetLineColor(2);
    graph->SetMarkerColor(2);
    graph->SetMarkerStyle(8);
+   graph->SetPoint(0,1459992588,0.8102634538);
+   graph->SetPoint(1,1459998587,0.6747804136);
+   graph->SetPoint(2,1460004578,0.6843497498);
+   graph->SetPoint(3,1460010576,0.7070577543);
+   graph->SetPoint(4,1460016577,0.7581104506);
+   graph->SetPoint(5,1460022602,0.6797609171);
+   graph->SetPoint(6,1460028613,0.6516209794);
+   graph->SetPoint(7,1460034621,0.6419075284);
+   graph->SetPoint(8,1460040652,0.7051038707);
+   graph->SetPoint(9,1460043174,0);
+   graph->SetPoint(10,1460045619,0);
+   graph->SetPoint(11,1460046670,0.6986520194);
+   graph->SetPoint(12,1460052712,0.5962422504);
+   graph->SetPoint(13,1460058755,0.523476642);
+   graph->SetPoint(14,1460064842,0.5635158827);
+   graph->SetPoint(15,1460070963,0.6181351608);
+   graph->SetPoint(16,1460077019,0.5756293782);
+   graph->SetPoint(17,1460083183,0.7336279249);
+   graph->SetPoint(18,1460089390,0.7098324669);
+   graph->SetPoint(19,1460095592,0.7139583132);
+   graph->SetPoint(20,1460101729,0.6670536328);
+   graph->SetPoint(21,1460107913,0.7226922956);
+   graph->SetPoint(22,1460114074,0.676754632);
+   graph->SetPoint(23,1460120227,0.7215163467);
+   graph->SetPoint(24,1460126401,0.6110645722);
+   graph->SetPoint(25,1460132547,0.5703916431);
+   graph->SetPoint(26,1460138695,0.6546505988);
+   graph->SetPoint(27,1460144895,0.6688892542);
+   graph->SetPoint(28,1460151029,0.611196059);
+   graph->SetPoint(29,1460157228,0.6768779601);
+   graph->SetPoint(30,1460163378,5.423514047);
+   graph->SetPoint(31,1460169588,0.6226856097);
+   graph->SetPoint(32,1460175745,0.6556695129);
+   graph->SetPoint(33,1460181944,0.7114944209);
+   graph->SetPoint(34,1460188186,0.6151953748);
+   graph->SetPoint(35,1460194335,0.6270538379);
+   graph->SetPoint(36,1460200491,0.6102540265);
+   graph->SetPoint(37,1460206647,0.7004681797);
+   graph->SetPoint(38,1460212829,0.5955460711);
+   graph->SetPoint(39,1460218998,0.7097810004);
+   graph->SetPoint(40,1460225179,0.689143668);
+   graph->SetPoint(41,1460231354,0.6710556407);
+   graph->SetPoint(42,1460237504,0.6767853622);
+   graph->SetPoint(43,1460243683,0.6415201079);
+   graph->SetPoint(44,1460249857,0.7654253174);
+   graph->SetPoint(45,1460256044,0.685857629);
+   graph->SetPoint(46,1460262193,0.7415187103);
+   graph->SetPoint(47,1460268370,0.7170268139);
+   graph->SetPoint(48,1460274533,0.7616335079);
+   graph->SetPoint(49,1460280638,0.719953976);
+   graph->SetPoint(50,1460286817,0.7215228695);
+   graph->SetPoint(51,1460293016,0.6452753879);
+   graph->SetPoint(52,1460299158,0.6995783375);
+   graph->SetPoint(53,1460305337,0.730107742);
+   graph->SetPoint(54,1460311494,0.7141079573);
+   graph->SetPoint(55,1460317608,0.6277164136);
+   graph->SetPoint(56,1460323740,0.7239314807);
+   graph->SetPoint(57,1460329913,0.6258818819);
+   graph->SetPoint(58,1460336037,0.7542643388);
+   graph->SetPoint(59,1460342178,0.693801905);
+   graph->SetPoint(60,1460348402,0.6975903185);
+   graph->SetPoint(61,1460354614,0.7078405083);
+   graph->SetPoint(62,1460360786,0.703238654);
+   graph->SetPoint(63,1460366964,0.8549665279);
+   graph->SetPoint(64,1460373155,0.6976882255);
+   graph->SetPoint(65,1460379329,0.7478200342);
+   graph->SetPoint(66,1460385513,0.660586476);
+   graph->SetPoint(67,1460391689,0.7059994626);
+   graph->SetPoint(68,1460397845,0.8046291647);
+   graph->SetPoint(69,1460404016,0.6843937962);
+   graph->SetPoint(70,1460410171,0.6920718526);
+   graph->SetPoint(71,1460416325,0.7628207493);
+   graph->SetPoint(72,1460422430,0.817355789);
+   graph->SetPoint(73,1460428569,0.7768473297);
+   graph->SetPoint(74,1460434667,0.761250828);
+   graph->SetPoint(75,1460440784,0.7192269302);
+   graph->SetPoint(76,1460446929,0.7751502203);
+   graph->SetPoint(77,1460453096,0.6873742118);
+   graph->SetPoint(78,1460459266,0.6724692086);
+   graph->SetPoint(79,1460465418,0.7882239385);
+   graph->SetPoint(80,1460471588,0.6826569803);
+   graph->SetPoint(81,1460477734,0.6742124442);
+   graph->SetPoint(82,1460483898,0.6552061305);
+   graph->SetPoint(83,1460490060,0.7749756171);
+   graph->SetPoint(84,1460496213,0.7580294481);
+   graph->SetPoint(85,1460502345,0.6729563232);
+   graph->SetPoint(86,1460508496,1.011637562);
+   graph->SetPoint(87,1460514653,0.6672372792);
+   graph->SetPoint(88,1460519575,0.7113827992);
+   graph->SetPoint(89,1460536670,0.094726397);
+   graph->SetPoint(90,1460553797,0.6707605236);
+   graph->SetPoint(91,1460570733,0.74358211);
+   graph->SetPoint(92,1460587623,0.7585148062);
    
-   TH1F *Graph_Graph3 = new TH1F("Graph_Graph3","Graph",147,1.438386e+09,1.443435e+09);
-   Graph_Graph3->SetMinimum(0.2289346);
-   Graph_Graph3->SetMaximum(1.572833);
+   TH1F *Graph_Graph3 = new TH1F("Graph_Graph3","Graph",100,1.459933e+09,1.460647e+09);
+   Graph_Graph3->SetMinimum(0);
+   Graph_Graph3->SetMaximum(5.965865);
    Graph_Graph3->SetDirectory(0);
    Graph_Graph3->SetStats(0);
 
@@ -381,78 +176,81 @@ void QAQC_1()
    
    graph->Draw("p");
    
-   TF1 *f3msLifetime1 = new TF1("f3msLifetime","[0]",1.44238e+09,1.442984e+09);
-   f3msLifetime1->SetFillColor(19);
-   f3msLifetime1->SetFillStyle(0);
-   f3msLifetime1->SetLineWidth(2);
-   f3msLifetime1->SetLineStyle(2);
-   f3msLifetime1->GetXaxis()->SetLabelFont(42);
-   f3msLifetime1->GetXaxis()->SetLabelSize(0.035);
-   f3msLifetime1->GetXaxis()->SetTitleSize(0.035);
-   f3msLifetime1->GetXaxis()->SetTitleFont(42);
-   f3msLifetime1->GetYaxis()->SetLabelFont(42);
-   f3msLifetime1->GetYaxis()->SetLabelSize(0.035);
-   f3msLifetime1->GetYaxis()->SetTitleSize(0.035);
-   f3msLifetime1->GetYaxis()->SetTitleFont(42);
-   f3msLifetime1->SetParameter(0,0.3906278);
-   f3msLifetime1->SetParError(0,0);
-   f3msLifetime1->SetParLimits(0,0,0);
-   f3msLifetime1->Draw("SAME");
+   TF1 *f3msLifetime = new TF1("f3msLifetime","[0]",1.44238e+09,1.442984e+09);
+   f3msLifetime->SetFillColor(19);
+   f3msLifetime->SetFillStyle(0);
+   f3msLifetime->SetLineWidth(2);
+   f3msLifetime->SetLineStyle(2);
+   f3msLifetime->GetXaxis()->SetLabelFont(42);
+   f3msLifetime->GetXaxis()->SetLabelSize(0.035);
+   f3msLifetime->GetXaxis()->SetTitleSize(0.035);
+   f3msLifetime->GetXaxis()->SetTitleFont(42);
+   f3msLifetime->GetYaxis()->SetLabelFont(42);
+   f3msLifetime->GetYaxis()->SetLabelSize(0.035);
+   f3msLifetime->GetYaxis()->SetTitleSize(0.035);
+   f3msLifetime->GetYaxis()->SetTitleFont(42);
+   f3msLifetime->SetParameter(0,0.3906278);
+   f3msLifetime->SetParError(0,0);
+   f3msLifetime->SetParLimits(0,0,0);
+   f3msLifetime->Draw("SAME");
    
    TPaveText *pt = new TPaveText(0.23,0.43,0.3,0.47,"brNDC");
    pt->SetFillColor(0);
-   TText *AText = pt->AddText("3 ms");
+   pt->SetFillStyle(4000);
+   TText *text = pt->AddText("3 ms");
    pt->Draw();
    
-   TF1 *f6msLifetime2 = new TF1("f6msLifetime","[0]",1.44238e+09,1.442984e+09);
-   f6msLifetime2->SetFillColor(19);
-   f6msLifetime2->SetFillStyle(0);
-   f6msLifetime2->SetLineWidth(2);
-   f6msLifetime2->SetLineStyle(2);
-   f6msLifetime2->GetXaxis()->SetLabelFont(42);
-   f6msLifetime2->GetXaxis()->SetLabelSize(0.035);
-   f6msLifetime2->GetXaxis()->SetTitleSize(0.035);
-   f6msLifetime2->GetXaxis()->SetTitleFont(42);
-   f6msLifetime2->GetYaxis()->SetLabelFont(42);
-   f6msLifetime2->GetYaxis()->SetLabelSize(0.035);
-   f6msLifetime2->GetYaxis()->SetTitleSize(0.035);
-   f6msLifetime2->GetYaxis()->SetTitleFont(42);
-   f6msLifetime2->SetParameter(0,0.6250023);
-   f6msLifetime2->SetParError(0,0);
-   f6msLifetime2->SetParLimits(0,0,0);
-   f6msLifetime2->Draw("SAME");
+   TF1 *f6msLifetime = new TF1("f6msLifetime","[0]",1.44238e+09,1.442984e+09);
+   f6msLifetime->SetFillColor(19);
+   f6msLifetime->SetFillStyle(0);
+   f6msLifetime->SetLineWidth(2);
+   f6msLifetime->SetLineStyle(2);
+   f6msLifetime->GetXaxis()->SetLabelFont(42);
+   f6msLifetime->GetXaxis()->SetLabelSize(0.035);
+   f6msLifetime->GetXaxis()->SetTitleSize(0.035);
+   f6msLifetime->GetXaxis()->SetTitleFont(42);
+   f6msLifetime->GetYaxis()->SetLabelFont(42);
+   f6msLifetime->GetYaxis()->SetLabelSize(0.035);
+   f6msLifetime->GetYaxis()->SetTitleSize(0.035);
+   f6msLifetime->GetYaxis()->SetTitleFont(42);
+   f6msLifetime->SetParameter(0,0.6250023);
+   f6msLifetime->SetParError(0,0);
+   f6msLifetime->SetParLimits(0,0,0);
+   f6msLifetime->Draw("SAME");
    
    pt = new TPaveText(0.23,0.615,0.3,0.655,"brNDC");
    pt->SetFillColor(0);
-   AText = pt->AddText("6 ms");
+   pt->SetFillStyle(4000);
+   text = pt->AddText("6 ms");
    pt->Draw();
    
-   TF1 *f9msLifetime3 = new TF1("f9msLifetime","[0]",1.44238e+09,1.442984e+09);
-   f9msLifetime3->SetFillColor(19);
-   f9msLifetime3->SetFillStyle(0);
-   f9msLifetime3->SetLineWidth(2);
-   f9msLifetime3->SetLineStyle(2);
-   f9msLifetime3->GetXaxis()->SetLabelFont(42);
-   f9msLifetime3->GetXaxis()->SetLabelSize(0.035);
-   f9msLifetime3->GetXaxis()->SetTitleSize(0.035);
-   f9msLifetime3->GetXaxis()->SetTitleFont(42);
-   f9msLifetime3->GetYaxis()->SetLabelFont(42);
-   f9msLifetime3->GetYaxis()->SetLabelSize(0.035);
-   f9msLifetime3->GetYaxis()->SetTitleSize(0.035);
-   f9msLifetime3->GetYaxis()->SetTitleFont(42);
-   f9msLifetime3->SetParameter(0,0.7310062);
-   f9msLifetime3->SetParError(0,0);
-   f9msLifetime3->SetParLimits(0,0,0);
-   f9msLifetime3->Draw("SAME");
+   TF1 *f9msLifetime = new TF1("f9msLifetime","[0]",1.44238e+09,1.442984e+09);
+   f9msLifetime->SetFillColor(19);
+   f9msLifetime->SetFillStyle(0);
+   f9msLifetime->SetLineWidth(2);
+   f9msLifetime->SetLineStyle(2);
+   f9msLifetime->GetXaxis()->SetLabelFont(42);
+   f9msLifetime->GetXaxis()->SetLabelSize(0.035);
+   f9msLifetime->GetXaxis()->SetTitleSize(0.035);
+   f9msLifetime->GetXaxis()->SetTitleFont(42);
+   f9msLifetime->GetYaxis()->SetLabelFont(42);
+   f9msLifetime->GetYaxis()->SetLabelSize(0.035);
+   f9msLifetime->GetYaxis()->SetTitleSize(0.035);
+   f9msLifetime->GetYaxis()->SetTitleFont(42);
+   f9msLifetime->SetParameter(0,0.7310062);
+   f9msLifetime->SetParError(0,0);
+   f9msLifetime->SetParLimits(0,0,0);
+   f9msLifetime->Draw("SAME");
    
    pt = new TPaveText(0.23,0.7,0.3,0.74,"brNDC");
    pt->SetFillColor(0);
-   AText = pt->AddText("9 ms");
+   pt->SetFillStyle(4000);
+   text = pt->AddText("9 ms");
    pt->Draw();
    
    pt = new TPaveText(0.1,0.95,0.3,1,"brNDC");
    pt->SetFillColor(0);
-   AText = pt->AddText("B. Carls 11/21/15");
+   text = pt->AddText("B. Carls 11/21/15");
    pt->Draw();
    c1->Modified();
    c1->cd();

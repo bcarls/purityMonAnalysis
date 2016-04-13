@@ -1,6 +1,6 @@
 
 #include "PurityPlotMaker.h"
-#include "root/TNtuple.h"
+#include "TNtuple.h"
 
 void PurityPlotMaker::MakePlots(){
   TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","month:day:year:hour:minute:second:lifetime:QC:QA:CatBase:AnoBase:CathF:AnoF");
