@@ -28,4 +28,7 @@ done
 python run_PurityPlotMaker.py -S list_of_datafiles.txt -p $1 -b 
 
 # Post the plots to the ECL
-python post_purity_plots_ecl.py 
+if [[ $HOSTNAME == *"ubdaq"* ]]; then
+    echo "Submitting to the ECL."
+    python post_purity_plots_ecl.py 
+fi

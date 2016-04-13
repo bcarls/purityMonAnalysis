@@ -1,8 +1,6 @@
 
-
 #include "PurityPlotMaker.h"
-
-
+#include "root/TNtuple.h"
 
 void PurityPlotMaker::MakePlots(){
   TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","month:day:year:hour:minute:second:lifetime:QC:QA:CatBase:AnoBase:CathF:AnoF");
@@ -15,9 +13,9 @@ void PurityPlotMaker::MakePlots(){
   // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1";
   // For live plots
   // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.001 && CatBase < 0.001 && AnoRMS < 0.0001";
-  TString dataQualityCuts = "lifetime<0.1 && CatBase > -0.001 && CatBase < 0.001";
+  
   // Loose cuts
-  // TString dataQualityCuts = "lifetime<0.1";
+  TString dataQualityCuts = "lifetime<0.1";
 
 
   float Lifetime, QC, QA, CatBase, AnoBase, CathF, AnoF;
@@ -97,8 +95,6 @@ void PurityPlotMaker::MakePlots(){
     QAQCSum += QA/QC;
     QAQCSumCount++;
     datimeSum+=datime.Convert();
-    // std::cout << "QA/QC: " << QA/QC << std::endl;
-    // std::cout << j << " " << lifetimeValue << " " << LifetimeSum << std::endl;
     j++;
     if(j==measPerAve){
       // std::cout << LifetimeSum/measPerAve << std::endl;
@@ -160,14 +156,18 @@ void PurityPlotMaker::MakePlots(){
   // Set custom datimeMin and datimeMax, it's in this format:
   // datimeMin.Set(year,month,day,hour,minute,second);
   TDatime datimePlotBegin, datimePlotEnd,datimePlotFiltBegin;
+  // For publication  
   // datimePlotBegin.Set(2015,8,4,0,0,0);
   // datimePlotEnd.Set(2015,8,19,12,0,0);
-  // datimePlotBegin.Set(2015,8,25,0,0,0);
-  // datimePlotEnd.Set(2015,9,1,0,0,0);
-  // datimePlotBegin.Set(2015,8,17,0,0,0);
-  // datimePlotEnd.Set(2015,8,24,0,0,0);
-  datimePlotBegin.Set(datimeMax.Convert()-604800);
-  datimePlotEnd = datimeMax;
+  // For comparison to cosmic rays
+  // datimePlotBegin.Set(2015,8,15,0,0,0);
+  // datimePlotEnd.Set(2015,8,31,0,0,0);
+  // For Stephen 
+  datimePlotBegin.Set(2015,9,16,0,0,0);
+  datimePlotEnd.Set(2015,9,23,0,0,0);
+  // For live plots
+  // datimePlotBegin.Set(datimeMax.Convert()-604800);
+  // datimePlotEnd = datimeMax;
   // datimePlotBegin.Set(datimeMin.Convert() - 30*60);
   // datimePlotEnd.Set(datimeMax.Convert() + 30*60);
  
@@ -201,6 +201,8 @@ void PurityPlotMaker::MakePlots(){
   // Set ticks for both sides
   gPad->SetTicks(0,1);
 
+
+
   TH2F *frameLifetime = new TH2F("frameLifetime","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 15);
   frameLifetime->GetXaxis()->SetTitle("Date/Time");
   frameLifetime->GetXaxis()->SetTimeDisplay(1);
@@ -217,10 +219,47 @@ void PurityPlotMaker::MakePlots(){
 
   TString lifetimeImage = "lifetime_" + sAtM + ".ps";
   TString lifetimeImagePNG = "lifetime_" + sAtM + ".png";
+  TString lifetimeImageMacro = "lifetime_" + sAtM + ".C";
 
   c1->Print(lifetimeImage);
+  c1->Print(lifetimeImageMacro);
   std::cout << "convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG << std::endl;
   gSystem->Exec("convert -rotate 90 "+lifetimeImage+" "+lifetimeImagePNG);
+
+
+
+
+
+  // Plot oxygen equivalent contamination
+  // Conversion is 
+  gPad->SetLogy();
+  TH2F *frameContamination = new TH2F("frameContamination","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 1e-2, 1);
+  frameContamination->GetXaxis()->SetTitle("Date/Time");
+  frameContamination->GetXaxis()->SetTimeDisplay(1);
+  frameContamination->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+  frameContamination->GetXaxis()->SetTimeOffset(0);
+  frameContamination->GetXaxis()->SetLabelOffset(0.025);
+  frameContamination->GetXaxis()->SetTitleOffset(1.5);
+  frameContamination->GetYaxis()->SetTitle("Oxygen Equivalent Contamination (ppb)");
+  // frameContamination->SetNdivisions(-404);
+  frameContamination->SetNdivisions(-7);
+  frameContamination->Draw();
+  TPaveText *lName = new TPaveText(0.1,0.91,0.3,0.96,"NDC");
+  lName->SetFillColor(0);
+  lName->AddText("B. Carls 11/21/15");
+  lName->Draw("SAME");
+
+  lifetimeData->Draw("1e9*3e-13/lifetime:datime.Convert()", dataQualityCuts,"SAME");
+
+  TString contaminationImage = "contamination_" + sAtM + ".ps";
+  TString contaminationImagePNG = "contamination_" + sAtM + ".png";
+  TString contaminationImageMacro = "contamination_" + sAtM + ".C";
+
+  c1->Print(contaminationImage);
+  c1->Print(contaminationImageMacro);
+  std::cout << "convert -rotate 90 "+contaminationImage+" "+contaminationImagePNG << std::endl;
+  gSystem->Exec("convert -rotate 90 "+contaminationImage+" "+contaminationImagePNG);
+  gPad->SetLogy(0);
 
 
 
@@ -351,7 +390,8 @@ void PurityPlotMaker::MakePlots(){
   f3msLifetime->SetLineColor(1);
   f3msLifetime->SetLineStyle(2);
   f3msLifetime->Draw("SAME");
-  TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,f3msY1,datimePlotBegin.Convert()+0.00015e9,f3msY2);
+  // TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,f3msY1,datimePlotBegin.Convert()+0.00015e9,f3msY2);
+  TPaveText *lab3ms = new TPaveText(0.23,0.43,0.3,0.47,"NDC");
   lab3ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
   lab3ms->SetFillStyle(4000);
@@ -364,7 +404,8 @@ void PurityPlotMaker::MakePlots(){
   f6msLifetime->SetLineColor(1);
   f6msLifetime->SetLineStyle(2);
   f6msLifetime->Draw("SAME");
-  TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.633,datimePlotBegin.Convert()+0.00015e9,0.683);
+  // TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.633,datimePlotBegin.Convert()+0.00015e9,0.683);
+  TPaveText *lab6ms = new TPaveText(0.23,0.615,0.3,0.655,"NDC");
   lab6ms->SetFillColor(0);
   lab6ms->SetFillStyle(4000);
   // lab6ms->SetLineColor(0);
@@ -377,17 +418,23 @@ void PurityPlotMaker::MakePlots(){
   f9msLifetime->SetLineColor(1);
   f9msLifetime->SetLineStyle(2);
   f9msLifetime->Draw("SAME");
-  // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
-  TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.743,datimePlotBegin.Convert()+0.00015e9,0.793);
+  // TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.743,datimePlotBegin.Convert()+0.00015e9,0.793);
+  TPaveText *lab9ms = new TPaveText(0.23,0.7,0.3,0.74,"NDC");
   lab9ms->SetFillColor(0);
   lab9ms->SetFillStyle(4000);
   // lab6ms->SetLineColor(0);
   lab9ms->AddText("9 ms");
   lab9ms->Draw("SAME");
+  TPaveText *lQAQCName = new TPaveText(0.1,0.95,0.3,1.00,"NDC");
+  lQAQCName->SetFillColor(0);
+  lQAQCName->AddText("B. Carls 11/21/15");
+  lQAQCName->Draw("SAME");
 
   TString QAQCImage = "QAQC_" + sAtM + ".ps";
   TString QAQCImagePNG = "QAQC_" + sAtM + ".png";
+  TString QAQCImageMacro = "QAQC_" + sAtM + ".C";
   c1->Print(QAQCImage);
+  c1->Print(QAQCImageMacro);
   std::cout << "convert -rotate 90 " + QAQCImage + " "+ QAQCImagePNG << std::endl;
   gSystem->Exec("convert -rotate 90 " + QAQCImage + " "+ QAQCImagePNG );
 
@@ -452,7 +499,9 @@ void PurityPlotMaker::MakePlots(){
 
   TString QAQCErrorImage = "QAQCError_" + sAtM + ".ps";
   TString QAQCErrorImagePNG = "QAQCError_" + sAtM + ".png";
+  TString QAQCErrorImageMacro = "QAQCError_" + sAtM + ".C";
   c1->Print(QAQCErrorImage);
+  c1->Print(QAQCErrorImageMacro);
   std::cout << "convert -rotate 90 " + QAQCErrorImage + " "+ QAQCErrorImagePNG << std::endl;
   gSystem->Exec("convert -rotate 90 " + QAQCErrorImage + " "+ QAQCErrorImagePNG );
 
