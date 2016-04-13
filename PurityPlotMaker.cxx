@@ -5,8 +5,8 @@
 
 
 void PurityPlotMaker::MakePlots(){
-  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","run:month:day:year:hour:minute:second:lifetime:QC:QA:CatBase:AnoBase:CatRMS:AnoRMS:CathF:AnoF");
-  TNtuple *averagedLifetimeData = new TNtuple("averagedLifetime","NTUPLE","averagedRun:averagedLifetime:datime");
+  TNtuple *lifetimeData = new TNtuple("lifetimeData","NTUPLE","month:day:year:hour:minute:second:lifetime:QC:QA:CatBase:AnoBase:CathF:AnoF");
+  TNtuple *averagedLifetimeData = new TNtuple("averagedLifetime","NTUPLE","averagedDatime:averagedLifetime");
 
   for(int i = 0; i < listOfDataFiles.size(); i++)
     lifetimeData->ReadFile(listOfDataFiles[i].Data());
@@ -14,16 +14,18 @@ void PurityPlotMaker::MakePlots(){
   // For publication 
   // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.00005 && AnoRMS<0.00012 && AnoF < 1.4 && AnoF > 1.1";
   // For live plots
-  TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.001 && CatBase < 0.001 && AnoRMS < 0.0001";
+  // TString dataQualityCuts = "lifetime<0.1 && CatRMS < 0.0005 && CatBase > -0.001 && CatBase < 0.001 && AnoRMS < 0.0001";
+  TString dataQualityCuts = "lifetime<0.1 && CatBase > -0.001 && CatBase < 0.001";
   // Loose cuts
   // TString dataQualityCuts = "lifetime<0.1";
 
 
-  float runNumber, Lifetime, QC, QA, CatBase, AnoBase, CatRMS, AnoRMS, CathF, AnoF;
-  float runNumberSum, LifetimeSum, QAQCSum;
+  float Lifetime, QC, QA, CatBase, AnoBase, CathF, AnoF;
+  // float runNumberSum, LifetimeSum, QAQCSum;
+  float datimeSum, LifetimeSum, QAQCSum;
   float month, day, year, hour, minute, second;
   int nEntries = (int)lifetimeData->GetEntries();
-  lifetimeData->SetBranchAddress("run",&runNumber);
+  // lifetimeData->SetBranchAddress("run",&runNumber);
   lifetimeData->SetBranchAddress("month",&month);
   lifetimeData->SetBranchAddress("day",&day);
   lifetimeData->SetBranchAddress("year",&year);
@@ -35,8 +37,8 @@ void PurityPlotMaker::MakePlots(){
   lifetimeData->SetBranchAddress("QA",&QA);
   lifetimeData->SetBranchAddress("CatBase",&CatBase);
   lifetimeData->SetBranchAddress("AnoBase",&AnoBase);
-  lifetimeData->SetBranchAddress("CatRMS",&CatRMS);
-  lifetimeData->SetBranchAddress("AnoRMS",&AnoRMS);
+  // lifetimeData->SetBranchAddress("CatRMS",&CatRMS);
+  // lifetimeData->SetBranchAddress("AnoRMS",&AnoRMS);
   lifetimeData->SetBranchAddress("CathF",&CathF);
   lifetimeData->SetBranchAddress("AnoF",&AnoF);
 
@@ -66,7 +68,7 @@ void PurityPlotMaker::MakePlots(){
 
 
 
-  TString sAtM = listOfDataFiles[0][20];
+  TString sAtM = listOfDataFiles[0][24];
 
 
 
@@ -79,42 +81,35 @@ void PurityPlotMaker::MakePlots(){
   int QAQCSumCount = 0;
   float datimeSum = 0;
   // Sort the TTree so that the average actually makes sense
-  lifetimeData->BuildIndex("run");
+  lifetimeData->BuildIndex("datime.Convert()");
   TTreeIndex *lifetimeDataIndex = (TTreeIndex*)lifetimeData->GetTreeIndex();
-  // for(int i = lifetimeDataIndex->GetN() - 1; i >= 0; --i){
   for(int i = 0; i < lifetimeDataIndex->GetN(); i++){
     Long64_t local = lifetimeData->LoadTree(lifetimeDataIndex->GetIndex()[i]);
     lifetimeData->GetEntry(local);
     if(lifetimeValue >= 0.1)
       continue;
-    if(CatRMS >= 0.0005)
-      continue;
     if(CatBase <= -0.001)
       continue;
     if(CatBase >= 0.001)
       continue;
-    if(AnoRMS >= 0.0001)
-      continue;
-    runNumberSum+=runNumber;
+    // runNumberSum+=runNumber;
     LifetimeSum+=lifetimeValue;
     QAQCSum += QA/QC;
     QAQCSumCount++;
     datimeSum+=datime.Convert();
-    std::cout << "QA/QC: " << QA/QC << std::endl;
-    // std::cout << j << " " << lifetimeValue << std::endl;
-    // std::cout << runNumber << " " << lifetimeValue << std::endl;
+    // std::cout << "QA/QC: " << QA/QC << std::endl;
+    // std::cout << j << " " << lifetimeValue << " " << LifetimeSum << std::endl;
     j++;
     if(j==measPerAve){
-      averagedLifetimeData->Fill(runNumberSum/measPerAve,LifetimeSum/measPerAve,datimeSum/measPerAve);
       // std::cout << LifetimeSum/measPerAve << std::endl;
-      runNumberSum=0;
-      LifetimeSum=0;
+      averagedLifetimeData->Fill(datimeSum/measPerAve,LifetimeSum/measPerAve);
       datimeSum=0;
+      LifetimeSum=0;
       j=0;
     }
   }
   if(j!=0){
-    averagedLifetimeData->Fill(runNumberSum/(double)j,LifetimeSum/(double)j,datimeSum/(double)j);
+    averagedLifetimeData->Fill(datimeSum/(double)j,LifetimeSum/(double)j);
     // std::cout << LifetimeSum/j << std::endl;
   }
   float QAQCAverage = QAQCSum/QAQCSumCount;
@@ -130,14 +125,14 @@ void PurityPlotMaker::MakePlots(){
     status = averagedLifetimeData->GetEntry(i/(double)measPerAve);
     if(lifetimeValue >= 0.1)
       continue;
-    if(CatRMS >= 0.0005)
-      continue;
+    // if(CatRMS >= 0.0005)
+    //   continue;
     if(CatBase <= -0.001)
       continue;
     if(CatBase >= 0.001)
       continue;
-    if(AnoRMS >= 0.0001)
-      continue;
+    // if(AnoRMS >= 0.0001)
+    //   continue;
     lifetimeAverageUncertValue += pow(lifetimeValue-averagedLifetimeValue,2);
     QAQCSigma += (QAQCAverage-QA/QC)*(QAQCAverage-QA/QC);
     // std::cout << local <<  " " << i/measPerAve << " " << lifetimeValue << " " << local/measPerAve << " " << averagedLifetimeValue << std::endl;
@@ -157,7 +152,7 @@ void PurityPlotMaker::MakePlots(){
 
   QAQCSigma = sqrt(QAQCSigma/QAQCSumCount);
 
-  std::cout << QAQCAverage << " " << QAQCSigma << " " << std::endl;
+  // std::cout << QAQCAverage << " " << QAQCSigma << " " << std::endl;
 
 
   // averagedLifetimeData->Scan();
@@ -359,6 +354,7 @@ void PurityPlotMaker::MakePlots(){
   TPaveText *lab3ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,f3msY1,datimePlotBegin.Convert()+0.00015e9,f3msY2);
   lab3ms->SetFillColor(0);
   // lab6ms->SetLineColor(0);
+  lab3ms->SetFillStyle(4000);
   lab3ms->AddText("3 ms");
   lab3ms->Draw("SAME");
 
@@ -370,6 +366,7 @@ void PurityPlotMaker::MakePlots(){
   f6msLifetime->Draw("SAME");
   TPaveText *lab6ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.633,datimePlotBegin.Convert()+0.00015e9,0.683);
   lab6ms->SetFillColor(0);
+  lab6ms->SetFillStyle(4000);
   // lab6ms->SetLineColor(0);
   lab6ms->AddText("6 ms");
   lab6ms->Draw("SAME");
@@ -383,6 +380,7 @@ void PurityPlotMaker::MakePlots(){
   // TPaveText *lab9ms = new TPaveText(1.43894e9,0.743,1.43903e9,0.793);
   TPaveText *lab9ms = new TPaveText(datimePlotBegin.Convert()+0.000015e9,0.743,datimePlotBegin.Convert()+0.00015e9,0.793);
   lab9ms->SetFillColor(0);
+  lab9ms->SetFillStyle(4000);
   // lab6ms->SetLineColor(0);
   lab9ms->AddText("9 ms");
   lab9ms->Draw("SAME");
@@ -407,7 +405,8 @@ void PurityPlotMaker::MakePlots(){
 
   // Plot QA/QC with error bars from baseline calculation
   gStyle->SetOptStat(0);
-  long NQAQC = lifetimeData->Draw("datime.Convert():(1.007)*(1.0)*QA/QC*(run < 2100)+0.9992877*1.057*QA/QC*(run>2113):0.057*QA/QC",dataQualityCuts,"goff");
+  // long NQAQC = lifetimeData->Draw("datime.Convert():(1.007)*(1.0)*QA/QC*(run < 2100)+0.9992877*1.057*QA/QC*(run>2113):0.057*QA/QC",dataQualityCuts,"goff");
+  long NQAQC = lifetimeData->Draw("datime.Convert():0.9992877*1.057*QA/QC:0.057*QA/QC",dataQualityCuts,"goff");
   TGraphErrors *grQAQC = new TGraphErrors(NQAQC,lifetimeData->GetV1(),lifetimeData->GetV2(),0,lifetimeData->GetV3());
   grQAQC->SetMarkerStyle(8);
   grQAQC->SetMarkerColor(2);
@@ -476,11 +475,9 @@ void PurityPlotMaker::MakePlots(){
 
 
 
-
-
   // Make the averaged plot
   gStyle->SetOptStat(0);
-  long N = averagedLifetimeData->Draw("datime.Convert():1000*averagedLifetime:1000*lifetimeAverageUncert","","goff");
+  long N = averagedLifetimeData->Draw("averagedDatime:1000*averagedLifetime:1000*lifetimeAverageUncert","","goff");
   TGraphErrors *gr = new TGraphErrors(N,averagedLifetimeData->GetV1(),averagedLifetimeData->GetV2(),0,averagedLifetimeData->GetV3());
   gr->SetMarkerStyle(8);
   gr->SetMarkerColor(2);
@@ -620,46 +617,46 @@ void PurityPlotMaker::MakePlots(){
 
 
   
-  TH2F *frameCatRMS = new TH2F("frameCatRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
-  frameCatRMS->GetXaxis()->SetTitle("Date/Time");
-  frameCatRMS->GetXaxis()->SetTimeDisplay(1);
-  frameCatRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
-  frameCatRMS->GetXaxis()->SetTimeOffset(0);
-  frameCatRMS->GetXaxis()->SetLabelOffset(0.025);
-  frameCatRMS->GetXaxis()->SetTitleOffset(1.5);
-  frameCatRMS->GetYaxis()->SetTitle("Cathode RMS (mV)");
-  frameCatRMS->SetNdivisions(-7);
-  frameCatRMS->Draw();
-  lifetimeData->Draw("1000*CatRMS:datime.Convert()","","SAME");
+//   TH2F *frameCatRMS = new TH2F("frameCatRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
+//   frameCatRMS->GetXaxis()->SetTitle("Date/Time");
+//   frameCatRMS->GetXaxis()->SetTimeDisplay(1);
+//   frameCatRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+//   frameCatRMS->GetXaxis()->SetTimeOffset(0);
+//   frameCatRMS->GetXaxis()->SetLabelOffset(0.025);
+//   frameCatRMS->GetXaxis()->SetTitleOffset(1.5);
+//   frameCatRMS->GetYaxis()->SetTitle("Cathode RMS (mV)");
+//   frameCatRMS->SetNdivisions(-7);
+//   frameCatRMS->Draw();
+//   lifetimeData->Draw("1000*CatRMS:datime.Convert()","","SAME");
 
-  TString CatRMSImage = "CatRMS_" + sAtM + ".ps";
-  TString CatRMSImagePNG = "CatRMS_" + sAtM + ".png";
+//   TString CatRMSImage = "CatRMS_" + sAtM + ".ps";
+//   TString CatRMSImagePNG = "CatRMS_" + sAtM + ".png";
 
-  c1->Print(CatRMSImage);
-  std::cout << "convert -rotate 90 " + CatRMSImage + " "+ CatRMSImagePNG << std::endl;
-  gSystem->Exec("convert -rotate 90 " + CatRMSImage + " "+ CatRMSImagePNG );
+//   c1->Print(CatRMSImage);
+//   std::cout << "convert -rotate 90 " + CatRMSImage + " "+ CatRMSImagePNG << std::endl;
+//   gSystem->Exec("convert -rotate 90 " + CatRMSImage + " "+ CatRMSImagePNG );
 
 
  
 
-  TH2F *frameAnoRMS = new TH2F("frameAnoRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
-  frameAnoRMS->GetXaxis()->SetTitle("Date/Time");
-  frameAnoRMS->GetXaxis()->SetTimeDisplay(1);
-  frameAnoRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
-  frameAnoRMS->GetXaxis()->SetTimeOffset(0);
-  frameAnoRMS->GetXaxis()->SetLabelOffset(0.025);
-  frameAnoRMS->GetXaxis()->SetTitleOffset(1.5);
-  frameAnoRMS->GetYaxis()->SetTitle("Anode RMS (mV)");
-  frameAnoRMS->SetNdivisions(-7);
-  frameAnoRMS->Draw();
-  lifetimeData->Draw("1000*AnoRMS:datime.Convert()","","SAME");
+//   TH2F *frameAnoRMS = new TH2F("frameAnoRMS","", 1000, datimePlotBegin.Convert(), datimePlotEnd.Convert(), 1000, 0, 1);
+//   frameAnoRMS->GetXaxis()->SetTitle("Date/Time");
+//   frameAnoRMS->GetXaxis()->SetTimeDisplay(1);
+//   frameAnoRMS->GetXaxis()->SetTimeFormat("#splitline{%m-%d-%y}{%H:%M}");
+//   frameAnoRMS->GetXaxis()->SetTimeOffset(0);
+//   frameAnoRMS->GetXaxis()->SetLabelOffset(0.025);
+//   frameAnoRMS->GetXaxis()->SetTitleOffset(1.5);
+//   frameAnoRMS->GetYaxis()->SetTitle("Anode RMS (mV)");
+//   frameAnoRMS->SetNdivisions(-7);
+//   frameAnoRMS->Draw();
+//   lifetimeData->Draw("1000*AnoRMS:datime.Convert()","","SAME");
 
-  TString AnoRMSImage = "AnoRMS_" + sAtM + ".ps";
-  TString AnoRMSImagePNG = "AnoRMS_" + sAtM + ".png";
+//   TString AnoRMSImage = "AnoRMS_" + sAtM + ".ps";
+//   TString AnoRMSImagePNG = "AnoRMS_" + sAtM + ".png";
 
-  c1->Print(AnoRMSImage);
-  std::cout << "convert -rotate 90 " + AnoRMSImage + " "+ AnoRMSImagePNG << std::endl;
-  gSystem->Exec("convert -rotate 90 " + AnoRMSImage + " "+ AnoRMSImagePNG );
+//   c1->Print(AnoRMSImage);
+//   std::cout << "convert -rotate 90 " + AnoRMSImage + " "+ AnoRMSImagePNG << std::endl;
+//   gSystem->Exec("convert -rotate 90 " + AnoRMSImage + " "+ AnoRMSImagePNG );
 
 
 

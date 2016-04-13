@@ -43,7 +43,7 @@ def main(argv):
     elif inputFileList != '':
         inputFiles = open(inputFileList).read().splitlines()
     for f in inputFiles:
-        print 'Adding input file: '+f+'.'
+        # print 'Adding input file: '+f+'.'
         t.AddDataFile(f)
 
     t.SetPurityMonitor(prm)
