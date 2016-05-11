@@ -1,3 +1,6 @@
+# This is depreciated, go to GitLab
+
+
 # purityMonAnalysis
 
 This code is intended to measure argon purities. The code uses PyROOT and ROOT 6. 
